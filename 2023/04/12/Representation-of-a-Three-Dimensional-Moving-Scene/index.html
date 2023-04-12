@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Introduction - An Invitation to 3-D Vision - RitzzzZ 
+        Representation of a Three-Dimensional Moving Scene - RitzzzZ 
     </title>
      
     
@@ -92,14 +92,14 @@
     <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/04/11/Introduction-An-Invitation-to-3-D-Vision/">
-                    Introduction - An Invitation to 3-D Vision
+                <a itemprop="url" href="/2023/04/12/Representation-of-a-Three-Dimensional-Moving-Scene/">
+                    Representation of a Three-Dimensional Moving Scene
                 </a>
             </h1>
         </div>
         <ul class="post-meta post-meta-atpage">
             <li class="post-time">
-                2023-04-11
+                2023-04-12
             </li>
             <li>
                 <div class="article-category">
@@ -111,25 +111,47 @@
             <blockquote>
 <p>Notes for <a target="_blank" rel="noopener" href="https://link.springer.com/book/10.1007/978-0-387-21779-6"><em>An Invitation to 3-D Vision</em></a>.</p>
 </blockquote>
-<h2 id="Visual-System"><a href="#Visual-System" class="headerlink" title="Visual System"></a>Visual System</h2><p>A collection of <strong>devices</strong> that transform measurements of light into information about spatial and material properties of a scene.</p>
-<h3 id="Devices"><a href="#Devices" class="headerlink" title="Devices"></a>Devices</h3><ul>
-<li>photosensitive sensor (camera, retina)</li>
-<li>computational mechanisms (computer, brain)</li>
-</ul>
-<h2 id="Why-is-vision-hard"><a href="#Why-is-vision-hard" class="headerlink" title="Why is vision hard?"></a>Why is vision hard?</h2><p>We do not know:</p>
-<ul>
-<li>shape (geometry)</li>
-<li>illumination &amp; material properties (photometry)</li>
-<li>motion (dynamics)</li>
-</ul>
-<h2 id="What-this-books-does"><a href="#What-this-books-does" class="headerlink" title="What this books does"></a>What this books does</h2><p>Concentrate on scenes that contain a number of <strong>rigidly moving objects</strong> that have <strong>“benign”</strong> (excludes shiny and translucent materials) photometric properties.</p>
-<p>Given a number of 2-D images, this book seeks to answer the following questions</p>
+<h2 id="3-D-Euclidean-space"><a href="#3-D-Euclidean-space" class="headerlink" title="3-D Euclidean space"></a>3-D Euclidean space</h2><p><strong>Definition 1 Vector.</strong> Omitted.</p>
+<p><strong>Definition 2 Cross product.</strong> Given two vector $u,v \in \Bbb R^3$, their cross product is </p>
+<p>$$<br>u\times v \ \dot{=}\begin{bmatrix}u_2v_3-u_3v_2\u_3v_1-u_1v_3\u_1v_2-u_2v_1\end{bmatrix} \in \Bbb R^3.<br>$$</p>
+<p>Some properties:</p>
+<p>$$<br>\langle u\times v,u \rangle=\langle u\times v,v \rangle=0,\ u\times v=-v\times u<br>$$</p>
 <ol>
-<li>to what extent and how can we estimate the 3-D shape of each object?</li>
-<li>to what extent can we recover the motion of each object relative to the camera?</li>
-<li>to what extent can we recover a model of the geometry of the camera itself?</li>
+<li>orthogonal</li>
+<li>the order of the factors defines an orientation</li>
+<li>right-hand rule: for $e_1 \ \dot{=} [1,0,0]^T,\ e_2 \ \dot{=} [0,1,0]^T, \ e_1 \times e_2= [0,0,1]^T\ \dot{=}\ e_3$</li>
 </ol>
-<p>To conclude, this book describes algorithms designed to <strong>estimate 3-D structure, motion and camera calibration from a collection of images</strong>.</p>
+<p>If we fix $u$, the cross product can be represented by a map from $\Bbb R^3$ to $\Bbb R^3$: $v \mapsto u \times v.$ This map is linear in $v$ and can be represented by a <strong>skew-symmetric</strong> matrix $\hat{u} \in \Bbb R^{3\times 3}.$</p>
+<p>$$<br>\hat{u} \ \dot{=} \begin{bmatrix} 0&amp;-u_3&amp;u_2\ u_3&amp;0&amp;-u_1\-u_2&amp;u_1&amp;0\end{bmatrix}\in \Bbb R^{3\times 3}.<br>$$</p>
+<p><strong>Lemma 3 Skew-symmetric matrix.</strong> A matrix $M \in \Bbb R^{3 \times 3}$ is skew-symmetric if and only if $M=\hat{u}$ for some  $u \in \Bbb R^3$.</p>
+<h2 id="Rigid-body-motion"><a href="#Rigid-body-motion" class="headerlink" title="Rigid-body motion"></a>Rigid-body motion</h2><p>It’s sufficient to specify the motion of one point and the motion of three coordinate axes attached to that point. Because the distances between any two points do not change over time as the object move.</p>
+<p><strong>Euclidean transformation:</strong> a map that preserves the distance.</p>
+<p><strong>Definition 4 Rigid-body motion or special Euclidean transformation.</strong> A map $g:\Bbb R^3 \mapsto\Bbb R^3$ is a rigid-body motion or special Euclidean transformation if it <strong>preserves the norm (or inner product) and the cross product of any two vectors</strong>.</p>
+<p>Rigid-body motion also preserves <strong>triple product</strong> which corresponds to the <strong>volume</strong> of the parallelepiped spanned by three vectors.</p>
+<h3 id="Two-coordinate-frame"><a href="#Two-coordinate-frame" class="headerlink" title="Two coordinate frame"></a>Two coordinate frame</h3><ul>
+<li>world (reference) frame: fixed</li>
+<li>object (body) coordinate frame: this <strong>right-handed orthonormal</strong> frame is attached to some point on the rigid body</li>
+</ul>
+<h3 id="The-configuration-of-camera"><a href="#The-configuration-of-camera" class="headerlink" title="The configuration of camera"></a>The configuration of camera</h3><ol>
+<li>translational part $T$: the vector between the origin of the world frame and that of the camera frame</li>
+<li>rotational part $R$: the relative orientation of the camera frame  $C$ with coordinate axes $(x, y,z)$, relative to the fixed world frame $W$ with coordinate axes $(X,Y,Z)$</li>
+</ol>
+<h2 id="Rotational-motion-and-its-representation"><a href="#Rotational-motion-and-its-representation" class="headerlink" title="Rotational motion and its representation"></a>Rotational motion and its representation</h2><h3 id="Orthogonal-matrix-representation-of-rotations"><a href="#Orthogonal-matrix-representation-of-rotations" class="headerlink" title="Orthogonal matrix representation of rotations"></a>Orthogonal matrix representation of rotations</h3><p>A rotation matrix about the Z-axis:</p>
+<p>$$<br>R_z(\theta)=\begin{bmatrix}cos\theta&amp;-sin\theta&amp;0\sin\theta&amp;cos\theta&amp;0\0&amp;0&amp;1\end{bmatrix}.<br>$$</p>
+<p>The inverse transformation of a rotation is also a rotation:</p>
+<p>$$<br>R_{cw}=R^{-1}<em>{wc}=R^{T}</em>{wc}<br>$$</p>
+<h3 id="Canonical-exponential-coordinates-for-rotations"><a href="#Canonical-exponential-coordinates-for-rotations" class="headerlink" title="Canonical exponential coordinates for rotations"></a>Canonical exponential coordinates for rotations</h3><p>The dimension of the space of rotation matrices should be 3, and 6 parameters are redundant. </p>
+<p>(to be continue…)</p>
+<h2 id="Rigid-body-motion-and-its-representations"><a href="#Rigid-body-motion-and-its-representations" class="headerlink" title="Rigid-body motion and its representations"></a>Rigid-body motion and its representations</h2><p>$$<br>X_w=R_{wc}X_c+T_{wc}<br>$$</p>
+<p>We denote the full rigid-body motion by $g_{wc}=(R_{wx},T_{wc})$, or simply $g=(R,T)$.</p>
+<h3 id="homogeneous-coordinates"><a href="#homogeneous-coordinates" class="headerlink" title="homogeneous coordinates"></a>homogeneous coordinates</h3><p>Notice that the coordinate transformation for a full rigid-body motion is not linear but <strong>affine</strong>. We may convert a affine transformation to a <strong>linear</strong> one by using homogeneous coodinates.</p>
+<p>$$<br>\bar{X} \dot{=}\begin{bmatrix}X\1 \end{bmatrix} \in \Bbb R^4.<br>$$</p>
+<p>Rewrite the affine transformation in a linear form</p>
+<p>$$<br>\bar{X}<em>w=\begin{bmatrix}X_w\1 \end{bmatrix}=\begin{bmatrix}R</em>{wc}&amp;T_{wc}\0&amp;1 \end{bmatrix}\begin{bmatrix}X_c\1 \end{bmatrix} \dot{=}\ \bar{g}_{wc}\bar{X}_c,<br>$$</p>
+<p>where the 4 * 4 matrix $\bar{g}<em>{wc} \in \Bbb R^{4 \times 4}$  is called the homogeneous representation of the rigid-body motion $g</em>{wc}$. In general, if $g=(R,T)$, its homogeneous representation is </p>
+<p>$$<br>\bar{g}=\begin{bmatrix}R&amp;T\0&amp;1 \end{bmatrix} \in \Bbb R^{4 \times 4}.<br>$$</p>
+<h3 id="Canonical-exponential-coordinates-for-rigid-body-motions"><a href="#Canonical-exponential-coordinates-for-rigid-body-motions" class="headerlink" title="Canonical exponential coordinates for rigid-body motions"></a>Canonical exponential coordinates for rigid-body motions</h3><p>(to be continue…)</p>
+<h2 id="Coordinate-and-velocity-transformations"><a href="#Coordinate-and-velocity-transformations" class="headerlink" title="Coordinate and velocity transformations"></a>Coordinate and velocity transformations</h2><p>(to be continue…)</p>
 
              
         </div>
@@ -144,13 +166,13 @@
     <div class="post-near">
     <div class="post-near-child post-near-child-left "> 
         
-            <a href="/2022/07/31/Preface/">Preface &laquo; </a>
+            <a href="/2023/04/11/Introduction-An-Invitation-to-3-D-Vision/">Introduction - An Invitation to 3-D Vision &laquo; </a>
         
         <br /> Prev  &laquo;
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a href="/2023/04/12/Representation-of-a-Three-Dimensional-Moving-Scene/"> &raquo; Representation of a Three-Dimensional Moving Scene</a>
+            <a>None</a>
         
         <br /> &raquo; Next 
     </div>
