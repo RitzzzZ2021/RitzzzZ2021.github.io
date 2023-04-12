@@ -150,6 +150,25 @@
 </script>
  
 <!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
  
 <!-- mathjax support -->
 
