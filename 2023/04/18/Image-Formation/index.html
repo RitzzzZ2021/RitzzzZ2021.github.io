@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Representation of a Three-Dimensional Moving Scene - RitzzzZ 
+        Image Formation - RitzzzZ 
     </title>
      
     
@@ -96,14 +96,14 @@
     <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/04/12/Representation-of-a-Three-Dimensional-Moving-Scene/">
-                    Representation of a Three-Dimensional Moving Scene
+                <a itemprop="url" href="/2023/04/18/Image-Formation/">
+                    Image Formation
                 </a>
             </h1>
         </div>
         <ul class="post-meta post-meta-atpage">
             <li class="post-time">
-                2023-04-12
+                2023-04-18
             </li>
             <li>
                 <div class="article-category">
@@ -112,52 +112,42 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <blockquote>
-<p>Notes for <a target="_blank" rel="noopener" href="https://link.springer.com/book/10.1007/978-0-387-21779-6"><em>An Invitation to 3-D Vision</em></a>.</p>
-</blockquote>
-<h2 id="3-D-Euclidean-space"><a href="#3-D-Euclidean-space" class="headerlink" title="3-D Euclidean space"></a>3-D Euclidean space</h2><p><strong>Definition 1 Vector.</strong> Omitted.</p>
-<p><strong>Definition 2 Cross product.</strong> Given two vector $u,v \in \Bbb R^3$, their cross product is</p>
-<script type="math/tex; mode=display">
-u\times v \ \dot{=}\begin{bmatrix}u_2v_3-u_3v_2\\u_3v_1-u_1v_3\\u_1v_2-u_2v_1\end{bmatrix} \in \Bbb R^3.</script><p>Some properties:</p>
-<script type="math/tex; mode=display">
-\langle u\times v,u \rangle=\langle u\times v,v \rangle=0,\ u\times v=-v\times u</script><ol>
-<li>orthogonal</li>
-<li>the order of the factors defines an orientation</li>
-<li>right-hand rule: for $e_1 \ \dot{=} [1,0,0]^T,\ e_2 \ \dot{=} [0,1,0]^T, \ e_1 \times e_2= [0,0,1]^T\ \dot{=}\ e_3$</li>
+            <h2 id="A-geometric-model-of-image-formation"><a href="#A-geometric-model-of-image-formation" class="headerlink" title="A geometric model of image formation"></a>A geometric model of image formation</h2><p>Goal: project points in 3-D space onto images in a 2-D image plane.</p>
+<p>Process:</p>
+<ol>
+<li>coordinate transformations between the camera frame and the world frame</li>
+<li>projection of 3-D coordinates onto  2-D image coordinates</li>
+<li>coordinate transformations between possible choices of image coordinate frame</li>
 </ol>
-<p>If we fix $u$, the cross product can be represented by a map from $\Bbb R^3$ to $\Bbb R^3$: $v \mapsto u \times v.$ This map is linear in $v$ and can be represented by a <strong>skew-symmetric</strong> matrix $\hat{u} \in \Bbb R^{3\times 3}.$</p>
+<p>Inversed chain - camera calibration</p>
+<h3 id="An-ideal-perspective-camera"><a href="#An-ideal-perspective-camera" class="headerlink" title="An ideal perspective camera"></a>An ideal perspective camera</h3><p>Recall the coordinates $X=[X,Y,Z]^T$ of the same point $p$ relative to the camera frame are given by a rigid-body transformation $g=(R,T)$ of $X_0$:</p>
 <script type="math/tex; mode=display">
-\hat{u} \ \dot{=} \begin{bmatrix} 0&-u_3&u_2\\ u_3&0&-u_1\\-u_2&u_1&0\end{bmatrix}\in \Bbb R^{3\times 3}.</script><p><strong>Lemma 3 Skew-symmetric matrix.</strong> A matrix $M \in \Bbb R^{3 \times 3}$ is skew-symmetric if and only if $M=\hat{u}$ for some  $u \in \Bbb R^3$.</p>
-<h2 id="Rigid-body-motion"><a href="#Rigid-body-motion" class="headerlink" title="Rigid-body motion"></a>Rigid-body motion</h2><p>It’s sufficient to specify the motion of one point and the motion of three coordinate axes attached to that point. Because the distances between any two points do not change over time as the object move.</p>
-<p><strong>Euclidean transformation:</strong> a map that preserves the distance.</p>
-<p><strong>Definition 4 Rigid-body motion or special Euclidean transformation.</strong> A map $g:\Bbb R^3 \mapsto\Bbb R^3$ is a rigid-body motion or special Euclidean transformation if it <strong>preserves the norm (or inner product) and the cross product of any two vectors</strong>.</p>
-<p>Rigid-body motion also preserves <strong>triple product</strong> which corresponds to the <strong>volume</strong> of the parallelepiped spanned by three vectors.</p>
-<h3 id="Two-coordinate-frame"><a href="#Two-coordinate-frame" class="headerlink" title="Two coordinate frame"></a>Two coordinate frame</h3><ul>
-<li>world (reference) frame: fixed</li>
-<li>object (body) coordinate frame: this <strong>right-handed orthonormal</strong> frame is attached to some point on the rigid body</li>
-</ul>
-<h3 id="The-configuration-of-camera"><a href="#The-configuration-of-camera" class="headerlink" title="The configuration of camera"></a>The configuration of camera</h3><ol>
-<li>translational part $T$: the vector between the origin of the world frame and that of the camera frame</li>
-<li>rotational part $R$: the relative orientation of the camera frame  $C$ with coordinate axes $(x, y,z)$, relative to the fixed world frame $W$ with coordinate axes $(X,Y,Z)$</li>
-</ol>
-<h2 id="Rotational-motion-and-its-representation"><a href="#Rotational-motion-and-its-representation" class="headerlink" title="Rotational motion and its representation"></a>Rotational motion and its representation</h2><h3 id="Orthogonal-matrix-representation-of-rotations"><a href="#Orthogonal-matrix-representation-of-rotations" class="headerlink" title="Orthogonal matrix representation of rotations"></a>Orthogonal matrix representation of rotations</h3><p>A rotation matrix about the Z-axis:</p>
+X=RX_0+T \ \in \Bbb R^3.</script><p>Adopting the frontal pinhole camera model, we see that the point $X$ is projected onto the image plane at point</p>
 <script type="math/tex; mode=display">
-R_z(\theta)=\begin{bmatrix}cos\theta&-sin\theta&0\\sin\theta&cos\theta&0\\0&0&1\end{bmatrix}.</script><p>The inverse transformation of a rotation is also a rotation:</p>
+x=\begin{bmatrix}x\\y\end{bmatrix}=\frac{f}{Z}\begin{bmatrix}X\\Y\end{bmatrix}.</script><p>$Z$: the depth of the point $p$.</p>
+<p>In homogeneous coordinates, this relationship can be written as</p>
 <script type="math/tex; mode=display">
-R_{cw}=R^{-1}_{wc}=R^{T}_{wc}</script><h3 id="Canonical-exponential-coordinates-for-rotations"><a href="#Canonical-exponential-coordinates-for-rotations" class="headerlink" title="Canonical exponential coordinates for rotations"></a>Canonical exponential coordinates for rotations</h3><p>The dimension of the space of rotation matrices should be 3, and 6 parameters are redundant.</p>
-<p>(to be continue…)</p>
-<h2 id="Rigid-body-motion-and-its-representations"><a href="#Rigid-body-motion-and-its-representations" class="headerlink" title="Rigid-body motion and its representations"></a>Rigid-body motion and its representations</h2><script type="math/tex; mode=display">
-X_w=R_{wc}X_c+T_{wc}</script><p>We denote the full rigid-body motion by $g<em>{wc}=(R</em>{wx},T_{wc})$, or simply $g=(R,T)$.</p>
-<h3 id="homogeneous-coordinates"><a href="#homogeneous-coordinates" class="headerlink" title="homogeneous coordinates"></a>homogeneous coordinates</h3><p>Notice that the coordinate transformation for a full rigid-body motion is not linear but <strong>affine</strong>. We may convert a affine transformation to a <strong>linear</strong> one by using homogeneous coodinates.</p>
+Z\begin{bmatrix}x\\y\\1\end{bmatrix}=\begin{bmatrix}f&0&0&0\\0&f&0&0\\0&0&1&0\end{bmatrix}\begin{bmatrix}X\\Y\\Z\\1\end{bmatrix},</script><p>which is equivalent as</p>
 <script type="math/tex; mode=display">
-\bar{X} \dot{=}\begin{bmatrix}X\\1 \end{bmatrix} \in \Bbb R^4.</script><p>Rewrite the affine transformation in a linear form</p>
+Zx=\begin{bmatrix}f&0&0&0\\0&f&0&0\\0&0&1&0\end{bmatrix}X.</script><p>The coordinate $Z$ (or the depth of the point $p$) is usually unknown, so we simply write it as an arbitrary positive scalar $\lambda \in \Bbb R_+$.</p>
+<p>Define two matrices</p>
 <script type="math/tex; mode=display">
-\bar{X}_w=\begin{bmatrix}X_w\\1 \end{bmatrix}=\begin{bmatrix}R_{wc}&T_{wc}\\0&1 \end{bmatrix}\begin{bmatrix}X_c\\1 \end{bmatrix} \dot{=}\ \bar{g}_{wc}\bar{X}_c,</script><p>where the 4 * 4 matrix $\bar{g}<em>{wc} \in \Bbb R^{4 \times 4}$  is called the homogeneous representation of the rigid-body motion $g</em>{wc}$. In general, if $g=(R,T)$, its homogeneous representation is</p>
+K_f \dot{=}\begin{bmatrix}f&0&0\\0&f&0\\0&0&1\end{bmatrix}\in \Bbb R^{3\times 3},\ \Pi_0\dot{=}\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\end{bmatrix} \in \Bbb R^{3\times 4}.</script><p>$\Pi_0$: standard (or canonical) projection matrix.</p>
+<p>The overall geometric model for <strong>an</strong> <strong>ideal camera</strong> can be describe as</p>
 <script type="math/tex; mode=display">
-\bar{g}=\begin{bmatrix}R&T\\0&1 \end{bmatrix} \in \Bbb R^{4 \times 4}.</script><p>The rigid-body motion (R, T) between the world frame and the camera frame is sometimes referred to as the <strong>extrinsic calibration parameters</strong>.</p>
-<h3 id="Canonical-exponential-coordinates-for-rigid-body-motions"><a href="#Canonical-exponential-coordinates-for-rigid-body-motions" class="headerlink" title="Canonical exponential coordinates for rigid-body motions"></a>Canonical exponential coordinates for rigid-body motions</h3><p>(to be continue…)</p>
-<h2 id="Coordinate-and-velocity-transformations"><a href="#Coordinate-and-velocity-transformations" class="headerlink" title="Coordinate and velocity transformations"></a>Coordinate and velocity transformations</h2><p>(to be continue…)</p>
-
+\lambda\begin{bmatrix}x\\y\\z\end{bmatrix}=\begin{bmatrix}f&0&0\\0&f&0\\0&0&1\end{bmatrix}\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\end{bmatrix}\begin{bmatrix}R&T\\0&1\end{bmatrix}\begin{bmatrix}X_0\\Y_0\\Z_0\\1\end{bmatrix},</script><p>or in matrix form,</p>
+<script type="math/tex; mode=display">
+\lambda x=K_f\Pi_0X=K_f\Pi_0 gX_0.</script><h3 id="Camera-with-intrinsic-parameters"><a href="#Camera-with-intrinsic-parameters" class="headerlink" title="Camera with intrinsic parameters"></a>Camera with intrinsic parameters</h3><p>Goal: specify the relationship between the retinal plane coordinate frame and the pixel array.</p>
+<p>Actual image coordinates</p>
+<script type="math/tex; mode=display">
+x'\dot{=}\begin{bmatrix}x'\\y'\\1\end{bmatrix}=\begin{bmatrix}s_x&s_\theta&o_x\\0&s_y&o_y\\0&0&1\end{bmatrix}\begin{bmatrix}x\\y\\1\end{bmatrix},</script><p>$(o_x,o_y)$: coordinates (in pixel) of the principal point (where the z-axis intersects the image plane) relative to the image reference frame.</p>
+<p>$s_x, s_y$: scale factors. When $s_x=s_y$, each pixel is square.</p>
+<p>$s_\theta$: skew factor, proportional to $cot(\theta)$, where $\theta$ is the angle between the image axes $x_s,y_s$.</p>
+<p>The transformation matrix</p>
+<script type="math/tex; mode=display">
+K_s\dot{=}\begin{bmatrix}s_x&s_\theta&o_x\\0&s_y&o_y\\0&0&1\end{bmatrix} \in \Bbb R^{3\times 3}.</script><p>An <strong>intrinsic parameter matrix / calibration matrix</strong> refers to</p>
+<script type="math/tex; mode=display">
+K\dot{=}K_sK_f\dot{=}\begin{bmatrix}s_x&s_\theta&o_x\\0&s_y&o_y\\0&0&1\end{bmatrix}\begin{bmatrix}f&0&0\\0&f&0\\0&0&1\end{bmatrix}=\begin{bmatrix}fs_x&fs_\theta&o_x\\0&fs_y&o_y\\0&0&1\end{bmatrix}.</script>
              
         </div>
         
@@ -171,13 +161,13 @@ X_w=R_{wc}X_c+T_{wc}</script><p>We denote the full rigid-body motion by $g<em>{w
     <div class="post-near">
     <div class="post-near-child post-near-child-left "> 
         
-            <a href="/2023/04/11/Introduction-An-Invitation-to-3-D-Vision/">Introduction - An Invitation to 3-D Vision &laquo; </a>
+            <a href="/2023/04/12/Representation-of-a-Three-Dimensional-Moving-Scene/">Representation of a Three-Dimensional Moving Scene &laquo; </a>
         
         <br /> Prev  &laquo;
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a href="/2023/04/18/Image-Formation/"> &raquo; Image Formation</a>
+            <a href="/2023/04/19/Image-Primitives-and-Correspondence/"> &raquo; Image Primitives and Correspondence</a>
         
         <br /> &raquo; Next 
     </div>
