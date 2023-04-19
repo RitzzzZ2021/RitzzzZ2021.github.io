@@ -147,12 +147,12 @@ R_z(\theta)=\begin{bmatrix}cos\theta&-sin\theta&0\\sin\theta&cos\theta&0\\0&0&1\
 R_{cw}=R^{-1}_{wc}=R^{T}_{wc}</script><h3 id="Canonical-exponential-coordinates-for-rotations"><a href="#Canonical-exponential-coordinates-for-rotations" class="headerlink" title="Canonical exponential coordinates for rotations"></a>Canonical exponential coordinates for rotations</h3><p>The dimension of the space of rotation matrices should be 3, and 6 parameters are redundant.</p>
 <p>(to be continue…)</p>
 <h2 id="Rigid-body-motion-and-its-representations"><a href="#Rigid-body-motion-and-its-representations" class="headerlink" title="Rigid-body motion and its representations"></a>Rigid-body motion and its representations</h2><script type="math/tex; mode=display">
-X_w=R_{wc}X_c+T_{wc}</script><p>We denote the full rigid-body motion by $g<em>{wc}=(R</em>{wx},T_{wc})$, or simply $g=(R,T)$.</p>
+X_w=R_{wc}X_c+T_{wc}</script><p>We denote the full rigid-body motion by $g_{wc}=(R_{wx},T_{wc})$, or simply $g=(R,T)$.</p>
 <h3 id="homogeneous-coordinates"><a href="#homogeneous-coordinates" class="headerlink" title="homogeneous coordinates"></a>homogeneous coordinates</h3><p>Notice that the coordinate transformation for a full rigid-body motion is not linear but <strong>affine</strong>. We may convert a affine transformation to a <strong>linear</strong> one by using homogeneous coodinates.</p>
 <script type="math/tex; mode=display">
 \bar{X} \dot{=}\begin{bmatrix}X\\1 \end{bmatrix} \in \Bbb R^4.</script><p>Rewrite the affine transformation in a linear form</p>
 <script type="math/tex; mode=display">
-\bar{X}_w=\begin{bmatrix}X_w\\1 \end{bmatrix}=\begin{bmatrix}R_{wc}&T_{wc}\\0&1 \end{bmatrix}\begin{bmatrix}X_c\\1 \end{bmatrix} \dot{=}\ \bar{g}_{wc}\bar{X}_c,</script><p>where the 4 * 4 matrix $ \bar{g}<em>{wc} \in \Bbb R^{4 \times 4}$  is called the homogeneous representation of the rigid-body motion $g</em>{wc}$. In general, if $g=(R,T)$, its homogeneous representation is</p>
+\bar{X}_w=\begin{bmatrix}X_w\\1 \end{bmatrix}=\begin{bmatrix}R_{wc}&T_{wc}\\0&1 \end{bmatrix}\begin{bmatrix}X_c\\1 \end{bmatrix} \dot{=}\ \bar{g}_{wc}\bar{X}_c,</script><p>where the 4 * 4 matrix $\bar{g} _{wc} \in \Bbb R^{4 \times 4}$  is called the homogeneous representation of the rigid-body motion $g_{wc}$. In general, if $g=(R,T)$, its homogeneous representation is</p>
 <script type="math/tex; mode=display">
 \bar{g}=\begin{bmatrix}R&T\\0&1 \end{bmatrix} \in \Bbb R^{4 \times 4}.</script><p>The rigid-body motion (R, T) between the world frame and the camera frame is sometimes referred to as the <strong>extrinsic calibration parameters</strong>.</p>
 <h3 id="Canonical-exponential-coordinates-for-rigid-body-motions"><a href="#Canonical-exponential-coordinates-for-rigid-body-motions" class="headerlink" title="Canonical exponential coordinates for rigid-body motions"></a>Canonical exponential coordinates for rigid-body motions</h3><p>(to be continue…)</p>

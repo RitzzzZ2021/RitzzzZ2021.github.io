@@ -129,7 +129,7 @@
 <script type="math/tex; mode=display">
 I_1(\tilde{x})=I_2(h(\tilde{x}, \alpha)),\ \forall \tilde{x}\in W(x),</script><p><strong>uniquely</strong> determine the parameter $\alpha$. Such conditions would require that $I_1$ and $I_2$ at least have <strong>nonzero gradient</strong> (considering the example of blank wall).</p>
 <p>$h$: the transfromation of the domain, or “image motion”.</p>
-<p>$\alpha$: a set of parameters on which the transformations depend, $\alpha =\Delta x$ for the translational model, and $\alpha = {A,d}$ for the affine motion model.</p>
+<p>$\alpha$: a set of parameters on which the transformations depend, $\alpha =\Delta x$ for the translational model, and $\alpha = \{ A,d \} $ for the affine motion model.</p>
 <h3 id="Line-feature"><a href="#Line-feature" class="headerlink" title="Line feature"></a>Line feature</h3><p>Similarly, we can define a <strong>line feature</strong> as a line segment with a support region and a collection of labels such that the <strong>orientation and normal displacement</strong> of the transformed line can be uniquely determined from the equation above.</p>
 <h3 id="Small-baseline-feature-tracking-and-optical-flow"><a href="#Small-baseline-feature-tracking-and-optical-flow" class="headerlink" title="Small baseline: feature tracking and optical flow"></a>Small baseline: feature tracking and optical flow</h3><p>model: translational</p>
 <p>criterion: sum of squared differences (SSD) </p>
@@ -147,7 +147,7 @@ I_1(\tilde{x})=I_2(h(\tilde{x}, \alpha)),\ \forall \tilde{x}\in W(x),</script><p
 <h2 id="Tracking-line-features"><a href="#Tracking-line-features" class="headerlink" title="Tracking line features"></a>Tracking line features</h2><h3 id="Edge-feature"><a href="#Edge-feature" class="headerlink" title="Edge feature"></a>E<strong>dge feature</strong></h3><p>The gradient norm $||\nabla I||$  reaches a <strong>local maximum</strong> compared to its neighboring pixels.</p>
 <p><img src="Untitled1.png" alt="Untitled"></p>
 <h3 id="Line-fitting"><a href="#Line-fitting" class="headerlink" title="Line fitting"></a>Line fitting</h3><p>connected component analysis: group neighboring pixels with common gradient orientation to form a connected contour or more specifically a candidate line $l$.</p>
-<p>Each connected component $C^k$ is a list of edge pixels ${(x<em>i,y_i)}^n</em>{i=1}$, which are connected and grouped based on their gradient orientation, forming a line support region, say $W(l)$. The line parameters can then be directly computed from the eigenvalues $\lambda_1, \lambda_2$ and eigenvectors $v_1,v_2$ of the matrix $D^k$ associated with the line support region:</p>
+<p>Each connected component $C^k$ is a list of edge pixels $\{(x_i,y_i)\}^n_{i=1}$, which are connected and grouped based on their gradient orientation, forming a line support region, say $W(l)$. The line parameters can then be directly computed from the eigenvalues $\lambda_1, \lambda_2$ and eigenvectors $v_1,v_2$ of the matrix $D^k$ associated with the line support region:</p>
 <script type="math/tex; mode=display">
 D^k \dot{=}\begin{bmatrix}\Sigma_i \tilde{x}_i^2&\Sigma_i \tilde{x}_i\tilde{y}_i\\\Sigma_i \tilde{x}_i\tilde{y}_i&\Sigma_i \tilde{y}_i^2\end{bmatrix}\in\Bbb R^{2\times 2},</script><p>where $\tilde{x}=x_i-\bar{x}$ and $\tilde{y}=y_i-\bar{y}$ are the mean-corrected pixel coordinates of every pixel $(x_i,y_i)$ in the connected component.</p>
 <p>Point $(x,y)$ on a line must satisfy an equation of the form</p>
