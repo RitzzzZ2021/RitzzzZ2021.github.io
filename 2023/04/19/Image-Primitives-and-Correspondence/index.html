@@ -112,7 +112,10 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="Correspondence-of-geometric-features"><a href="#Correspondence-of-geometric-features" class="headerlink" title="Correspondence of geometric features"></a>Correspondence of geometric features</h2><p>Corresponding points: projections of the same point in space.</p>
+            <blockquote>
+<p>Notes for <a target="_blank" rel="noopener" href="https://link.springer.com/book/10.1007/978-0-387-21779-6"><em>An Invitation to 3-D Vision</em></a>.</p>
+</blockquote>
+<h2 id="Correspondence-of-geometric-features"><a href="#Correspondence-of-geometric-features" class="headerlink" title="Correspondence of geometric features"></a>Correspondence of geometric features</h2><p>Corresponding points: projections of the same point in space.</p>
 <p>Methods: analyzing context and neighboring structures in the image and prior information on the content of the scene.</p>
 <p>Existing problems</p>
 <ul>
@@ -140,16 +143,16 @@ I_1(\tilde{x})=I_2(h(\tilde{x}, \alpha)),\ \forall \tilde{x}\in W(x),</script><p
 <p>criterion: normalized cross-correlation (NCC) because SSD is not invariant to scalings and shifts in image intensities</p>
 <h2 id="Point-feature-selection"><a href="#Point-feature-selection" class="headerlink" title="Point feature selection"></a>Point feature selection</h2><p>How to compute the image gradient $\nabla I=[I_x,I_y]^T$ ?</p>
 <p>A <strong>corner feature</strong> is the virtual intersection of local edges.</p>
-<p><img src="Image-Primitives-and-Correspondence/Untitled.png" alt="Untitled"></p>
+<p><img src="Untitled.png" alt="Untitled"></p>
 <h2 id="Tracking-line-features"><a href="#Tracking-line-features" class="headerlink" title="Tracking line features"></a>Tracking line features</h2><h3 id="Edge-feature"><a href="#Edge-feature" class="headerlink" title="Edge feature"></a>E<strong>dge feature</strong></h3><p>The gradient norm $||\nabla I||$  reaches a <strong>local maximum</strong> compared to its neighboring pixels.</p>
-<p><img src="Image-Primitives-and-Correspondence/Untitled1.png" alt="Untitled"></p>
+<p><img src="Untitled1.png" alt="Untitled"></p>
 <h3 id="Line-fitting"><a href="#Line-fitting" class="headerlink" title="Line fitting"></a>Line fitting</h3><p>connected component analysis: group neighboring pixels with common gradient orientation to form a connected contour or more specifically a candidate line $l$.</p>
 <p>Each connected component $C^k$ is a list of edge pixels ${(x<em>i,y_i)}^n</em>{i=1}$, which are connected and grouped based on their gradient orientation, forming a line support region, say $W(l)$. The line parameters can then be directly computed from the eigenvalues $\lambda_1, \lambda_2$ and eigenvectors $v_1,v_2$ of the matrix $D^k$ associated with the line support region:</p>
 <script type="math/tex; mode=display">
 D^k \dot{=}\begin{bmatrix}\Sigma_i \tilde{x}_i^2&\Sigma_i \tilde{x}_i\tilde{y}_i\\\Sigma_i \tilde{x}_i\tilde{y}_i&\Sigma_i \tilde{y}_i^2\end{bmatrix}\in\Bbb R^{2\times 2},</script><p>where $\tilde{x}=x_i-\bar{x}$ and $\tilde{y}=y_i-\bar{y}$ are the mean-corrected pixel coordinates of every pixel $(x_i,y_i)$ in the connected component.</p>
 <p>Point $(x,y)$ on a line must satisfy an equation of the form</p>
 <script type="math/tex; mode=display">
-sin(\theta)x-cos(\theta)y=\rho.</script><p><img src="Image-Primitives-and-Correspondence/Untitled2.png" alt="Untitled"></p>
+sin(\theta)x-cos(\theta)y=\rho.</script><p><img src="Untitled2.png" alt="Untitled"></p>
 <p>The unit eigenvector $v_1$ (corresponfing to the larger eigenvaues $\lambda_1$) is of the form $v_1=[cos(\theta),sin(\theta)]^T$. Then, parameters of the line $l:(\rho,\theta)$ are determined from $v_1$ as </p>
 <script type="math/tex; mode=display">
 \theta=arctan(v_1(2)/v_1(1)),\\ \rho=\bar{x}sin(\theta)-\bar{y}cos(\theta),</script><p>where $(\bar{x},\bar{y})$ is the midpoint of the line segment.</p>
@@ -252,7 +255,7 @@ sin(\theta)x-cos(\theta)y=\rho.</script><p><img src="Image-Primitives-and-Corres
         }
       });
     </script>
-    <script type="text/javascript" src=""></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 
 <!-- fancybox support -->
