@@ -2192,7 +2192,7 @@ input, select, textarea {
 
 		.image.fit {
 			display: block;
-			margin: 0 0 2em 0;
+			margin: 0 0 0 0;
 			width: 100%;
 		}
 
@@ -3589,7 +3589,8 @@ input, select, textarea {
 /* Main */
 
 	#main {
-		background-color: #2a2f4a;
+		/* background-color: #2a2f4a; */
+		background-color: #404669; 
 	}
 
 		#main > * {
@@ -3599,6 +3600,11 @@ input, select, textarea {
 			#main > *:first-child {
 				border-top: 0;
 			}
+
+			#main > *:nth-child(2n) {
+				background-color: #5e6280; 
+			}
+
 
 			#main > * > .inner {
 				padding: 4em 0 2em 0 ;
