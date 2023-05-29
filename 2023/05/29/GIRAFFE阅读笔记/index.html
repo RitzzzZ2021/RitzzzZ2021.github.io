@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>
+        GIRAFFE阅读笔记 - RitzzzZ 
+    </title>
+     
+    
+<link rel="stylesheet" href="/css/grid.css">
+
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+<link rel="stylesheet" href="/css/ringo.css">
+
+     
+        <link rel="icon" type="image/x-icon" href="/img/icon.png " />
+     
+     
+     
+        <meta name=" " content="" />
+     
+        <meta name=" " content="" />
+     
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header id="header" class="clearfix" onclick="window.open('/', '_self')">
+    <div class="site-name">
+        <a href="/" id="logo" class="site-title">
+            RitzzzZ
+        </a>
+        <p class="description site-description">
+            <span style="padding-top:20px; font-size: 10px">
+                An infinite journey
+            </span>
+        </p>
+    </div>
+</header>
+<div id="sidebar" role="complementary">
+    <section class="widget">
+        <ul class="menu widget-list">
+            
+                <li class="menu-item">
+                    <a href="/" class="menu-item-link">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/about" class="menu-item-link">
+                        About
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/archives" class="menu-item-link">
+                        Archives
+                    </a>
+                </li>
+                
+        </ul>
+    </section>
+    <section class="widget sidebar-foot">
+        <ul class="widget-list">
+            <li>Theme <a rel="nofollow" target="_blank" href="https://github.com/HeliumOI/hexo-theme-ringo">Ringo</a>
+                by <a target="_blank" href="/ "> RitzzzZ  </a></li>
+            <li>Proudly powered by  <a rel="nofollow" target="_blank" href="https://hexo.io/">Hexo</a></li>
+        </ul>
+    </section>
+</div>
+
+<div id="helpbar">
+    <div class="back-to-top">
+        <button id="back2top">↑</button>
+        <script>
+            back2top.onclick = function() {
+                var movement = document.body.scrollTop || document.documentElement.scrollTop;
+                scrollBy(0, -movement);
+            }
+        </script>
+    </div>
+</div>
+      <main class="main">
+        <div id="body">
+          <div class="container">
+            <div class="col-12" id="main" role="main">
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/05/29/GIRAFFE%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+                    GIRAFFE阅读笔记
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-05-29
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>可控的图像生成。</p>
+<h3 id="目前工作不足"><a href="#目前工作不足" class="headerlink" title="目前工作不足"></a>目前工作不足</h3><ol>
+<li>大多数工作研究2D空间，而真实世界是3D的</li>
+<li>很少有工作考虑到场景是很多物体的组合</li>
+</ol>
+<h3 id="本文贡献"><a href="#本文贡献" class="headerlink" title="本文贡献"></a>本文贡献</h3><p>本文提出了一种新的场景表示方式：组合式三维场景表示。结合生成模型，可以进行更可控的图像生成。</p>
+<p>优势：将物体和背景解耦，不需要额外的监督即可从无结构无姿势的图像中学习。在实验中，本文提出的模型可以做到解耦单个物体，进行平移，旋转，改变相机位姿。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>GANs是一类十分强大的生成模型，可以合成分辨率≥1024像素的非常真实的图像。</p>
+<p>有许多工作研究如何分离物体，但一般只关注了其中一些属性，比如物体形状、大小或者位姿。大多数只在2D空间中操作，这导致了物体之间的关联性，比如改变一个物体的位置，另一个物体的属性也会受到影响。</p>
+<p>结合3D表达的其他研究大多局限于单个物体的场景，对于高分辨率的、更复杂和真实的成像一致性比较差。</p>
+<ul>
+<li>体素 voxels</li>
+<li>原语 primitives</li>
+<li>辐射场 radiance fields</li>
+</ul>
+<p>贡献：将组合的3D场景表达结合进生成模型从而进行更可控的图像合成，将显式的3D表达结合神经渲染pipeline从而更快地生成更真实的图像。</p>
+<p>先用体渲染得到相对低分辨率的特征图像，然后用神经渲染处理特征图像，得到最终的渲染结果。</p>
+<h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><h3 id="基于GANs的图像合成"><a href="#基于GANs的图像合成" class="headerlink" title="基于GANs的图像合成"></a>基于GANs的图像合成</h3><p>改变训练对象或网络结构，或者探究well-engineered和预训练的生产模型的潜在空间。</p>
+<p>但是，都没有对组合性的场景进行建模。- controlled at object-level</p>
+<h3 id="隐式函数"><a href="#隐式函数" class="headerlink" title="隐式函数"></a>隐式函数</h3><p>基于学习的3D重建，扩展到场景级别的重建。为了避免3D监督学习，许多工作提出了可微渲染技术，如NeRFs，将隐式神经模型结合体渲染用以合成复杂场景的新视角。需要多视角的图像，以相机位姿作为监督，对每个场景训练一个网络，不能生成新的场景。</p>
+<p>本文提出的是NeRFs的生成模型变体。</p>
+<h3 id="3D图像合成"><a href="#3D图像合成" class="headerlink" title="3D图像合成"></a>3D图像合成</h3><p>本文更关注不需要额外监督的方法，直接在原始图像上训练。</p>
+<p>Henzler et al. 基于体素的表达：3D controllable，但是三次的内存增长导致体素分辨率有限。</p>
+<p>Phuoc et al. 体素化的特征网格表示：通过重塑操作渲染到2D，但是训练不太稳定，结果对于高分辨率的图像一致性较差。</p>
+<p>Liao et al. 结合原语和可微分渲染的抽象特征：可以应对多物体的场景，但是需要额外的监督（纯的背景图，很难从现实世界中获得）。</p>
+<p>Schwarz et al. 生成神经辐射场GRAF：限制在单个物体的场景，在更复杂的真实世界图像上结果会变差。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li><p>为每个对象建立模型</p>
+<p> Neural Radiance Fields：</p>
+<p> <img src="Untitled.png" alt="Untitled"></p>
+<p> GRAF：在NeRFs基础上，加上了正态分布的shape &amp; appearance codes $z_s,z_a$   </p>
+<p> <img src="Untitled1.png" alt="Untitled"></p>
+<p> <strong>Generative Neural Feature Fields</strong>：在GRAF基础上，将3维的颜色$c$替换成$M_f$-dimensional 特征f</p>
+<p> <img src="Untitled2.png" alt="Untitled"></p>
+<p> 如何表示一个对象：</p>
+<ul>
+<li>特征场：共享参数weights</li>
+<li>仿射变换矩阵$T=\{s,t,R\}$ 从依赖于数据集的分布中采样</li>
+</ul>
+</li>
+<li><p>关注特征场的附加属性，用许多个物体组成场景</p>
+<p> N个实体，前N-1是场景中的物体，最后一个是背景</p>
+<p> 两种情况：</p>
+<ul>
+<li>数据集中N恒定不变</li>
+<li><p>数据集中N的数量会变化</p>
+<p>将背景也视作一个对象，只是固定了scale和translation参数，中心固定在空间原点。</p>
+<p>组合操作符：从方向d看某一点x，体密度为所有物体的体密度之和，特征向量是每个物体的特征的加权平均（权重为密度）</p>
+<p><img src="Untitled3.png" alt="Untitled"></p>
+<p>这样做不仅简单直观，而且确保梯度流向所有体密度大于0的实体</p>
+</li>
+</ul>
+</li>
+<li><p>对于渲染，使用体渲染和神经渲染结合的高效的方法</p>
+<p> 为了提高效率，体渲染得到的特征图分辨率较低，然后用2D神经渲染进行上采样得到高分辨率的最终输出图像。</p>
+<ul>
+<li><p>体渲染</p>
+<p>  对于某个像素点，沿着相机发出的光线$d$进行采样，记采样点为$\{x_j\}^{N_s}_{j=1}$，对应的密度和特征向量为$(\sigma_j,f_j)=C(x_j,d)$</p>
+<p>  体渲染$\pi_{vol}:(\Bbb{R}^+\times \Bbb{R}^{M_f})^{N_s}\to\Bbb{R}^{M_f},\ \{\sigma_j,f_j\}^{N_s}_{j=1}\mapsto f$</p>
+</li>
+<li><p>2D神经渲染</p>
+<p>  $\pi_\theta^{neural}:\Bbb{R}^{H_v\times W_v\times M_f}\to\Bbb{R}^{H\times W \times 3}$</p>
+<p>  参数化方式：2D CNN （with leaky ReLU activation, 最近邻上采样，卷积核3x3）</p>
+<p>  小的卷积核、没有中间层：空间中小范围的精炼，防止全局场景的耦合</p>
+<p>  对每个空间分辨率，将特征图映射到RGB图像，并用双线性插值上采样将之前的输出加到下一个</p>
+<p>  使用sigmoid activation得到最终的预测图像</p>
+</li>
+</ul>
+</li>
+<li><p>训练模型</p>
+<ul>
+<li><p>Generator</p>
+<script type="math/tex; mode=display">
+  G_\theta(\{z_s^i,z_a^i,T_i\}^N_{i=1},\xi)=\pi_\theta^{neural}(I_V)</script><p>  where $I_V=\{\pi_{vol}(\{C(x_{jk},d_k)\}^{N_s}_{j=1})\}^{H_V \times W_V}_{k=1}$</p>
+<p>  其中，N是场景中实体的数量，$N_S$是沿着每根光线采样的点的数量，$d_k$是第k个像素，$x_{jk}$是第k个像素上的第j个采样点</p>
+</li>
+<li><p>Discriminator: CNN with leaky ReLU activation</p>
+<p>  非饱和GAN + R1梯度惩罚</p>
+</li>
+</ul>
+</li>
+<li><p>实现细节</p>
+<p> 所有物体的特征场$\{h_{\theta_i}^i\}^{N-1}_{i=1}$ 共享权重。</p>
+<p> RMSprop optimizer</p>
+</li>
+</ol>
+<h3 id="workflow"><a href="#workflow" class="headerlink" title="workflow"></a>workflow</h3><p><img src="Untitled4.png" alt="Untitled"></p>
+<h2 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h2><p>本文在一些常用的单个物体、白色背景数据集（Chairs [68], Cats [95], CelebA [52], and CelebA-HQ），单个物体、真实世界数据集（CompCars, LSUN Churches, FFHQ），包含不同数量、多个物体的场景（Clevr-2345）</p>
+<h3 id="解耦"><a href="#解耦" class="headerlink" title="解耦"></a>解耦</h3><p>Fig5: 不需要纯背景的图像或其他任何监督，就可以产生解耦。模型在包含固定或可变数量物体的多物体场景上进行训练时，能够正确地解耦出各个物体。</p>
+<p>Fig6: 解耦在训练的相当早期就发生了。</p>
+<h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><ul>
+<li>Baselines<ul>
+<li>voxel-based: Platonic-GAN, BlockGAN, HoloGAN (w/o 3D Conv)</li>
+<li>radiance field-based: GRAF</li>
+<li>ResNet-based 2D GAN</li>
+</ul>
+</li>
+<li>Metrics: Frechet Inception Distance (FID) score</li>
+</ul>
+<h3 id="消融研究"><a href="#消融研究" class="headerlink" title="消融研究"></a>消融研究</h3><p>table 4: 去除某个组成成分造成FID在CompCars上的变化，包括</p>
+<ul>
+<li>RGB skip connections</li>
+<li>final activation</li>
+<li>上采样选择最近邻/双线性</li>
+</ul>
+<p>神经渲染器：quantitative（FID score） &amp; qualitative（360°旋转效果图） comparison，更换背景</p>
+<p>位置编码：使用坐标轴对齐的位置编码</p>
+
+             
+        </div>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/05/26/DragGAN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">DragGAN阅读笔记 &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
+            <footer id="footer" role="contentinfo">
+    
+        &copy; 2022 - 2023
+        <br />
+    
+    
+    <br />
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_value_site_pv">......</span> visits ·
+        <span id="busuanzi_value_site_uv">......</span> visitors 
+    
+</footer>
+          </div>
+        </div>
+      </main>
+      <!-- highlight support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
+ 
+<script>
+        hljs.initHighlightingOnLoad();
+</script>
+ 
+<!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
+ 
+<!-- mathjax support -->
+
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- fancybox support -->
+ 
+<!-- viewerjs support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.js"></script>
+
+<script type="text/javascript">
+    Viewer.setDefaults({
+        zoomRatio: [0.5],
+        show: function () {
+            this.viewer.zoomTo(1);
+        },
+    });
+    
+    var imageList = document.querySelector('.post-content').getElementsByTagName('img');
+    
+    var imageArray = new Array();
+    Array.prototype.forEach.call(imageList, element => {
+        if (element.alt != "no-view" && element.className != "no-view") {
+            imageArray.push(element);
+        }
+    });
+    
+    Array.prototype.forEach.call(imageArray, element => {
+        var viewer1 = new Viewer(element);
+        viewer1.images = imageArray;
+        viewer1.length = imageArray.length;
+    });
+</script>
+ 
+<!-- google analytics support -->
+
+
+
+ 
+ 
+
+<!-- lazyload support -->
+
+    
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
+
+<script>
+    new LazyLoad({
+        elements_selector: '.post-content img'
+    });
+</script>
+ 
+  </body>
+
+</html>

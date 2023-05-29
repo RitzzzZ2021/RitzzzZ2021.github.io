@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        生成式神经辐射场的相关研究 - RitzzzZ 
+        DragGAN阅读笔记 - RitzzzZ 
     </title>
      
     
@@ -96,14 +96,14 @@
     <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/05/25/%E7%94%9F%E6%88%90%E5%BC%8F%E7%A5%9E%E7%BB%8F%E8%BE%90%E5%B0%84%E5%9C%BA%E7%9A%84%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6/">
-                    生成式神经辐射场的相关研究
+                <a itemprop="url" href="/2023/05/26/DragGAN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+                    DragGAN阅读笔记
                 </a>
             </h1>
         </div>
         <ul class="post-meta post-meta-atpage">
             <li class="post-time">
-                2023-05-25
+                2023-05-26
             </li>
             <li>
                 <div class="article-category">
@@ -112,54 +112,67 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="GAN相关重要工作"><a href="#GAN相关重要工作" class="headerlink" title="GAN相关重要工作"></a>GAN相关重要工作</h2><ul>
-<li><p>GAN</p>
+            <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>合成符合用户需求的视觉内容通常需要对生成对象的姿势、形状、表情和布局进行灵活而精确的可控性。现有方法通过手动注释的训练数据或先前的3D模型获得了对生成对抗网络（GANs）的可控性，但往往缺乏灵活性、精确性和普适性。</p>
+<h3 id="本文贡献"><a href="#本文贡献" class="headerlink" title="本文贡献"></a>本文贡献</h3><p>以用户交互的方式”拖动”图像中的任意点以精确到达目标点。DragGAN包括两个主要组成部分：</p>
+<ol>
+<li><p>基于特征的运动监督，推动操作点向目标位置移动；</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1812.04948v3">StyleGAN</a>：新的生成器架构，对生成图像中的高层属性（例如人脸训练时的姿势和身份）和随机变异的自动学习、无监督分离（例如雀斑、头发）。</p>
+<li><p>一种利用鉴别性生成器特征进行点追踪的新方法，以持续定位操作点的位置。</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/9792208">GAN inversion</a>：连接真实图像和虚假图像——将给定的图像逆向映射回预训练GAN模型的潜空间，从而可以通过生成器从逆向编码中忠实地重构图像。在图像恢复和图像操作中得到广泛应用。</p>
+</ol>
+<h2 id="二、相关工作"><a href="#二、相关工作" class="headerlink" title="二、相关工作"></a>二、相关工作</h2><h3 id="交互式内容创作的生成模型"><a href="#交互式内容创作的生成模型" class="headerlink" title="交互式内容创作的生成模型"></a>交互式内容创作的生成模型</h3><p>对于可控的图像合成，目前的方法一般使用GAN或diffusion models。</p>
+<ul>
+<li><p>无条件GAN/Unconditional GAN：GAN是生成模型，将低维随机采样的潜在向量转换为逼真的图像。它们使用对抗学习进行训练，可以用于生成高分辨率的逼真图像。大多数GAN模型，如StyleGAN，不能直接实现对生成图像的可控编辑。</p>
 </li>
-</ul>
-<h2 id="神经辐射场"><a href="#神经辐射场" class="headerlink" title="神经辐射场"></a>神经辐射场</h2><ul>
-<li>NeRF</li>
-</ul>
-<h2 id="Generative-Radiance-Fields"><a href="#Generative-Radiance-Fields" class="headerlink" title="Generative Radiance Fields"></a>Generative Radiance Fields</h2><ul>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384521486">NeRF -&gt; GRAF -&gt; GIRAFFE</a></p>
+<li><p>条件GAN/Conditional GAN：一些方法提出了条件GAN来解决这个限制。在条件GAN中，除随机采样的潜在向量之外，网络接收到一个条件输入，比如分割图或3D变量，以生成逼真的图像。与对条件分布进行建模不同，EditGAN通过首先建模图像和分割图的联合分布，然后计算对应于编辑后分割图的新图像来实现编辑功能。</p>
 </li>
-<li><p>GIRAFFE HD：GIRAFFE图像分辨率较低。GIRAFFE HD引入StyleGAN encoder，上采样生成高分辨率图片，对场景的形状和外观解耦。关键思想是利用基于风格的神经渲染器，独立生成前景和背景，强制它们解耦，并通过施加一致性约束将它们拼接在一起以生成一张连贯的最终图像。</p>
+<li><p>使用无条件GAN的可控性。已经有几种方法，通过操作输入的潜在向量来编辑无条件GAN。</p>
+<ul>
+<li><p>通过从手动注释或在先前的3D模型中进行监督学习来找到有意义的潜在方向。</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/html/Chan_Efficient_Geometry-Aware_3D_Generative_Adversarial_Networks_CVPR_2022_paper.html">EG3D</a>：利用StyleGAN生成三个正交的2D特征平面，并组成整个三维特征空间；上采样生成高分辨率图片，双判别器结构保证多视角一致性。</p>
+<li><p>以无监督的方式计算潜在空间中重要的语义方向。</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08985">StyleNeRF</a>：交互级的高分辨率新视角合成，并且保留较高的视角一致性。使用更好的上采样策略，正则化损失函数。</p>
-</li>
-<li><p>GRAM：学习空间中的多个2D曲面表示整个空间中的颜色场和密度场，实现3D感知的虚拟内容生成。</p>
-</li>
-<li><p>StyleSDF：Signed Distance Field(SDF) + 2D风格化生成器，SDF编码器生成低分辨率特征图，体渲染生成视角一致的高分辨率（1024*1024）图片。</p>
-</li>
-<li><p>3DMM：网格模型，更精确的可控的3D生成。</p>
+<li><p>通过引入中间的“斑点”或热图，实现了对粗略物体位置的可控性。</p>
 </li>
 </ul>
-
+<p>所有这些方法都可以编辑与图像对齐的语义属性（如外观）或粗略的几何属性（如物体位置和姿态）。虽然Editing-in-Style展示了一些空间属性编辑能力，但它只能通过在不同样本之间转移局部语义来实现。与这些方法不同，我们的方法允许用户使用基于点的编辑对空间属性进行精细控制。</p>
+<p>GANWarping也使用基于点的编辑，但它们只能实现out-of-distribution的图像编辑。可以使用一些扭曲的图像来更新生成模型，以便所有生成的图像都显示类似的扭曲效果。然而，该方法不能确保扭曲会产生逼真的图像。此外，它也无法实现诸如改变物体的三维姿态等控制。</p>
+<p>与我们类似，UserControllableLT通过<strong>转换GAN的潜在向量</strong>实现基于点的编辑。然而，该方法只支持使用鼠标拖动图像上的单个点进行编辑，并且无法很好地处理多点约束。此外，该方法的控制不是很精确，即在编辑后，通常无法准确达到目标点。</p>
+</li>
+<li><p>3D-aware GANs. 一些方法修改了GAN的架构以实现3D控制。在这些方法中，模型生成可以使用基于物理的解析渲染器进行渲染的3D表示。然而，与我们的方法不同，这些方法的控制仅限于全局姿态或光照。</p>
+</li>
+<li><p>Diffusion Models. 最近，扩散模型已经实现了高质量的图像合成。这些模型通过迭代去噪随机采样的噪声来创建逼真的图像。最近的模型已经展示了在文本输入条件下表现出的富有表现力的图像合成能力。然而，自然语言无法对图像的空间属性进行精细控制，因此所有基于文本的方法都局限于高级语义编辑。此外，当前的扩散模型速度较慢，因为它们需要多个去噪步骤。尽管在高效采样方面取得了一些进展，但GAN的效率仍然显著更高。</p>
+</li>
+</ul>
+<h3 id="Point-Tracking-点跟踪"><a href="#Point-Tracking-点跟踪" class="headerlink" title="Point Tracking 点跟踪"></a>Point Tracking 点跟踪</h3><p>光流估计是一个经典问题，用于估计两幅图像之间的运动场。</p>
+<ul>
+<li><p>手工设计规则解决优化问题。</p>
+</li>
+<li><p>基于深度学习的方法，通常使用带有光流真值的合成数据来训练深度神经网络。</p>
+<ul>
+<li><p>RAFT：目前最广泛使用的方法，通过迭代算法估计光流。</p>
+</li>
+<li><p>PIPs：将RAFT与传统的particle video方法相结合，考虑了多帧间的信息，因此比以前的方法更好地处理了长距离跟踪。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>本文不使用前面提到的任何方法或额外的神经网络。我们揭示了GAN的特征空间具有足够的区分性，以至于可以通过<strong>特征匹配</strong>来实现跟踪。首次将基于点的编辑问题与区分性的GAN特征联系起来。摆脱额外的跟踪模型使得我们的方法可以更高效地运行，以支持交互式编辑。</p>
+<h2 id="三、方法"><a href="#三、方法" class="headerlink" title="三、方法"></a>三、方法</h2>
              
         </div>
-        
-            <p itemprop="keywords" class="tags">
-                
-                    <a href="/tags/NeRF/"> NeRF </a>
-                
-            </p>
         
     </article>
     <div class="post-near">
     <div class="post-near-child post-near-child-left "> 
         
-            <a href="/2023/05/24/NeRF%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">NeRF相关论文阅读 &laquo; </a>
+            <a href="/2023/05/25/%E7%94%9F%E6%88%90%E5%BC%8F%E7%A5%9E%E7%BB%8F%E8%BE%90%E5%B0%84%E5%9C%BA%E7%9A%84%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6/">生成式神经辐射场的相关研究 &laquo; </a>
         
         <br /> Prev  &laquo;
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a href="/2023/05/26/DragGAN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"> &raquo; DragGAN阅读笔记</a>
+            <a href="/2023/05/29/GIRAFFE%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"> &raquo; GIRAFFE阅读笔记</a>
         
         <br /> &raquo; Next 
     </div>
