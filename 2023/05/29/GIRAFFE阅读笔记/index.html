@@ -112,14 +112,14 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>可控的图像生成。</p>
+            <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>可控的图像生成。</p>
 <h3 id="目前工作不足"><a href="#目前工作不足" class="headerlink" title="目前工作不足"></a>目前工作不足</h3><ol>
 <li>大多数工作研究2D空间，而真实世界是3D的</li>
 <li>很少有工作考虑到场景是很多物体的组合</li>
 </ol>
 <h3 id="本文贡献"><a href="#本文贡献" class="headerlink" title="本文贡献"></a>本文贡献</h3><p>本文提出了一种新的场景表示方式：组合式三维场景表示。结合生成模型，可以进行更可控的图像生成。</p>
 <p>优势：将物体和背景解耦，不需要额外的监督即可从无结构无姿势的图像中学习。在实验中，本文提出的模型可以做到解耦单个物体，进行平移，旋转，改变相机位姿。</p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>GANs是一类十分强大的生成模型，可以合成分辨率≥1024像素的非常真实的图像。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>GANs是一类十分强大的生成模型，可以合成分辨率≥1024像素的非常真实的图像。</p>
 <p>有许多工作研究如何分离物体，但一般只关注了其中一些属性，比如物体形状、大小或者位姿。大多数只在2D空间中操作，这导致了物体之间的关联性，比如改变一个物体的位置，另一个物体的属性也会受到影响。</p>
 <p>结合3D表达的其他研究大多局限于单个物体的场景，对于高分辨率的、更复杂和真实的成像一致性比较差。</p>
 <ul>
@@ -129,7 +129,7 @@
 </ul>
 <p>贡献：将组合的3D场景表达结合进生成模型从而进行更可控的图像合成，将显式的3D表达结合神经渲染pipeline从而更快地生成更真实的图像。</p>
 <p>先用体渲染得到相对低分辨率的特征图像，然后用神经渲染处理特征图像，得到最终的渲染结果。</p>
-<h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><h3 id="基于GANs的图像合成"><a href="#基于GANs的图像合成" class="headerlink" title="基于GANs的图像合成"></a>基于GANs的图像合成</h3><p>改变训练对象或网络结构，或者探究well-engineered和预训练的生产模型的潜在空间。</p>
+<h2 id="三、相关工作"><a href="#三、相关工作" class="headerlink" title="三、相关工作"></a>三、相关工作</h2><h3 id="基于GANs的图像合成"><a href="#基于GANs的图像合成" class="headerlink" title="基于GANs的图像合成"></a>基于GANs的图像合成</h3><p>改变训练对象或网络结构，或者探究well-engineered和预训练的生产模型的潜在空间。</p>
 <p>但是，都没有对组合性的场景进行建模。- controlled at object-level</p>
 <h3 id="隐式函数"><a href="#隐式函数" class="headerlink" title="隐式函数"></a>隐式函数</h3><p>基于学习的3D重建，扩展到场景级别的重建。为了避免3D监督学习，许多工作提出了可微渲染技术，如NeRFs，将隐式神经模型结合体渲染用以合成复杂场景的新视角。需要多视角的图像，以相机位姿作为监督，对每个场景训练一个网络，不能生成新的场景。</p>
 <p>本文提出的是NeRFs的生成模型变体。</p>
@@ -138,7 +138,7 @@
 <p>Phuoc et al. 体素化的特征网格表示：通过重塑操作渲染到2D，但是训练不太稳定，结果对于高分辨率的图像一致性较差。</p>
 <p>Liao et al. 结合原语和可微分渲染的抽象特征：可以应对多物体的场景，但是需要额外的监督（纯的背景图，很难从现实世界中获得）。</p>
 <p>Schwarz et al. 生成神经辐射场GRAF：限制在单个物体的场景，在更复杂的真实世界图像上结果会变差。</p>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<h2 id="四、方法"><a href="#四、方法" class="headerlink" title="四、方法"></a>四、方法</h2><ol>
 <li><p>为每个对象建立模型</p>
 <p> Neural Radiance Fields：</p>
 <p> <img src="Untitled.png" alt="Untitled"></p>
@@ -199,7 +199,7 @@
 </li>
 </ol>
 <h3 id="workflow"><a href="#workflow" class="headerlink" title="workflow"></a>workflow</h3><p><img src="Untitled4.png" alt="Untitled"></p>
-<h2 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h2><p>本文在一些常用的单个物体、白色背景数据集（Chairs [68], Cats [95], CelebA [52], and CelebA-HQ），单个物体、真实世界数据集（CompCars, LSUN Churches, FFHQ），包含不同数量、多个物体的场景（Clevr-2345）</p>
+<h2 id="五、结果分析"><a href="#五、结果分析" class="headerlink" title="五、结果分析"></a>五、结果分析</h2><p>本文在一些常用的单个物体、白色背景数据集（Chairs [68], Cats [95], CelebA [52], and CelebA-HQ），单个物体、真实世界数据集（CompCars, LSUN Churches, FFHQ），包含不同数量、多个物体的场景（Clevr-2345）</p>
 <h3 id="解耦"><a href="#解耦" class="headerlink" title="解耦"></a>解耦</h3><p>Fig5: 不需要纯背景的图像或其他任何监督，就可以产生解耦。模型在包含固定或可变数量物体的多物体场景上进行训练时，能够正确地解耦出各个物体。</p>
 <p>Fig6: 解耦在训练的相当早期就发生了。</p>
 <h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><ul>
