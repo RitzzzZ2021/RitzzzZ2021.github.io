@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>
+        2023 WWW Best Paper阅读笔记 - RitzzzZ 
+    </title>
+     
+    
+<link rel="stylesheet" href="/css/grid.css">
+
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+<link rel="stylesheet" href="/css/ringo.css">
+
+     
+        <link rel="icon" type="image/x-icon" href="/img/icon.png " />
+     
+     
+     
+        <meta name=" " content="" />
+     
+        <meta name=" " content="" />
+     
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header id="header" class="clearfix" onclick="window.open('/', '_self')">
+    <div class="site-name">
+        <a href="/" id="logo" class="site-title">
+            RitzzzZ
+        </a>
+        <p class="description site-description">
+            <span style="padding-top:20px; font-size: 10px">
+                An infinite journey
+            </span>
+        </p>
+    </div>
+</header>
+<div id="sidebar" role="complementary">
+    <section class="widget">
+        <ul class="menu widget-list">
+            
+                <li class="menu-item">
+                    <a href="/" class="menu-item-link">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/about" class="menu-item-link">
+                        About
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/archives" class="menu-item-link">
+                        Archives
+                    </a>
+                </li>
+                
+        </ul>
+    </section>
+    <section class="widget sidebar-foot">
+        <ul class="widget-list">
+            <li>Theme <a rel="nofollow" target="_blank" href="https://github.com/HeliumOI/hexo-theme-ringo">Ringo</a>
+                by <a target="_blank" href="/ "> RitzzzZ  </a></li>
+            <li>Proudly powered by  <a rel="nofollow" target="_blank" href="https://hexo.io/">Hexo</a></li>
+        </ul>
+    </section>
+</div>
+
+<div id="helpbar">
+    <div class="back-to-top">
+        <button id="back2top">↑</button>
+        <script>
+            back2top.onclick = function() {
+                var movement = document.body.scrollTop || document.documentElement.scrollTop;
+                scrollBy(0, -movement);
+            }
+        </script>
+    </div>
+</div>
+      <main class="main">
+        <div id="body">
+          <div class="container">
+            <div class="col-12" id="main" role="main">
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/05/31/2023-WWW-Best-Paper%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+                    2023 WWW Best Paper阅读笔记
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-05-31
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <blockquote>
+<p>2023 WWW Best Paper: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2301.07015">Simplistic Collection and Labeling Practices Limit the Utility of Benchmark Datasets for Twiter Bot Detection</a></p>
+</blockquote>
+<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>本文仔细研究了广泛使用的Twitter机器人检测数据集，并探讨了它们的局限性。平台会部署基础设施来标记或移除自动化账户，但它们的工具和数据并不公开可用，因此，公众必须依赖第三方的机器人检测工具。这些机器人检测工具采用机器学习技术，在现有数据集上通常拥有接近完美的分类性能。然而，有迹象表明机器人检测工具远未达到完美，它们可能1)彼此不一致，2)随着时间的推移可能变得不可靠，3)依赖可疑的标签。</p>
+<p>评估第三方机器人检测数据集和工具在本质上是具有挑战性的：公众无法获得或无法了解“真实情况”，我们对Twitter上的机器人的洞察仅限于数据集本身。然而，这并不意味着评估是不可能的。通过仔细分析数据集及其之间的关系，我们仍然可以更好地了解这些数据集所告诉我们的信息。</p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>随着在线社交媒体成为与他人交流和分享信息的重要手段，机器人（或自动化账户）的影响力已成为一个重要的社会关注话题。一些机器人是良性的，它们<strong>提供娱乐内容</strong>或<strong>直接提升了网站的可访问性（例如，在平台上为原本没有字幕的视频提供字幕）</strong>，但还有很多其他机器人涉及<strong>影响操作、虚假信息传播和骚扰行为</strong>：虚假关注者增加了某些用户的知名度；垃圾邮件账户充斥着为某个政治候选人或产品做广告；恶意自动化账户破坏选举的可信度或煽动极端化。<strong>对这些账户的准确标记能够对选举、公共卫生以及公众对机构的信任产生实际影响。</strong>研究人员、记者和广大公众依赖于研究人员开发的工具来区分机器人和真实的人类用户，并了解<strong>机器人对社会现象的影响</strong>。</p>
+<p><strong>研究人员经常将机器人检测作为预处理步骤来研究社会现象，将人类用户与机器人分离，并研究与人类和机器人相关的现象。</strong>这些研究结果的鲁棒性和有效性取决于准确可靠的机器人检测。</p>
+<p>从表面上看，机器人检测研究对于机器学习来说似乎取得不少成功：研究人员已经收集了多种数据集用于一个明确定义的分类任务，并且像随机森林和神经网络这样具有表达能力的机器学习模型在这些数据上获得了近乎完美的性能。此外，这些方法在学术文献和公共使用中被广泛采用。机器人检测工具经常在多个数据集的基础上进行训练，并且研究人员认为现有的方法可以通过添加更多的数据集或使用更复杂的技术，如生成对抗网络，轻松适应现有分类器的缺陷或更接近人类的机器人的进化。</p>
+<h2 id="二、技术方案"><a href="#二、技术方案" class="headerlink" title="二、技术方案"></a>二、技术方案</h2><p>本文使用简单的决策规则，使得数据的标注过程变得透明化。本文选择使用浅层决策树，它们的透明性使我们能够轻松地查看每个数据点被分配标签的具体原因。本文使用scikit-learn的二叉决策树实现，通过在数值数据上进行递归训练来选择最佳的特征阈值对（由节点表示），以便将数据按类别划分为两组，并分别在每组上学习决策树。经过固定的递归深度（对应于树的深度），分类器输出与该组中大多数示例相对应的标签（树的叶节点）。本文只考虑深度不超过四层的决策树，以确保可以轻松检查这些树，并避免过拟合。</p>
+<h2 id="三、实验设置"><a href="#三、实验设置" class="headerlink" title="三、实验设置"></a>三、实验设置</h2><h3 id="数据集选取"><a href="#数据集选取" class="headerlink" title="数据集选取"></a>数据集选取</h3><p>本文评估了以下数据集：twibot-2020，feedback-2019，pan-2019，rtbust-2019，midterm-2018，stock-2018，cresci-2017，gilani-2017，cresci-2015，yang-2013，caverlee-2011。</p>
+<p>所有的数据集都包括个人资料特征，通常包括屏幕名称、推文数量、关注者数量、关注数量、收藏数量、语言、位置、时区、用户所在的Twitter列表数量等等。此外，一些数据集还包括数据集中每个用户的推文语料库。有时也会记录网络关系和相关的关注/粉丝行为。本文假设数据中的标签是基准真实。</p>
+<h3 id="评测指标"><a href="#评测指标" class="headerlink" title="评测指标"></a>评测指标</h3><p>在文献中最常报告的性能指标是<strong>准确率</strong>和<strong>F1分数</strong>。</p>
+<ul>
+<li><p>准确率定义为正确标记的示例比例。当数据集在类别之间不平衡时，准确率可能会误导，因为通过始终预测多数类别，简单的模型可以获得高准确率。</p>
+</li>
+<li><p>在二分类中，F1分数是模型精确率和召回率的调和平均值。低F1分数表示分类器要么无法检测到高比例的机器人，要么错误地标记了大部分人类。F1分数不包括真负例的数量，即正确标记为人类的人数，这在机器人超过人类的情况下可能会引起误导。</p>
+</li>
+</ul>
+<p>尽管这两个指标相互补充，但都依赖于数据中人类和机器人的比例。因此，很难比较具有不同比例的机器人和人类的模型和数据集的准确率和F1分数结果。为了提供额外的清晰度和可比性，我们报告了我们分类器的<strong>平衡准确率（bal. acc.）</strong>，即真正例率和真负例率的算术平均值。</p>
+<h2 id="四、结论"><a href="#四、结论" class="headerlink" title="四、结论"></a>四、结论</h2><p>机器人检测的高性能是由于<strong>数据集收集和标注的限制</strong>，而不是工具的复杂性。具体而言，我们表明<strong>简单的决策规则（在少数特征上训练的浅层决策树）在大多数可用数据集上实现了接近最先进的性能</strong>，而即使将机器人检测的数据集组合在一起，也无法很好地推广到样本外的数据集上。预测结果在很大程度上取决于<strong>每个数据集的收集和标注程序</strong>，而不是机器人和人类之间的根本差异。这些结果对于采样和标注程序的透明性以及使用现有机器人检测工具进行预处理的研究中潜在的偏见具有重要的影响。</p>
+<h2 id="五、本文贡献"><a href="#五、本文贡献" class="headerlink" title="五、本文贡献"></a>五、本文贡献</h2><ol>
+<li><p>本文证明简单的决策规则在基准数据集上的表现几乎与最先进的模型相当。每个数据集只提供了有限复杂性的预测信号。由于简单的决策规则使我们能够透明地检查我们分类器高性能的原因，我们发现数据集中的预测信号很可能反映了特定的收集和标记过程，即从Twitter收集账户并为每个账户分配人类或机器人标签的过程。</p>
+</li>
+<li><p>本文研究了数据集的组合。本文展示了在一个数据集上训练的表达性机器学习模型在其他数据集上的测试表现不佳，并且在除一个之外的所有数据集上训练的模型在保留的数据集上的评估结果也较差。一个数据集提供的信息不具有泛化到其他数据集的能力，这表明数据集按照不同的分布进行分布，这意味着不同的抽样（即收集和标记）过程。</p>
+</li>
+<li><p>本文考虑了是否对数据施加结构假设，即每个数据集包含来自少量类型（例如垃圾信息机器人或虚假关注者）的机器人，是否能够提供更好的泛化性能。现有数据集不太可能提供代表性或全面的机器人样本，而且在这些数据上训练的分类器在部署时性能可能不佳。</p>
+</li>
+<li><p>除了机器人检测之外，我们的方法论（在数据集上检验简单的决策规则，并测量跨数据集的性能）可能对检测各种机器学习应用中的简化数据采样和标注过程很有用。</p>
+</li>
+<li><p>这些发现对未来在Twitter和其他平台上的机器人检测研究有直接的影响：机器人检测数据集的创建者应该透明地报告和证明采样和标注程序；研究开发机器人检测技术的研究人员应该在使用更具表达性的模型之外，训练和分析简单且可解释的模型；而将机器人检测作为预处理步骤的研究人员应该考虑它可能如何影响结果的偏差。</p>
+</li>
+</ol>
+
+             
+        </div>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/05/29/GIRAFFE%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">GIRAFFE阅读笔记 &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a href="/2023/06/02/C-11%E5%8F%8A%E4%B9%8B%E5%90%8E%E6%96%B0%E7%89%B9%E6%80%A7/"> &raquo; C++11及之后新特性</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
+            <footer id="footer" role="contentinfo">
+    
+        &copy; 2022 - 2023
+        <br />
+    
+    
+    <br />
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_value_site_pv">......</span> visits ·
+        <span id="busuanzi_value_site_uv">......</span> visitors 
+    
+</footer>
+          </div>
+        </div>
+      </main>
+      <!-- highlight support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
+ 
+<script>
+        hljs.initHighlightingOnLoad();
+</script>
+ 
+<!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
+ 
+<!-- mathjax support -->
+
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- fancybox support -->
+ 
+<!-- viewerjs support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.js"></script>
+
+<script type="text/javascript">
+    Viewer.setDefaults({
+        zoomRatio: [0.5],
+        show: function () {
+            this.viewer.zoomTo(1);
+        },
+    });
+    
+    var imageList = document.querySelector('.post-content').getElementsByTagName('img');
+    
+    var imageArray = new Array();
+    Array.prototype.forEach.call(imageList, element => {
+        if (element.alt != "no-view" && element.className != "no-view") {
+            imageArray.push(element);
+        }
+    });
+    
+    Array.prototype.forEach.call(imageArray, element => {
+        var viewer1 = new Viewer(element);
+        viewer1.images = imageArray;
+        viewer1.length = imageArray.length;
+    });
+</script>
+ 
+<!-- google analytics support -->
+
+
+
+ 
+ 
+
+<!-- lazyload support -->
+
+    
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
+
+<script>
+    new LazyLoad({
+        elements_selector: '.post-content img'
+    });
+</script>
+ 
+  </body>
+
+</html>
