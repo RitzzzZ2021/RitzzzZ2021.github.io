@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        archive: 2023/6 - RitzzzZ 
+        NeuroSEED阅读笔记 - RitzzzZ 
     </title>
      
     
@@ -93,46 +93,74 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-   
-   
-    
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.06
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/06/05/NeuroSEED%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
-            <time class="archive-time" itemprop="datePublished">
-              06.05
-            </time>
-            · NeuroSEED阅读笔记
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/06/02/C-11%E5%8F%8A%E4%B9%8B%E5%90%8E%E6%96%B0%E7%89%B9%E6%80%A7/">
-            <time class="archive-time" itemprop="datePublished">
-              06.02
-            </time>
-            · C++11及之后新特性
-          </a>
-        </h2>
-      </article>
-    
-</div>
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/06/05/NeuroSEED%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+                    NeuroSEED阅读笔记
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-06-05
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <blockquote>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2109.09740">Neural Distance Embeddings for Biological Sequences</a></p>
+</blockquote>
+<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>使用深度学习模型拟合传统蛋白质相似性计算过程，利用训练后的模型提取查询蛋白质序列与蛋白质库中其余蛋白质序列的嵌入表示（embedding）并计算距离（distance）。</p>
+<h3 id="本文贡献"><a href="#本文贡献" class="headerlink" title="本文贡献"></a>本文贡献</h3><ul>
+<li><p>引入了Neural Distance Embeddings(NeuroSEED)，一个通用的框架，用于将序列映射到几何向量空间，并将现有方法重新定义为该框架的一部分。</p>
+</li>
+<li><p>展示了双曲空间如何对生物序列的数据相关分析带来显著改进。</p>
+</li>
+<li><p>提出了几种启发式方法，用于解决经典的生物信息学问题，并且这些方法可以构建在NeuroSEED嵌入之上，相对于传统基线方法，能够显著减少运行时间。</p>
+</li>
+</ul>
+<h2 id="二、相关工作"><a href="#二、相关工作" class="headerlink" title="二、相关工作"></a>二、相关工作</h2><ul>
+<li><p>Hyperbolic geometry</p>
+<p>双曲几何是一种非欧几何，具有恒定的负曲率截面，通常被称为树的连续版本，因为它能够以任意低的失真嵌入树。将具有隐含或显式分层结构的对象映射到双曲空间的优势在其他领域也有所展示。相比之下，本工作处理的是由生物序列中的编辑距离定义的非常不同的空间，并且与大多数先前的工作不同，我们不仅仅为一组特定的数据点推导嵌入，而是训练一个编码器将该领域中的任意序列映射到空间中。</p>
+</li>
+</ul>
+<h2 id="三、方法"><a href="#三、方法" class="headerlink" title="三、方法"></a>三、方法</h2><p><img src="Untitled.png" alt="Untitled"></p>
 
              
+        </div>
+        
+            <p itemprop="keywords" class="tags">
+                
+                    <a href="/tags/Information-Processing/"> Information Processing </a>
+                
+            </p>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/06/02/C-11%E5%8F%8A%E4%B9%8B%E5%90%8E%E6%96%B0%E7%89%B9%E6%80%A7/">C++11及之后新特性 &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023
