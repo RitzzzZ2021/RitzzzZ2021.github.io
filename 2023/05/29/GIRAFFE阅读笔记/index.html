@@ -67,12 +67,6 @@
                     </a>
                 </li>
                 
-                <li class="menu-item">
-                    <a href="/tags" class="menu-item-link">
-                        Tags
-                    </a>
-                </li>
-                
         </ul>
     </section>
     <section class="widget sidebar-foot">
@@ -118,10 +112,10 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>可控的图像生成。</p>
+            <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>Controllable Image Generation 可控的图像生成。</p>
 <h3 id="目前工作不足"><a href="#目前工作不足" class="headerlink" title="目前工作不足"></a>目前工作不足</h3><ol>
 <li>大多数工作研究2D空间，而真实世界是3D的</li>
-<li>很少有工作考虑到场景是很多物体的组合</li>
+<li>很少有工作考虑到很多物体的组合场景</li>
 </ol>
 <h3 id="本文贡献"><a href="#本文贡献" class="headerlink" title="本文贡献"></a>本文贡献</h3><p>本文提出了一种新的场景表示方式：组合式三维场景表示。结合生成模型，可以进行更可控的图像生成。</p>
 <p>优势：将物体和背景解耦，不需要额外的监督即可从无结构无姿势的图像中学习。在实验中，本文提出的模型可以做到解耦单个物体，进行平移，旋转，改变相机位姿。</p>
@@ -135,7 +129,7 @@
 </ul>
 <p>贡献：将组合的3D场景表达结合进生成模型从而进行更可控的图像合成，将显式的3D表达结合神经渲染pipeline从而更快地生成更真实的图像。</p>
 <p>先用体渲染得到相对低分辨率的特征图像，然后用神经渲染处理特征图像，得到最终的渲染结果。</p>
-<h2 id="三、相关工作"><a href="#三、相关工作" class="headerlink" title="三、相关工作"></a>三、相关工作</h2><h3 id="基于GANs的图像合成"><a href="#基于GANs的图像合成" class="headerlink" title="基于GANs的图像合成"></a>基于GANs的图像合成</h3><p>改变训练对象或网络结构，或者探究well-engineered和预训练的生产模型的潜在空间。</p>
+<h2 id="三、相关工作"><a href="#三、相关工作" class="headerlink" title="三、相关工作"></a>三、相关工作</h2><h3 id="基于GANs的图像合成"><a href="#基于GANs的图像合成" class="headerlink" title="基于GANs的图像合成"></a>基于GANs的图像合成</h3><p>改变训练对象或网络结构，或者探究well-engineered和预训练的生成模型的潜在空间。</p>
 <p>但是，都没有对组合性的场景进行建模。- controlled at object-level</p>
 <h3 id="隐式函数"><a href="#隐式函数" class="headerlink" title="隐式函数"></a>隐式函数</h3><p>基于学习的3D重建，扩展到场景级别的重建。为了避免3D监督学习，许多工作提出了可微渲染技术，如NeRFs，将隐式神经模型结合体渲染用以合成复杂场景的新视角。需要多视角的图像，以相机位姿作为监督，对每个场景训练一个网络，不能生成新的场景。</p>
 <p>本文提出的是NeRFs的生成模型变体。</p>
@@ -144,70 +138,83 @@
 <p>Phuoc et al. 体素化的特征网格表示：通过重塑操作渲染到2D，但是训练不太稳定，结果对于高分辨率的图像一致性较差。</p>
 <p>Liao et al. 结合原语和可微分渲染的抽象特征：可以应对多物体的场景，但是需要额外的监督（纯的背景图，很难从现实世界中获得）。</p>
 <p>Schwarz et al. 生成神经辐射场GRAF：限制在单个物体的场景，在更复杂的真实世界图像上结果会变差。</p>
-<h2 id="四、方法"><a href="#四、方法" class="headerlink" title="四、方法"></a>四、方法</h2><ol>
-<li><p>为每个对象建立模型</p>
-<p> Neural Radiance Fields：</p>
-<p> <img src="Untitled.png" alt="Untitled"></p>
-<p> GRAF：在NeRFs基础上，加上了正态分布的shape &amp; appearance codes $z_s,z_a$   </p>
-<p> <img src="Untitled1.png" alt="Untitled"></p>
-<p> <strong>Generative Neural Feature Fields</strong>：在GRAF基础上，将3维的颜色$c$替换成$M_f$-dimensional 特征f</p>
-<p> <img src="Untitled2.png" alt="Untitled"></p>
-<p> 如何表示一个对象：</p>
-<ul>
-<li>特征场：共享参数weights</li>
-<li>仿射变换矩阵$T=\{s,t,R\}$ 从依赖于数据集的分布中采样</li>
-</ul>
+<h2 id="四、方法"><a href="#四、方法" class="headerlink" title="四、方法"></a>四、方法</h2><h3 id="1-为每个对象建立模型"><a href="#1-为每个对象建立模型" class="headerlink" title="1. 为每个对象建立模型"></a>1. 为每个对象建立模型</h3><ul>
+<li><p>Neural Radiance Fields：</p>
+<p><img src="Untitled.png" alt="Untitled"></p>
+<p>其中$L_x,L_d$是位置编码的输出维度。</p>
+<p>位置编码：</p>
+<p><img src="Untitled6.png" alt="Untitled"></p>
+<p>其中$t$是一个标量，可以是$x$或$d$的某个方向分量；$L$是频率倍频程的数量。在生成模型中，位置编码体现了额外的优势，因为它很自然地产生了一个能学习3D形状表示的bias。</p>
 </li>
-<li><p>关注特征场的附加属性，用许多个物体组成场景</p>
-<p> N个实体，前N-1是场景中的物体，最后一个是背景</p>
-<p> 两种情况：</p>
+<li><p>GRAF：在NeRFs基础上，加上了正态分布的shape &amp; appearance codes $z_s,z_a$</p>
+<p><img src="Untitled1.png" alt="Untitled"></p>
+<p>其中$M_s,M_a$是潜在编码的维度。</p>
+</li>
+<li><p><strong>Generative Neural Feature Fields</strong>：在GRAF基础上，将3维的颜色$c$替换成更通用的$M_f$-dimensional特征$f$，将物体表示成Generative Neural Feature Fields</p>
+<p><img src="Untitled2.png" alt="Untitled"></p>
+</li>
+<li><p>如何表示<strong>一个</strong>对象：</p>
 <ul>
-<li>数据集中N恒定不变</li>
-<li><p>数据集中N的数量会变化</p>
+<li><p>特征场：shared weights</p>
+</li>
+<li><p>仿射变换矩阵$T=\{s,t,R\}$, scale, translation, rotation matrix</p>
+</li>
+</ul>
+<p>将点从物体转移到场景空间：</p>
+<script type="math/tex; mode=display">
+  k(x)=R\cdot \begin{bmatrix}s_1&&\\&s_2&\\&&s_3\end{bmatrix}\cdot x+t</script></li>
+</ul>
+<h3 id="2-组合场景"><a href="#2-组合场景" class="headerlink" title="2. 组合场景"></a>2. 组合场景</h3><p>N个实体，前N-1是场景中的物体，最后一个是背景</p>
+<p>两种情况：</p>
+<ul>
+<li><p>数据集中N恒定不变</p>
+</li>
+<li><p>数据集中N的数量会变化  </p>
+</li>
+</ul>
 <p>将背景也视作一个对象，只是固定了scale和translation参数，中心固定在空间原点。</p>
 <p>组合操作符：从方向d看某一点x，体密度为所有物体的体密度之和，特征向量是每个物体的特征的加权平均（权重为密度）</p>
 <p><img src="Untitled3.png" alt="Untitled"></p>
 <p>这样做不仅简单直观，而且确保梯度流向所有体密度大于0的实体</p>
-</li>
-</ul>
-</li>
-<li><p>对于渲染，使用体渲染和神经渲染结合的高效的方法</p>
-<p> 为了提高效率，体渲染得到的特征图分辨率较低，然后用2D神经渲染进行上采样得到高分辨率的最终输出图像。</p>
+<h3 id="3-场景渲染"><a href="#3-场景渲染" class="headerlink" title="3. 场景渲染"></a>3. 场景渲染</h3><p>使用体渲染和神经渲染结合的高效的方法</p>
+<p>为了提高效率，体渲染得到的特征图分辨率较低，然后用2D神经渲染进行上采样得到高分辨率的最终输出图像。</p>
 <ul>
-<li><p>体渲染</p>
-<p>  对于某个像素点，沿着相机发出的光线$d$进行采样，记采样点为$\{x_j\}^{N_s}_{j=1}$，对应的密度和特征向量为$(\sigma_j,f_j)=C(x_j,d)$</p>
-<p>  体渲染$\pi_{vol}:(\Bbb{R}^+\times \Bbb{R}^{M_f})^{N_s}\to\Bbb{R}^{M_f},\ \{\sigma_j,f_j\}^{N_s}_{j=1}\mapsto f$</p>
+<li><p>3D体渲染</p>
+<p>对于某个像素点，沿着相机发出的光线$d$进行采样，记采样点为$\{x_j\}^{N_s}_{j=1}$，对应的密度和特征向量为$(\sigma_j,f_j)=C(x_j,d)$</p>
+<p>体渲染$\pi_{vol}:(\Bbb{R}^+\times \Bbb{R}^{M_f})^{N_s}\to\Bbb{R}^{M_f},\ \{\sigma_j,f_j\}^{N_s}_{j=1}\mapsto f$</p>
 </li>
 <li><p>2D神经渲染</p>
-<p>  $\pi_\theta^{neural}:\Bbb{R}^{H_v\times W_v\times M_f}\to\Bbb{R}^{H\times W \times 3}$</p>
-<p>  参数化方式：2D CNN （with leaky ReLU activation, 最近邻上采样，卷积核3x3）</p>
-<p>  小的卷积核、没有中间层：空间中小范围的精炼，防止全局场景的耦合</p>
-<p>  对每个空间分辨率，将特征图映射到RGB图像，并用双线性插值上采样将之前的输出加到下一个</p>
-<p>  使用sigmoid activation得到最终的预测图像</p>
+<p>$\pi_\theta^{neural}:\Bbb{R}^{H_v\times W_v\times M_f}\to\Bbb{R}^{H\times W \times 3}$</p>
+<p>参数化方式：2D CNN （with leaky ReLU activation, 最近邻上采样，卷积核3x3）</p>
+<p>小的卷积核、没有中间层：空间中小范围的精炼，防止全局场景的耦合</p>
+<p>对每个空间分辨率，将特征图映射到RGB图像，并用双线性插值上采样将之前的输出加到下一个</p>
+<p><img src="Untitled5.png" alt="Untitled"></p>
+<p>神经渲染$\pi_\theta^{neural}$如上图所示，其中灰色表示输出，橙色表示可学习，蓝色表示不可学习。特征图$I_V$通过$n$个【最近邻上采样+$3\times 3$-Conv + LRelu】的block，在每个block中，我们使用$3\times 3$-Conv将特征图映射到RGB图像，并用双线性插值上采样，然后和前面的输出进行相加。最后用sigmoid激活函数，得到最终图像$\hat{I}$。</p>
 </li>
 </ul>
-</li>
-<li><p>训练模型</p>
+<h3 id="4-训练模型"><a href="#4-训练模型" class="headerlink" title="4. 训练模型"></a>4. 训练模型</h3><p><img src="Untitled4.png" alt="Untitled"></p>
+<p>其中，橙色代表可学习的，蓝色代表不可学习的。采样场景中的$N\sim p_N$个实体，潜在编码$z^i_s,z^i_a\sim N(0,I)$，以及相机位姿$\xi\sim p_{\xi}$，物体级的转移矩阵$T_i\sim p_T$。实际操作中，我们定义$p_{\xi},p_T$分别是在数据集依赖的相机仰角和有效物体转移上的均匀分布，因为在现实世界中，物体可以任意地旋转，但在重力作用下不会倾斜；而对于观察者（也就是相机）来说，仰角是可以相对场景自由变化的。</p>
 <ul>
-<li><p>Generator</p>
+<li>Generator</li>
+</ul>
 <script type="math/tex; mode=display">
-  G_\theta(\{z_s^i,z_a^i,T_i\}^N_{i=1},\xi)=\pi_\theta^{neural}(I_V)</script><p>  where $I_V=\{\pi_{vol}(\{C(x_{jk},d_k)\}^{N_s}_{j=1})\}^{H_V \times W_V}_{k=1}$</p>
-<p>  其中，N是场景中实体的数量，$N_S$是沿着每根光线采样的点的数量，$d_k$是第k个像素，$x_{jk}$是第k个像素上的第j个采样点</p>
-</li>
+G_\theta(\{z_s^i,z_a^i,T_i\}^N_{i=1},\xi)=\pi_\theta^{neural}(I_V)</script><p>where $I_V=\{\pi_{vol}(\{C(x_{jk},d_k)\}^{N_s}_{j=1})\}^{H_V \times W_V}_{k=1}$</p>
+<p>其中，N是场景中实体的数量，$N_S$是沿着每根光线采样的点的数量，$d_k$是第k个像素，$x_{jk}$是第k个像素上的第j个采样点</p>
+<ul>
 <li><p>Discriminator: CNN with leaky ReLU activation</p>
-<p>  非饱和GAN + R1梯度惩罚</p>
+<p>计算生成的图像$\hat{I}$和真实图像$I$之间的对抗损失。</p>
 </li>
 </ul>
-</li>
-<li><p>实现细节</p>
-<p> 所有物体的特征场$\{h_{\theta_i}^i\}^{N-1}_{i=1}$ 共享权重。</p>
-<p> RMSprop optimizer</p>
-</li>
-</ol>
-<h3 id="workflow"><a href="#workflow" class="headerlink" title="workflow"></a>workflow</h3><p><img src="Untitled4.png" alt="Untitled"></p>
-<h2 id="五、结果分析"><a href="#五、结果分析" class="headerlink" title="五、结果分析"></a>五、结果分析</h2><p>本文在一些常用的单个物体、白色背景数据集（Chairs [68], Cats [95], CelebA [52], and CelebA-HQ），单个物体、真实世界数据集（CompCars, LSUN Churches, FFHQ），包含不同数量、多个物体的场景（Clevr-2345）</p>
+<p>非饱和GAN + R1梯度惩罚</p>
+<p><img src="Untitled7.png" alt="Untitled"></p>
+<p>其中$f(t) = − log(1 + exp(−t)), \lambda = 10$。</p>
+<h3 id="5-实现细节"><a href="#5-实现细节" class="headerlink" title="5. 实现细节"></a>5. 实现细节</h3><p>所有物体的特征场$\{h_{\theta_i}^i\}^{N-1}_{i=1}$ share weights，用MLPs + ReLU activation进行参数化。</p>
+<p>RMSprop optimizer</p>
+<h2 id="五、结果分析"><a href="#五、结果分析" class="headerlink" title="五、结果分析"></a>五、结果分析</h2><h3 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h3><p>单个物体、白色背景数据集（Chairs [68], Cats [95], CelebA [52], and CelebA-HQ），单个物体、真实世界数据集（CompCars, LSUN Churches, FFHQ），包含不同数量、多个物体的场景（Clevr-2345）。</p>
 <h3 id="解耦"><a href="#解耦" class="headerlink" title="解耦"></a>解耦</h3><p>Fig5: 不需要纯背景的图像或其他任何监督，就可以产生解耦。模型在包含固定或可变数量物体的多物体场景上进行训练时，能够正确地解耦出各个物体。</p>
-<p>Fig6: 解耦在训练的相当早期就发生了。</p>
+<p>Fig6: 训练过程中，不同iteration输出的图像，证明解耦在训练的相当早期就发生了。</p>
+<p>Fig7: 可控的场景生成，展示可控生成物体旋转，深度/水平/圆周移动，改变外观，改变相机仰角。</p>
+<p>Fig8: 训练数据集之外的泛化。增加物体数量，加大平移尺度。</p>
 <h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><ul>
 <li>Baselines<ul>
 <li>voxel-based: Platonic-GAN, BlockGAN, HoloGAN (w/o 3D Conv)</li>
@@ -223,7 +230,7 @@
 <li>final activation</li>
 <li>上采样选择最近邻/双线性</li>
 </ul>
-<p>神经渲染器：quantitative（FID score） &amp; qualitative（360°旋转效果图） comparison，更换背景</p>
+<p>神经渲染器：quantitative（FID score） &amp; qualitative（Fig 9 360°旋转效果图）comparison，更换背景（Fig 10）</p>
 <p>位置编码：使用坐标轴对齐的位置编码</p>
 
              

@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Tag: 3DV - RitzzzZ 
+        Rendering Basics - RitzzzZ 
     </title>
      
     
@@ -93,76 +93,73 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-   
-   
-    <h3 class="archive-title">
-        Tags: 3DV 
-    </h3>
-   
-    
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.04
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/19/Image-Primitives-and-Correspondence/">
-            <time class="archive-time" itemprop="datePublished">
-              04.19
-            </time>
-            · Image Primitives and Correspondence
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/18/Image-Formation/">
-            <time class="archive-time" itemprop="datePublished">
-              04.18
-            </time>
-            · Image Formation
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/12/Representation-of-a-Three-Dimensional-Moving-Scene/">
-            <time class="archive-time" itemprop="datePublished">
-              04.12
-            </time>
-            · Representation of a Three-Dimensional Moving Scene
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/11/Introduction-An-Invitation-to-3-D-Vision/">
-            <time class="archive-time" itemprop="datePublished">
-              04.11
-            </time>
-            · Introduction - An Invitation to 3-D Vision
-          </a>
-        </h2>
-      </article>
-    
-</div>
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/06/05/Rendering-Basics/">
+                    Rendering Basics
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-06-05
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <p>本人图形学基础薄弱，在此记录一下我的学习过程，持续更新。</p>
+<h2 id="课程"><a href="#课程" class="headerlink" title="课程"></a>课程</h2><ul>
+<li><p>GAMES101 图形学入门 2023.1 - 2023.2</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html">GAMES202 实时渲染</a> 2023.6 - present</p>
+</li>
+</ul>
+<h2 id="补充材料"><a href="#补充材料" class="headerlink" title="补充材料"></a>补充材料</h2><p>在学习<a target="_blank" rel="noopener" href="http://www.smallupbp.com/">SmallUPBP</a>算法过程中补全的知识：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/73749698">Photon Mapping 光子映射</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/379681777">Multiple Importance Sampling 多重重要性采样</a>：MIS的一个经典案例是面光源对光泽(glossy)表面的高光效果。通常来说计算这种高光有两种方法，第一种是对光源采样，第二种是对BSDF采样，这两种方法在各自擅长的情况下有不错的表现，而MIS则能在所有情况下都有不错的表现。</p>
+<p>重要性采样方法，目的是近似被积函数的某个项，当另外的项在这个函数中占据主导的情况则会表现不佳。但是对于获取整个被积函数的近似函数是不现实的，因此引出了结合不同近似函数的多重方法，其中每一个近似函数尽可能正比于被积函数的一个项，从而在各种情况下得到一个低方差的结果，即多重重要性采样。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384408596">Path Tracing &amp; Bidirectional Path Tracing 路径追踪、双向路径追踪</a></p>
+</li>
+</ul>
 
              
+        </div>
+        
+            <p itemprop="keywords" class="tags">
+                
+                    <a href="/tags/Rendering/"> Rendering </a>
+                
+            </p>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/06/05/NeuroSEED%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">NeuroSEED阅读笔记 &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023
