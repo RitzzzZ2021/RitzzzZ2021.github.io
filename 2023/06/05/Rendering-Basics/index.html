@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Rendering Basics - RitzzzZ 
+        渲染相关笔记 - RitzzzZ 
     </title>
      
     
@@ -97,7 +97,7 @@
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
                 <a itemprop="url" href="/2023/06/05/Rendering-Basics/">
-                    Rendering Basics
+                    渲染相关笔记
                 </a>
             </h1>
         </div>
@@ -112,25 +112,40 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <p>本人图形学基础薄弱，在此记录一下我的学习过程，持续更新。</p>
+            <p>图形学基础薄弱，自学中o(╥﹏╥)o 在此记录一下我的学习过程，持续更新！</p>
 <h2 id="课程"><a href="#课程" class="headerlink" title="课程"></a>课程</h2><ul>
 <li><p>GAMES101 图形学入门 2023.1 - 2023.2</p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html">GAMES202 实时渲染</a> 2023.6 - present</p>
 </li>
 </ul>
-<h2 id="补充材料"><a href="#补充材料" class="headerlink" title="补充材料"></a>补充材料</h2><p>在学习<a target="_blank" rel="noopener" href="http://www.smallupbp.com/">SmallUPBP</a>算法过程中补全的知识：</p>
+<h2 id="补充材料"><a href="#补充材料" class="headerlink" title="补充材料"></a>补充材料</h2><p>在学习<a target="_blank" rel="noopener" href="http://www.smallupbp.com/">SmallUPBP</a>算法过程中补全的知识。</p>
 <ul>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/137653729">光线在参与介质中传输</a></p>
+<li><p>path integral 路径积分</p>
+<p>将图像中某个像素的亮度$I$看做是某个空间$\Omega$中光线传播路径的积分：$I=\int_{\Omega} f(\bar{x})d\mu(\bar{x})$. </p>
+<p>微分路径$d\mu(\bar{x})$是表面顶点（对于面积积分）或介质顶点（对于体积积分）的乘积度量。</p>
+<p>分布函数$f(\bar{x})$是自发光的radiance $L_e(x_0)=L_e(x_0 \to x_1)$，路径通量$T(\bar{x})$和传感器对radiance的响应$W_e(x_k)=W_e(x_{k-1} \to x_k)$（就是用来把radiance转换成颜色的线性映射的系数）的乘积：$f(\bar{x})=L_e(x_0)T(\bar{x})W_e(x_k)$.</p>
+<p>其中路径通量$T(\bar{x})$是路径段几何项和传播项以及散射函数的乘积：</p>
+<script type="math/tex; mode=display">
+T(\bar{x})=\left[ \prod^{k-1}_{i=0} G(x_i,x_{i+1})T_r(x_i,x_{i+1}) \right]\left[ \prod^{k-1}_{i=0} \rho(x_i) \right].</script><p>其中，路径段$xy$的几何项$G(x,y)=V(x,y)\frac{D(x\to y)D(y \to x)}{||x-y||^2}$, 其中，$x$在表面上时$D(x \to y)=|n_x \cdot \omega_{xy}|$，$x$在介质中时$D(x\to y)=1$. $n_x$是表面法向量，$\omega_{xy}$是从$x$到$y$的单位长度向量.</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/73749698">Photon Mapping 光子映射</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/137653729">光线在参与介质中传输</a></p>
+<p>在对象之间的空间通常被一些集群介质(如：空间，水)占有，此外这些媒介包含杂质和悬浮的微小粒子。在这些情况下，当光线在表面之间传播时，介质参与了光线的交互。</p>
+<p>辐射传输方程（RTE）</p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/379681777">Multiple Importance Sampling 多重重要性采样</a>：MIS的一个经典案例是面光源对光泽(glossy)表面的高光效果。通常来说计算这种高光有两种方法，第一种是对光源采样，第二种是对BSDF采样，这两种方法在各自擅长的情况下有不错的表现，而MIS则能在所有情况下都有不错的表现。</p>
 <p>重要性采样方法，目的是近似被积函数的某个项，当另外的项在这个函数中占据主导的情况则会表现不佳。但是对于获取整个被积函数的近似函数是不现实的，因此引出了结合不同近似函数的多重方法，其中每一个近似函数尽可能正比于被积函数的一个项，从而在各种情况下得到一个低方差的结果，即多重重要性采样。</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384408596">Path Tracing &amp; Bidirectional Path Tracing 路径追踪、双向路径追踪</a></p>
-</li>
 </ul>
+<p>两种真实感渲染技术</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384408596">Path Tracing &amp; Bidirectional Path Tracing 路径追踪、双向路径追踪</a></p>
+<p>补充：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/73025214">Light Tracing</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/73749698">Photon Mapping 光子映射</a>：光子追踪的策略是，由灯光发发射出有限数量的光子，当光子命中场景模型的<strong>漫反射</strong>表面时存储光子到Photon Map中，光子会被模型反射、折射或吸收。当光子被吸收或者离开目标场景时结束此光子追踪过程。</p>
+<p>补充：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/479052804">Radiocity Method</a></p>
+</li>
+</ol>
 
              
         </div>
