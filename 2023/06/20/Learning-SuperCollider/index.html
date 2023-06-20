@@ -113,10 +113,10 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>学习SuperCollider纯属图一乐。关于SuperCollider的中文资料较少，在这里稍微记录一下学习过程，内容基于<a target="_blank" rel="noopener" href="https://ccrma.stanford.edu/~ruviaro/texts/A_Gentle_Introduction_To_SuperCollider.pdf">A Gentle Introduction to SuperCollider</a>。</p>
+<p>学习<a target="_blank" rel="noopener" href="https://supercollider.github.io/">SuperCollider</a>纯属图一乐。关于SuperCollider的中文资料较少，在这里稍微记录一下学习过程，内容基于<a target="_blank" rel="noopener" href="https://ccrma.stanford.edu/~ruviaro/texts/A_Gentle_Introduction_To_SuperCollider.pdf">A Gentle Introduction to SuperCollider</a>。</p>
 </blockquote>
-<h2 id="Start-up"><a href="#Start-up" class="headerlink" title="Start up"></a>Start up</h2><p>SuperCollider由两部分组成：server (叫做scsynth) 和language/client/interpreter (叫做sclang)。server是一个声音引擎，负责产生声音。我们在language中写代码、执行命令，控制声音的产生。</p>
-<p>一些快捷键：</p>
+<h2 id="1-Basics"><a href="#1-Basics" class="headerlink" title="1. Basics"></a>1. Basics</h2><p>SuperCollider由两部分组成：server (叫做scsynth) 和language/client/interpreter (叫做sclang)。server是一个声音引擎，负责产生声音。我们在language中写代码、执行命令，控制声音的产生。</p>
+<h3 id="Start-up"><a href="#Start-up" class="headerlink" title="Start up"></a>Start up</h3><p>一些快捷键：</p>
 <ul>
 <li><code>Ctrl + n</code> 新建文件</li>
 <li><code>Ctrl + b</code> 开启server</li>
@@ -139,10 +139,68 @@
 // Use parentheses to force a specific order of operations:
 5 + (2 * 2); // equals 9.
 </code></pre>
-<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>一次执行几行代码可以选中再<code>Ctrl + Enter</code>，也可以用括号将代码包起来，光标在代码块中任意位置，按下<code>Ctrl + Enter</code>。</p>
+<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>一次执行几行代码可以选中再<code>Ctrl + Enter</code>，也可以用一对括号()将代码包起来，光标在代码块中任意位置，按下<code>Ctrl + Enter</code>。</p>
+<h3 id="保存输出的音频"><a href="#保存输出的音频" class="headerlink" title="保存输出的音频"></a>保存输出的音频</h3><pre><code class="lang-c">// QUICK RECORD
+// Start recording:
+s.record;
+// Make some cool sound
+&#123;Saw.ar(LFNoise0.kr([2, 3]).range(100, 2000), LFPulse.kr([4, 5]) * 0.1)&#125;.play;
+// Stop recording:
+s.stopRecording;
+// Optional: GUI with record button, volume control, mute button:
+s.makeWindow;
+</code></pre>
+<p>Post window中会显示文件保存的路径。</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>小写字母中，除了<code>s</code>（保留，默认指代server），其他都可以直接用作变量名。</p>
+<p>Example 1</p>
+<pre><code class="lang-c">a = &quot;Hello, World&quot;; // a string of characters
+b = [0, 1, 2, 3, 5]; // a list
+c = Pbind(\note, Pwhite(0, 10), \dur, 0.1); // you&#39;ll learn all about Pbind later, don&#39;t worry
+// ...and now you can use them just like you would use the original data:
+a.postln; // post it
+b + 100; // do some math
+c.play; // play that Pbind
+d = b * 5; // take b, multiply by 5, and assign that to a new variable
+</code></pre>
+<p>可以用<code>~</code>声明更长的变量名，变量名必须以<strong>小写字母</strong>开头，后面可以用数字，下划线和大写字母。</p>
+<p>Example 2</p>
+<pre><code class="lang-c">~myFreqs = [415, 220, 440, 880, 220, 990];
+~myDurs = [0.1, 0.2, 0.2, 0.5, 0.2, 0.1];
+
+Pbind(\freq, Pseq(~myFreqs), \dur, Pseq(~myDurs)).play;
+</code></pre>
+<p><strong>全局变量和局部变量</strong></p>
+<p>前面说的都是全局变量，一旦声明，就会在任何地方工作，直到退出SuperCollider。如果要定义局部变量，要用保留字<code>var</code>。局部变量只在代码块的范围内存在。</p>
+<pre><code class="lang-c">// Environment variables
+~galaApples = 4;
+~bloodOranges = 5;
+~limes = 2;
+~plantains = 1;
+
+[&quot;Citrus&quot;, ~bloodOranges + ~limes];
+[&quot;Non−citrus&quot;, ~plantains + ~galaApples];
+
+// Local variables: valid only within the code block.
+// Evaluate the block once and watch the Post window:
+(
+var apples = 4, oranges = 3, lemons = 8, bananas = 10;
+[&quot;Citrus fruits&quot;, oranges + lemons].postln;
+[&quot;Non−citrus fruits&quot;, bananas + apples].postln;
+&quot;End&quot;.postln;
+)
+
+~galaApples; // still exists
+apples; // gone
+</code></pre>
 
              
         </div>
+        
+            <p itemprop="keywords" class="tags">
+                
+                    <a href="/tags/Computer-Music/"> Computer Music </a>
+                
+            </p>
         
     </article>
     <div class="post-near">
