@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        archive - RitzzzZ 
+        Learning SuperCollider - RitzzzZ 
     </title>
      
     
@@ -93,116 +93,78 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-   
-   
-    
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.05
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/05/24/NeRF%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">
-            <time class="archive-time" itemprop="datePublished">
-              05.24
-            </time>
-            · NeRF相关论文阅读
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.04
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/19/Image-Primitives-and-Correspondence/">
-            <time class="archive-time" itemprop="datePublished">
-              04.19
-            </time>
-            · Image Primitives and Correspondence
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/18/Image-Formation/">
-            <time class="archive-time" itemprop="datePublished">
-              04.18
-            </time>
-            · Image Formation
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/12/Representation-of-a-Three-Dimensional-Moving-Scene/">
-            <time class="archive-time" itemprop="datePublished">
-              04.12
-            </time>
-            · Representation of a Three-Dimensional Moving Scene
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/11/Introduction-An-Invitation-to-3-D-Vision/">
-            <time class="archive-time" itemprop="datePublished">
-              04.11
-            </time>
-            · Introduction - An Invitation to 3-D Vision
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2022.07
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2022/07/31/Preface/">
-            <time class="archive-time" itemprop="datePublished">
-              07.31
-            </time>
-            · Preface
-          </a>
-        </h2>
-      </article>
-    
-</div>
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/06/20/Learning-SuperCollider/">
+                    Learning SuperCollider
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-06-20
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <blockquote>
+<p>学习SuperCollider纯属图一乐。关于SuperCollider的中文资料较少，在这里稍微记录一下学习过程，内容基于<a target="_blank" rel="noopener" href="https://ccrma.stanford.edu/~ruviaro/texts/A_Gentle_Introduction_To_SuperCollider.pdf">A Gentle Introduction to SuperCollider</a>。</p>
+</blockquote>
+<h2 id="Start-up"><a href="#Start-up" class="headerlink" title="Start up"></a>Start up</h2><p>SuperCollider由两部分组成：server (叫做scsynth) 和language/client/interpreter (叫做sclang)。server是一个声音引擎，负责产生声音。我们在language中写代码、执行命令，控制声音的产生。</p>
+<p>一些快捷键：</p>
+<ul>
+<li><code>Ctrl + n</code> 新建文件</li>
+<li><code>Ctrl + b</code> 开启server</li>
+<li><code>Ctrl + +</code> 放大字体</li>
+<li><code>Ctrl + Enter</code> 执行程序（光标要放在要执行的指令那一行/代码块里）</li>
+<li><code>Ctrl + .</code> 停止播放声音</li>
+<li><code>Ctrl + Shift + p</code> 将Post window清屏</li>
+</ul>
+<h3 id="第一个程序"><a href="#第一个程序" class="headerlink" title="第一个程序"></a>第一个程序</h3><p>写一个Hello World程序并在Post Window中显示：</p>
+<p><code>&quot;Hello World&quot;.postln;</code></p>
+<p>产生正弦波：</p>
+<p><code>&#123;SinOsc.ar&#125;.play;</code></p>
+<p>显示控制音量的图形界面：</p>
+<p><code>s.volume.gui</code></p>
+<p>可以通过调整参数，产生不一样的正弦波：</p>
+<p><code>&#123;SinOsc.ar(LFNoise0.kr(10).range(500, 1500), mul: 0.1)&#125;.play;</code></p>
+<h3 id="运算优先级"><a href="#运算优先级" class="headerlink" title="运算优先级"></a>运算优先级</h3><p>按照从左到右的顺序进行计算，和数学运算符自身的优先级（比如乘除优先级大于加减）没有关系。如果要以另外的顺序进行计算，必须使用括号。</p>
+<pre><code class="lang-c">// In high school, the result was 9; in SC, it is 14:
+5 + 2 * 2;
+// Use parentheses to force a specific order of operations:
+5 + (2 * 2); // equals 9.
+</code></pre>
+<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>一次执行几行代码可以选中再<code>Ctrl + Enter</code>，也可以用括号将代码包起来，光标在代码块中任意位置，按下<code>Ctrl + Enter</code>。</p>
 
-    <ol class="page-navigator">
-      <a class="extend prev" rel="prev" href="/archives/">«</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-    </ol>
-  
              
+        </div>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/06/18/C-C/">C/C++ &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023
