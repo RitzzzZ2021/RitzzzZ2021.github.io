@@ -152,7 +152,6 @@ s.makeWindow;
 </code></pre>
 <p>Post window中会显示文件保存的路径。</p>
 <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>小写字母中，除了<code>s</code>（保留，默认指代server），其他都可以直接用作变量名。</p>
-<p>Example 1</p>
 <pre><code class="lang-c">a = &quot;Hello, World&quot;; // a string of characters
 b = [0, 1, 2, 3, 5]; // a list
 c = Pbind(\note, Pwhite(0, 10), \dur, 0.1); // you&#39;ll learn all about Pbind later, don&#39;t worry
@@ -163,7 +162,6 @@ c.play; // play that Pbind
 d = b * 5; // take b, multiply by 5, and assign that to a new variable
 </code></pre>
 <p>可以用<code>~</code>声明更长的变量名，变量名必须以<strong>小写字母</strong>开头，后面可以用数字，下划线和大写字母。</p>
-<p>Example 2</p>
 <pre><code class="lang-c">~myFreqs = [415, 220, 440, 880, 220, 990];
 ~myDurs = [0.1, 0.2, 0.2, 0.5, 0.2, 0.1];
 
@@ -192,7 +190,7 @@ var apples = 4, oranges = 3, lemons = 8, bananas = 10;
 ~galaApples; // still exists
 apples; // gone
 </code></pre>
-
+<h2 id="2-Patterns"><a href="#2-Patterns" class="headerlink" title="2. Patterns"></a>2. Patterns</h2>
              
         </div>
         
