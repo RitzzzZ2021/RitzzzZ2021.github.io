@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>
+        Generative Models - RitzzzZ 
+    </title>
+     
+    
+<link rel="stylesheet" href="/css/grid.css">
+
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+<link rel="stylesheet" href="/css/ringo.css">
+
+     
+        <link rel="icon" type="image/x-icon" href="/img/icon.png " />
+     
+     
+     
+        <meta name=" " content="" />
+     
+        <meta name=" " content="" />
+     
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header id="header" class="clearfix" onclick="window.open('/', '_self')">
+    <div class="site-name">
+        <a href="/" id="logo" class="site-title">
+            RitzzzZ
+        </a>
+        <p class="description site-description">
+            <span style="padding-top:20px; font-size: 10px">
+                An infinite journey
+            </span>
+        </p>
+    </div>
+</header>
+<div id="sidebar" role="complementary">
+    <section class="widget">
+        <ul class="menu widget-list">
+            
+                <li class="menu-item">
+                    <a href="/" class="menu-item-link">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/about" class="menu-item-link">
+                        About
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/archives" class="menu-item-link">
+                        Archives
+                    </a>
+                </li>
+                
+        </ul>
+    </section>
+    <section class="widget sidebar-foot">
+        <ul class="widget-list">
+            <li>Theme <a rel="nofollow" target="_blank" href="https://github.com/HeliumOI/hexo-theme-ringo">Ringo</a>
+                by <a target="_blank" href="/ "> RitzzzZ  </a></li>
+            <li>Proudly powered by  <a rel="nofollow" target="_blank" href="https://hexo.io/">Hexo</a></li>
+        </ul>
+    </section>
+</div>
+
+<div id="helpbar">
+    <div class="back-to-top">
+        <button id="back2top">↑</button>
+        <script>
+            back2top.onclick = function() {
+                var movement = document.body.scrollTop || document.documentElement.scrollTop;
+                scrollBy(0, -movement);
+            }
+        </script>
+    </div>
+</div>
+      <main class="main">
+        <div id="body">
+          <div class="container">
+            <div class="col-12" id="main" role="main">
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/06/22/Generative-Models/">
+                    Generative Models
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-06-22
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <blockquote>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.15663">Deep Generative Models on 3D Representations: A Survey</a><br>目录：<br><a href="#一简介">一、简介</a><br><a href="#二深度生成模型">二、深度生成模型</a><br><a href="#三3d表示">三、3D表示</a><br><a href="#四3d形状生成">四、3D形状生成</a><br><a href="#附录gan相关重要工作">附录</a></p>
+</blockquote>
+<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>我们期望理想的三维表示能够具备足够的能力来详细建模形状和外观，并且具备高效性，以便能够快速模拟高分辨率数据并且在内存成本低的情况下实现。然而，现有的三维表示，例如点云、网格和最近的神经场，通常无法同时满足上述要求。</p>
+<h3 id="现有技术"><a href="#现有技术" class="headerlink" title="现有技术"></a>现有技术</h3><p><strong>生成模型</strong>：变分自编码器（VAEs）、自回归模型（ARs）、归一化流（NFs）、生成对抗网络（GANs）和最近的扩散概率模型（DPMs）都能够将潜变量转换为高质量的图像。</p>
+<p><strong>3D表示</strong>：在2D生成和3D生成之间的一个关键区别是数据格式。2D图像可以自然地表示为像素值的数组，可以方便地通过神经网络进行处理。相反，有许多3D表示方法可以描述3D实例，例如点云（point cloud），网格（mesh），体素网格（voxel grid），多平面图像（multi-plane images），隐式神经表示（implicit neural representations）等。每种表示方法都有其优势和局限性。例如，网格可以紧凑地表示3D形状，但由于不规则的数据结构，很难通过神经网络进行分析和生成。相比之下，体素网格在3D空间中有规律地定位，并且与标准卷积神经网络配合效果良好，但体素网格在内存消耗方面较大，并且难以表示高分辨率的3D场景。选择适当的表示方法对于3D内容生成至关重要。</p>
+<h2 id="二、深度生成模型"><a href="#二、深度生成模型" class="headerlink" title="二、深度生成模型"></a>二、深度生成模型</h2><p>生成模型旨在以<strong>无监督</strong>的方式学习实际数据分布，通过尽可能逼真地生成数据来捕捉更多细节并展现更多创造力。生成模型首先需要总结输入数据的分布，然后利用这些总结信息在给定的数据分布中创建或合成样本。</p>
+<p>生成模型可以分为两个主要类别。一类是<strong>基于似然的模型(likelihood-based models)</strong>，包括变分自动编码器（VAEs）、归一化流（N-Flows）、扩散模型（DDPMs）以及能量模型（EBMs），这些模型通过最大化给定数据的似然来进行学习。另一类是<strong>无似然模型(likelihood-free models)</strong>，包括生成对抗网络（GANs），它们基于一个双方零和博弈来寻找纳什均衡点。</p>
+<p><img src="Untitled.png" alt="models"></p>
+<h3 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h3><p>生成对抗网络（Generative Adversarial Networks，简称GANs）在数据合成方面表现出色。GAN由两个独立的网络组成：生成器G(·)以从先验分布z ∼ pz中采样得到的潜在编码作为输入来创建数据，判别器D(·)旨在区分真实数据x ∼ px和合成数据G(z)。在训练过程中，G(·)需要尽可能逼真地合成数据，以欺骗D(·)使其认为这些样本是真实的，而D(·)则被训练成将G(·)合成的样本标记为假的，将训练样本x标记为真的。这两个网络相互竞争，并可以被形式化为一个最小最大博弈（零和博弈）。它们通过联合优化来进行训练。</p>
+<script type="math/tex; mode=display">
+L_D=-\Bbb{E}_{x\sim p_x}[log(D(x))]-\Bbb{E}_{z\sim p_z}[log(1-D(G(z)))],\\
+L_G=-\Bbb{E}_{z\sim p_z}[log(D(G(z)))].</script><p>随着深度学习的兴起，GAN中的两个网络逐渐采用了深度神经网络的参数化方法，如DC-GAN。最近的GAN变体，如PG-GAN、StyleGAN1-3改进了网络架构，能够合成逼真的样本。</p>
+<p>缺点：</p>
+<ul>
+<li>由于优化双方博弈的难度很大，GAN在稳定训练网络方面存在困难，导致更容易出现不收敛的情况。</li>
+<li>GAN还面临着模式崩溃的问题，即生成器将多个不同的潜在编码映射到相同的输出上。</li>
+</ul>
+<h3 id="VAE"><a href="#VAE" class="headerlink" title="VAE"></a>VAE</h3><p>变分自编码器（Variational Autoencoders，VAEs）是一种深度潜变量模型（Deep Latent Variable Models，DLVMs），通过神经网络对数据分布x∼pθ进行参数化，引入潜在变量z，并给出一个先验分布z∼pz。DLVMs的参数θ很难进行微分和优化，因为我们想要最大化的似然函数pθ(x) = pθ(x|z)pz(z)dz是难以计算的。而变分自编码器通过对难以计算的后验进行有效近似，将其转化为一个可解的问题。具体来说，通过使用前馈模型对后验分布qφ(z|x)进行参数化，并通过最小化自身与先验分布pθ(z|x)之间的KL散度来进行优化</p>
+<script type="math/tex; mode=display">
+L_{VAE}=-D_{KL}(q_{\phi}(z|x)||p_\theta(z))+\Bbb{E}_{z \sim q_{\phi (z|x)}}log(p_\theta(z|x))</script><p>被称为证据下界（ELBO）。由于$q_\phi (z|x)$的前馈模式，推断新样本的效率很高。并且，由于重构损失函数的存在，训练过程是稳定的。</p>
+<p>缺点：</p>
+<ul>
+<li>变分自编码器也会遭受后验崩溃的问题，即学习到的潜在空间变得对重构给定数据不具有信息性。</li>
+<li>由于注入的噪声和不完美的重构，变分自编码器更容易合成比起GAN生成的样本更模糊的样本。</li>
+</ul>
+<h3 id="NF"><a href="#NF" class="headerlink" title="NF"></a>NF</h3><p>在GANs和VAEs中，使用参数化模型来隐式地学习数据的密度，因此无法计算精确的似然函数来优化模型训练。而归一化流通过引入一组可逆变换函数来缓解这个问题。它从一个正态分布开始，然后一系列的可逆函数$f_{1:N}(·)$依次将正态分布转化为最终输出的概率分布：</p>
+<script type="math/tex; mode=display">
+z_i=f_{i-1}(z_{i-1}).</script><p>由于$f_i$的可逆性质，新变量$z_i$的概率密度函数可以很容易地从上一步的变量$z_{i-1}$估计得到：</p>
+<script type="math/tex; mode=display">
+p(z_i)=p(z_{i-1})|\frac{df_i}{dz_{i-1}}|^{-1},\\
+logp(z_i)=logp(z_{i-1})-log|\frac{df_i}{dz_{i-1}}|.</script><p>根据链式法则，经过N次变换后的最终输出zN的密度可以通过以下方式获得：</p>
+<script type="math/tex; mode=display">
+logp(z_N)=logp(z_0)-\sum_1^Nlog|\frac{df_i}{dz_{i-1}}|.</script><p>其中，由$z_i$组成的完整链被称为归一化流（normalizing flow）。由于其可逆性质，归一化流可以轻松用于新样本生成、潜在变量投影以及密度值估计。</p>
+<p>缺点：</p>
+<ul>
+<li>归一化流在平衡参数化模型的容量和效率方面存在困难。</li>
+</ul>
+<h3 id="Diffusion-Models"><a href="#Diffusion-Models" class="headerlink" title="Diffusion Models"></a>Diffusion Models</h3><p>扩散模型（Diffusion models）由一个马尔可夫链参数化，该链通过噪声调度（噪声逐渐增加）$\beta_{1:T}$将输入数据$x_0$进行处理，其中$T$表示时间步数。理论上，当$T \to ∞$时，$x_T$成为一个正态高斯分布。</p>
+<script type="math/tex; mode=display">
+q(x_t|x_{t-1})=N(x_t;\sqrt{1-\beta_t}x_{t-1},\beta_t I),\\
+q(x_{1:T}|x_0)=\prod_{t=1}^Tq(x_t|x_{t-1}).</script><p>通过学习扩散过程的反向过程，通过建模从噪声到数据的转换$q(x_{t−1}|x_t)$来重构输入。然而，后验推断$q(x_{t−1}|x_t)$也是不可计算的，因此使用参数化模型$p_\theta$来模拟条件转换概率，通过优化类似于VAE的ELBO。由于不可计算的长马尔可夫链，扩散模型可以合成高质量的数据，并以稳定的方式进行训练。</p>
+<p>缺点：</p>
+<ul>
+<li>推断新样本的成本较高，采样过程比GAN和VAE更慢。</li>
+</ul>
+<h3 id="Energy-based-model"><a href="#Energy-based-model" class="headerlink" title="Energy-based model"></a>Energy-based model</h3><p>能量基模型（Energy-based models）利用能量函数（energy function）来显式地建模数据的概率分布。它建立在一个基本思想之上，即任何概率函数都可以通过将其体积除以某个常数来转化为能量函数：</p>
+<script type="math/tex; mode=display">
+p(x)=\frac{exp(-E_\theta(x))}{\int_x exp(-E_\theta(x))},</script><p>其中$-E_\theta(x)$是能量函数。显然高似然的数据点有较低的能量，低似然的数据点有较高的能量。然而，由于计算高维数据的$\int_x exp(−E(x))$是困难的，优化似然函数是棘手的。为了缓解优化难题，对比散度（contrastive divergence）被提出，通过比较$p(x)$上的似然梯度和从能量分布$q_\theta (x)$中随机采样的数据的似然梯度来进行优化：</p>
+<script type="math/tex; mode=display">
+\nabla_\theta E_{x\sim q_\theta}
+(−log(p(x))) = E_{x\sim p}((E_\theta(x))) − E_{x\sim q_\theta} ((E_\theta(x)))</script><p>能量分布$q_\theta (x)$通过马尔可夫链蒙特卡洛（Markov Chain Monte Carlo，MCMC）过程进行近似。</p>
+<h2 id="三、3D表示"><a href="#三、3D表示" class="headerlink" title="三、3D表示"></a>三、3D表示</h2><p><img src="Untitled1.png" alt="representations"></p>
+<h3 id="体素网格"><a href="#体素网格" class="headerlink" title="体素网格"></a>体素网格</h3><p>体素是在3D空间中定期放置的欧几里得结构化数据，类似于2D空间中的像素。为了表示3D形状，体素可以存储几何占据度、体积密度或符号距离值。由于体素网格的<strong>规则性</strong>，它们与标准<strong>卷积神经网络</strong>结合使用效果良好，并广泛应用于深度几何学习中。作为先驱，3D ShapeNets将体素网格引入了3D场景理解任务中。它将深度图转换为3D体素网格，然后通过卷积深度置信网络进行进一步处理。体素网格通常用作3D重建任务中的<strong>网络输出</strong>，而不是前面提到的方法中的网络输入。3D-R2N2使用2D卷积神经网络将输入图像编码为潜在向量，并利用3D卷积神经网络预测目标体素网格。尽管体素网格非常适合3D CNN，但使用神经网络处理体素通常会<strong>占用大量内存</strong>。为了解决这个问题，一些工作引入了<strong>八叉树</strong>数据结构进行形状建模。</p>
+<p>体素网格在渲染任务中也有许多应用。早期的方法在体素中存储高维特征向量，用于编码场景的几何和外观信息，通常被称为<strong>特征体素</strong>，并可以使用投影和2D卷积神经网络转换为彩色图像。Neural Volumes使用CNN预测RGB-Alpha体素，并利用体素渲染技术合成图像。多平面图像（MPI）可以看作是一种体素网格，它将3D空间划分为几个深度平面，并在这些深度平面上定义了RGB-Alpha图像。由于它们减少了沿深度维度的体素数量，基于MPI的方法在一定程度上节省了计算成本。近年来，体素网格与神经场的结合成为一种趋势，这将在混合表示部分进行讨论。</p>
+<h3 id="点云"><a href="#点云" class="headerlink" title="点云"></a>点云</h3><p>点云是三维空间中<strong>无序</strong>的点的集合（深度图和法线图可以视为点云表示的特殊情况）。它可以被看作是三维形状表面的<strong>离散化采样</strong>。点云是深度传感器的直接输出，因此在三维场景理解任务中非常流行。尽管点云易于获取，但其<strong>不规则性</strong>使得它们难以使用现有的为规则网格数据（例如图像）设计的神经网络进行处理。此外，由于采样的变化，底层三维形状可以由许多不同的点云表示。</p>
+<p>许多方法尝试有效且高效地分析三维点云：</p>
+<ul>
+<li>PointNet利用MLP网络从点集中提取特征向量，并通过最大池化对所有点的特征进行汇总，以实现对点的顺序的不变性；</li>
+<li>PointNet++将点云分层分组为几个集合，并单独使用PointNet处理局部点集，从而捕捉点云的多个级别的局部上下文。</li>
+</ul>
+<p>一些方法将点云重新构造为其他类型的数据结构，并尝试在其他领域利用神经网络：</p>
+<ul>
+<li>DGCNN将点云视为图，并旨在使用图卷积神经网络模拟相邻点之间的关系；</li>
+<li>将点云转换为稀疏体素，并使用3D稀疏卷积网络对其进行处理。</li>
+</ul>
+<p>要使用点云合成图像，一种简单的方法是<strong>在点上存储颜色</strong>，并使用<strong>点云绘制技术</strong>来渲染点云。由于渲染的图像往往会包含空洞，有的方法使用2D卷积神经网络对图像进行优化。一些方法开发了可微分的点云渲染器，可以对点的位置、颜色和透明度进行优化。为了增加点云的建模能力，一些方法试图将高维特征向量锚定到点上，并将其投影到特征图中进行后续渲染。基于这一流程，ADOP提出了一个完善的系统，可以实时进行自由视点的场景导航。最近的方法尝试将点云与神经场结合起来，以实现高分辨率的渲染结果，这将在混合表示部分进行讨论。</p>
+<h3 id="网格"><a href="#网格" class="headerlink" title="网格"></a>网格</h3><p>多边形网格是非欧几里德数据，通过一组顶点、边和面来表示形状表面。与体素相比，网格仅模拟<strong>场景表面</strong>，因此更加紧凑。与点云相比，网格提供了<strong>表面点之间的连接性</strong>，可以建模点之间的关系。由于这些优势，多边形网格广泛应用于传统的计算机图形应用，如几何处理、动画和渲染。然而，将深度神经网络应用于网格比应用于点云更具挑战性，因为除了顶点之外，还需要考虑<strong>网格边缘</strong>。一些工作将3D形状表面参数化为2D几何图像，并使用2D卷积神经网络处理几何图像，避免了处理3D拓扑的复杂性。随着图神经网络的发展，一些工作将网格视为图形结构。MeshCNN专门为网格边缘设计了卷积和池化层，并提取边缘特征进行形状分析。与网格分析类似，使用网络生成网格也具有挑战性，因为需要预测顶点位置和拓扑结构。一些工作预先定义一个具有固定连接性的网格，并预测顶点位移来让网格变形，从而生成目标形状。为了建模具有更复杂拓扑结构的形状，有人提出了一个拓扑修改模块，用于修剪预定义网格的面。</p>
+<p>在传统计算机图形的渲染流程中，软件和硬件都经过了大量的优化，以实现对网格的渲染。一些可微分的网格渲染器利用经典渲染技术的进展，并设计反向传播过程来更新网格上定义的某些属性（例如颜色）。为了提高渲染质量，一种策略是将外观属性存储在形状表面上，这些表面被参数化为纹理映射。在渲染过程中，使用UV映射在纹理映射中查询任意表面点的值。基于学习的方法在纹理映射中定义了可学习的特征向量，用于编码表面外观，并通过2D渲染器将其解码为彩色图像。由于这些特征是从观察到的图像端到端训练的，它们能够学习补偿不完美的场景几何。最近的方法尝试利用神经场改进网格表示，以渲染高质量的图像，这将在混合表示部分进行讨论。</p>
+<h3 id="神经场"><a href="#神经场" class="headerlink" title="神经场"></a>神经场</h3><p>神经场是一种连续的神经隐式表示，它使用神经网络来完全或部分地表示场景或对象。对于3D空间中的每个位置，神经网络将其相关特征（例如坐标）映射到属性（例如RGB值）。神经场能够以任意分辨率和未知或复杂的拓扑结构表示3D场景或对象，这是由于其表示的连续性。此外，与前面提到的其他表示方法相比，神经场仅需要存储神经网络的参数，从而导致较低的内存消耗。ONet首次使用深度神经网络对神经场进行建模，其中3D空间中的每个点被映射到一个占据值。而DeepSDF则使用符号距离值作为神经场中每个点的属性。</p>
+<p>从神经场中渲染图像有两种技术流程-表面渲染和体积渲染。表面渲染使用一个隐式可微的渲染器，首先发射视线并找到与表面相交的点，然后从网络中查询这些相交点的RGB值，并形成一个2D图像。虽然基于表面渲染的方法在表示3D对象和渲染2D图像方面表现良好，但大多数方法都需要像素级的对象掩码和仔细的初始化来帮助优化到有效的表面。原因是表面渲染只在射线-表面相交点提供梯度，使得网络难以优化。相比之下，体积渲染是基于光线投射的，它沿着每条光线采样多个点，如图3所示。它在建模复杂场景方面显示出巨大的优势。对于每条相机光线的起点o和方向d，观察到的颜色是</p>
+<script type="math/tex; mode=display">
+C(o,d)=\int^{t_f}_{t_n}T(t,o,d)\sigma(o+td)c(o+td)dt,</script><p>其中$t_n$和$t_f$决定了光线的远近边界，$\sigma$表示点的密度，$c$是它发出的颜色。累积透射率$T$被定义为</p>
+<script type="math/tex; mode=display">
+T(t,o,d)=exp(-\int^t_{t_n}\sigma(o+sd)ds).</script><p>从所有光线中汇总的颜色结果形成一个2D图像。NeRF及其后续工作采用这种可微体积渲染方法从3D表示中渲染2D图像，允许梯度通过渲染器流动。然而，沿着所有光线采样一组点可能会导致渲染速度较慢。最近的研究聚焦于通过各种技术加速，例如修剪、改进的积分和精心设计的数据结构。</p>
+<h3 id="混合表示"><a href="#混合表示" class="headerlink" title="混合表示"></a>混合表示</h3><p>考虑到每种表示方法的优缺点，提出了混合表示方法以相互补充。大多数混合表示方法侧重于<strong>显式和隐式表示的组合</strong>。显式表示提供对<strong>几何形状</strong>的显式控制。然而，它们受分辨率和拓扑的限制。隐式表示能够用相对较小的内存消耗来建模复杂的几何形状和拓扑。然而，它们通常是用MLP层进行参数化，并为每个坐标输出属性，受限于<strong>小的感受野</strong>。因此，难以对表面提供明确的监督并且难以进行优化。研究人员利用每种类型表示的优势来弥补其他类型表示的不足之处。</p>
+<p>一些研究工作将<strong>体素网格</strong>与神经场相结合，以加速学习和渲染过程。可微分渲染的点特征是从体素网格的特征进行插值得到的。这些表示牺牲了内存消耗以换取渲染速度。MINE将神经场与多平面图像结合，这种表示比体素网格更小，但视野范围受限。EG3D使用三平面图提升神经场的模型容量。这些表示消耗的内存比基于体素的神经场少，并且同时允许快速渲染。</p>
+<p>一些工作在<strong>点云</strong>上构建了神经场，可以看作是基于体素的神经场的无序版本。[156]从K个相邻点插值点特征。[82]使用一个超网络，接收点云并生成NeRF网络的权重。</p>
+<p>NeuMesh通过在网格顶点上编码几何和纹理代码，提出了基于<strong>网格</strong>的神经场，使得可以通过网格对神经场进行操作。</p>
+<p>相比之下，[97]结合了两种显式表示，即网格和体素网格。所提出的可变形四面体网格表示优化了顶点位置和占用情况。因此，表面本质上由四面体网格表示，并且该表示实现了内存和计算效率的平衡。</p>
+<h2 id="四、3D形状生成"><a href="#四、3D形状生成" class="headerlink" title="四、3D形状生成"></a>四、3D形状生成</h2><p>最近，大多数的3D形状生成方法都是通过训练深度神经网络来捕捉3D形状的分布。与2D图像相比，3D形状有许多类型的表示方法，例如体素网格、点云、网格和神经场。这些表示在3D形状生成任务中都有各自的优势和劣势。有许多方面可以用来评估3D表示是否能够与深度生成模型良好地配合，包括网络在表示上的处理简易性、高质量和复杂3D形状的有效生成能力，以及获取生成模型的监督信号的成本。</p>
+<h3 id="voxel-grid"><a href="#voxel-grid" class="headerlink" title="voxel grid"></a>voxel grid</h3><p>体素网格通常被视为三维空间中的图像。为了表示三维形状，体素可以存储几何占据情况、有符号距离值或密度值，这些是定义形状表面的隐式表面表示，将形状表面定义为水平集函数。由于其数据结构的规则性，体素网格是最早被用于深度学习技术的三维视觉任务的表示之一，例如三维分类，三维目标检测，以及三维分割。</p>
+<h2 id="附录：GAN相关重要工作"><a href="#附录：GAN相关重要工作" class="headerlink" title="附录：GAN相关重要工作"></a>附录：GAN相关重要工作</h2><ul>
+<li><p>GAN</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1812.04948v3">StyleGAN</a>：新的生成器架构，对生成图像中的高层属性（例如人脸训练时的姿势和身份）和随机变异的自动学习、无监督分离（例如雀斑、头发）。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/9792208">GAN inversion</a>：连接真实图像和虚假图像——将给定的图像逆向映射回预训练GAN模型的潜空间，从而可以通过生成器从逆向编码中忠实地重构图像。在图像恢复和图像操作中得到广泛应用。</p>
+</li>
+</ul>
+<h2 id="神经辐射场"><a href="#神经辐射场" class="headerlink" title="神经辐射场"></a>神经辐射场</h2><ul>
+<li>NeRF</li>
+</ul>
+<h2 id="Generative-Radiance-Fields"><a href="#Generative-Radiance-Fields" class="headerlink" title="Generative Radiance Fields"></a>Generative Radiance Fields</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384521486">NeRF -&gt; GRAF -&gt; GIRAFFE</a></p>
+</li>
+<li><p>GIRAFFE HD：GIRAFFE图像分辨率较低。GIRAFFE HD引入StyleGAN encoder，上采样生成高分辨率图片，对场景的形状和外观解耦。关键思想是利用基于风格的神经渲染器，独立生成前景和背景，强制它们解耦，并通过施加一致性约束将它们拼接在一起以生成一张连贯的最终图像。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/html/Chan_Efficient_Geometry-Aware_3D_Generative_Adversarial_Networks_CVPR_2022_paper.html">EG3D</a>：利用StyleGAN生成三个正交的2D特征平面，并组成整个三维特征空间；上采样生成高分辨率图片，双判别器结构保证多视角一致性。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08985">StyleNeRF</a>：交互级的高分辨率新视角合成，并且保留较高的视角一致性。使用更好的上采样策略，正则化损失函数。</p>
+</li>
+<li><p>GRAM：学习空间中的多个2D曲面表示整个空间中的颜色场和密度场，实现3D感知的虚拟内容生成。</p>
+</li>
+<li><p>StyleSDF：Signed Distance Field(SDF) + 2D风格化生成器，SDF编码器生成低分辨率特征图，体渲染生成视角一致的高分辨率（1024*1024）图片。</p>
+</li>
+<li><p>3DMM：网格模型，更精确的可控的3D生成。</p>
+</li>
+</ul>
+
+             
+        </div>
+        
+            <p itemprop="keywords" class="tags">
+                
+                    <a href="/tags/CV/"> CV </a>
+                
+            </p>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/06/20/Learning-SuperCollider/">Learning SuperCollider &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
+            <footer id="footer" role="contentinfo">
+    
+        &copy; 2022 - 2023
+        <br />
+    
+    
+    <br />
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_value_site_pv">......</span> visits ·
+        <span id="busuanzi_value_site_uv">......</span> visitors 
+    
+</footer>
+          </div>
+        </div>
+      </main>
+      <!-- highlight support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
+ 
+<script>
+        hljs.initHighlightingOnLoad();
+</script>
+ 
+<!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
+ 
+<!-- mathjax support -->
+
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- fancybox support -->
+ 
+<!-- viewerjs support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.js"></script>
+
+<script type="text/javascript">
+    Viewer.setDefaults({
+        zoomRatio: [0.5],
+        show: function () {
+            this.viewer.zoomTo(1);
+        },
+    });
+    
+    var imageList = document.querySelector('.post-content').getElementsByTagName('img');
+    
+    var imageArray = new Array();
+    Array.prototype.forEach.call(imageList, element => {
+        if (element.alt != "no-view" && element.className != "no-view") {
+            imageArray.push(element);
+        }
+    });
+    
+    Array.prototype.forEach.call(imageArray, element => {
+        var viewer1 = new Viewer(element);
+        viewer1.images = imageArray;
+        viewer1.length = imageArray.length;
+    });
+</script>
+ 
+<!-- google analytics support -->
+
+
+
+ 
+ 
+
+<!-- lazyload support -->
+
+    
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
+
+<script>
+    new LazyLoad({
+        elements_selector: '.post-content img'
+    });
+</script>
+ 
+  </body>
+
+</html>

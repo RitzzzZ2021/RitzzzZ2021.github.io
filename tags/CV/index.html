@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Generative Models - RitzzzZ 
+        Tag: CV - RitzzzZ 
     </title>
      
     
@@ -93,89 +93,70 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
-        <div class="post-title">
-            <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/05/25/Generative-Models/">
-                    Generative Models
-                </a>
-            </h1>
-        </div>
-        <ul class="post-meta post-meta-atpage">
-            <li class="post-time">
-                2023-05-25
-            </li>
-            <li>
-                <div class="article-category">
-                    
-                </div>
-            </li>
-        </ul>
-        <div class="post-content" itemprop="articleBody">
-            <blockquote>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.15663">Deep Generative Models on 3D Representations: A Survey</a></p>
-</blockquote>
-<p>我们期望理想的三维表示能够具备足够的能力来详细建模形状和外观，并且具备高效性，以便能够快速模拟高分辨率数据并且在内存成本低的情况下实现。然而，现有的三维表示，例如点云、网格和最近的神经场，通常无法同时满足上述要求。</p>
-<p>变分自编码器（VAEs）、自回归模型（ARs）、归一化流（NFs）、生成对抗网络（GANs）和最近的扩散概率模型（DPMs）都能够将潜变量转换为高质量的图像。</p>
-<p>在2D生成和3D生成之间的一个关键区别是数据格式。具体而言，2D图像可以自然地表示为像素值的数组，可以方便地通过神经网络进行处理。相反，有许多3D表示方法可以描述3D实例，例如点云（point cloud），网格（mesh），体素网格（voxel grid），多平面图像（multi-plane images），隐式神经表示（implicit neural representations）等。每种表示方法都有其优势和局限性。例如，网格可以紧凑地表示3D形状，但由于不规则的数据结构，很难通过神经网络进行分析和生成。相比之下，体素网格在3D空间中有规律地定位，并且与标准卷积神经网络配合效果良好，但体素网格在内存消耗方面较大，并且难以表示高分辨率的3D场景。选择适当的表示方法对于3D内容生成至关重要。</p>
-<h2 id="GAN相关重要工作"><a href="#GAN相关重要工作" class="headerlink" title="GAN相关重要工作"></a>GAN相关重要工作</h2><ul>
-<li><p>GAN</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1812.04948v3">StyleGAN</a>：新的生成器架构，对生成图像中的高层属性（例如人脸训练时的姿势和身份）和随机变异的自动学习、无监督分离（例如雀斑、头发）。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/9792208">GAN inversion</a>：连接真实图像和虚假图像——将给定的图像逆向映射回预训练GAN模型的潜空间，从而可以通过生成器从逆向编码中忠实地重构图像。在图像恢复和图像操作中得到广泛应用。</p>
-</li>
-</ul>
-<h2 id="神经辐射场"><a href="#神经辐射场" class="headerlink" title="神经辐射场"></a>神经辐射场</h2><ul>
-<li>NeRF</li>
-</ul>
-<h2 id="Generative-Radiance-Fields"><a href="#Generative-Radiance-Fields" class="headerlink" title="Generative Radiance Fields"></a>Generative Radiance Fields</h2><ul>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384521486">NeRF -&gt; GRAF -&gt; GIRAFFE</a></p>
-</li>
-<li><p>GIRAFFE HD：GIRAFFE图像分辨率较低。GIRAFFE HD引入StyleGAN encoder，上采样生成高分辨率图片，对场景的形状和外观解耦。关键思想是利用基于风格的神经渲染器，独立生成前景和背景，强制它们解耦，并通过施加一致性约束将它们拼接在一起以生成一张连贯的最终图像。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/html/Chan_Efficient_Geometry-Aware_3D_Generative_Adversarial_Networks_CVPR_2022_paper.html">EG3D</a>：利用StyleGAN生成三个正交的2D特征平面，并组成整个三维特征空间；上采样生成高分辨率图片，双判别器结构保证多视角一致性。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08985">StyleNeRF</a>：交互级的高分辨率新视角合成，并且保留较高的视角一致性。使用更好的上采样策略，正则化损失函数。</p>
-</li>
-<li><p>GRAM：学习空间中的多个2D曲面表示整个空间中的颜色场和密度场，实现3D感知的虚拟内容生成。</p>
-</li>
-<li><p>StyleSDF：Signed Distance Field(SDF) + 2D风格化生成器，SDF编码器生成低分辨率特征图，体渲染生成视角一致的高分辨率（1024*1024）图片。</p>
-</li>
-<li><p>3DMM：网格模型，更精确的可控的3D生成。</p>
-</li>
-</ul>
+   
+   
+    <h3 class="archive-title">
+        Tags: CV 
+    </h3>
+   
+    
+    
+      
+      
+          
+          <div class="post post-atmain archive-model">
+            <h2 class="archive-month">
+              2023.06
+            </h2>
+          </div>
+      
+      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <h2 class="archive-title" itemprop="name headline">
+          <a itemprop="url" href="/2023/06/22/Generative-Models/">
+            <time class="archive-time" itemprop="datePublished">
+              06.22
+            </time>
+            · Generative Models
+          </a>
+        </h2>
+      </article>
+    
+      
+      
+          
+          <div class="post post-atmain archive-model">
+            <h2 class="archive-month">
+              2023.05
+            </h2>
+          </div>
+      
+      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <h2 class="archive-title" itemprop="name headline">
+          <a itemprop="url" href="/2023/05/29/GIRAFFE%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+            <time class="archive-time" itemprop="datePublished">
+              05.29
+            </time>
+            · GIRAFFE阅读笔记
+          </a>
+        </h2>
+      </article>
+    
+      
+      
+      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <h2 class="archive-title" itemprop="name headline">
+          <a itemprop="url" href="/2023/05/26/DragGAN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+            <time class="archive-time" itemprop="datePublished">
+              05.26
+            </time>
+            · DragGAN阅读笔记
+          </a>
+        </h2>
+      </article>
+    
+</div>
 
              
-        </div>
-        
-            <p itemprop="keywords" class="tags">
-                
-                    <a href="/tags/NeRF/"> NeRF </a>
-                
-            </p>
-        
-    </article>
-    <div class="post-near">
-    <div class="post-near-child post-near-child-left "> 
-        
-            <a href="/2023/05/24/NeRF%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">NeRF相关论文阅读 &laquo; </a>
-        
-        <br /> Prev  &laquo;
-    </div>
-    <div class="post-near-child post-near-child-right">
-        
-            <a href="/2023/05/26/DragGAN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"> &raquo; DragGAN阅读笔记</a>
-        
-        <br /> &raquo; Next 
-    </div>
-</div>
-</div>
-             
-<div id="comments">
-     
-</div>
- 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023
