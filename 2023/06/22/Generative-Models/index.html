@@ -121,6 +121,7 @@
 <h2 id="二、深度生成模型"><a href="#二、深度生成模型" class="headerlink" title="二、深度生成模型"></a>二、深度生成模型</h2><p>生成模型旨在以<strong>无监督</strong>的方式学习实际数据分布，通过尽可能逼真地生成数据来捕捉更多细节并展现更多创造力。生成模型首先需要总结输入数据的分布，然后利用这些总结信息在给定的数据分布中创建或合成样本。</p>
 <p>生成模型可以分为两个主要类别。一类是<strong>基于似然的模型(likelihood-based models)</strong>，包括变分自动编码器（VAEs）、归一化流（N-Flows）、扩散模型（DDPMs）以及能量模型（EBMs），这些模型通过最大化给定数据的似然来进行学习。另一类是<strong>无似然模型(likelihood-free models)</strong>，包括生成对抗网络（GANs），它们基于一个双方零和博弈来寻找纳什均衡点。</p>
 <p><img src="Untitled.png" alt="models"></p>
+<p><img src="Untitled2.png" alt="models"></p>
 <h3 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h3><p>生成对抗网络（Generative Adversarial Networks，简称GANs）在数据合成方面表现出色。GAN由两个独立的网络组成：生成器G(·)以从先验分布z ∼ pz中采样得到的潜在编码作为输入来创建数据，判别器D(·)旨在区分真实数据x ∼ px和合成数据G(z)。在训练过程中，G(·)需要尽可能逼真地合成数据，以欺骗D(·)使其认为这些样本是真实的，而D(·)则被训练成将G(·)合成的样本标记为假的，将训练样本x标记为真的。这两个网络相互竞争，并可以被形式化为一个最小最大博弈（零和博弈）。它们通过联合优化来进行训练。</p>
 <script type="math/tex; mode=display">
 L_D=-\Bbb{E}_{x\sim p_x}[log(D(x))]-\Bbb{E}_{z\sim p_z}[log(1-D(G(z)))],\\
@@ -130,7 +131,7 @@ L_G=-\Bbb{E}_{z\sim p_z}[log(D(G(z)))].</script><p>随着深度学习的兴起�
 <li>由于优化双方博弈的难度很大，GAN在稳定训练网络方面存在困难，导致更容易出现不收敛的情况。</li>
 <li>GAN还面临着模式崩溃的问题，即生成器将多个不同的潜在编码映射到相同的输出上。</li>
 </ul>
-<h3 id="VAE"><a href="#VAE" class="headerlink" title="VAE"></a>VAE</h3><p>变分自编码器（Variational Autoencoders，VAEs）是一种深度潜变量模型（Deep Latent Variable Models，DLVMs），通过神经网络对数据分布x∼pθ进行参数化，引入潜在变量z，并给出一个先验分布z∼pz。DLVMs的参数θ很难进行微分和优化，因为我们想要最大化的似然函数pθ(x) = pθ(x|z)pz(z)dz是难以计算的。而变分自编码器通过对难以计算的后验进行有效近似，将其转化为一个可解的问题。具体来说，通过使用前馈模型对后验分布qφ(z|x)进行参数化，并通过最小化自身与先验分布pθ(z|x)之间的KL散度来进行优化</p>
+<h3 id="VAE"><a href="#VAE" class="headerlink" title="VAE"></a>VAE</h3><p>变分自编码器（Variational Autoencoders，VAEs）是一种深度潜变量模型（Deep Latent Variable Models，DLVMs），通过神经网络对数据分布$x\sim p_\theta$进行参数化，引入潜在变量$z$，并给出一个先验分布$z\sim p_z$。DLVMs的参数$\theta$很难进行微分和优化，因为我们想要最大化的似然函数$p_\theta(x) = p_\theta(x|z)p_z(z)dz$是难以计算的。而变分自编码器通过对难以计算的后验进行有效近似，将其转化为一个可解的问题。具体来说，通过使用前馈模型对后验分布qφ(z|x)进行参数化，并通过最小化自身与先验分布$p_\theta(z|x)$之间的<a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/95687720?source_id=1005">KL散度</a>来进行优化：</p>
 <script type="math/tex; mode=display">
 L_{VAE}=-D_{KL}(q_{\phi}(z|x)||p_\theta(z))+\Bbb{E}_{z \sim q_{\phi (z|x)}}log(p_\theta(z|x))</script><p>被称为证据下界（ELBO）。由于$q_\phi (z|x)$的前馈模式，推断新样本的效率很高。并且，由于重构损失函数的存在，训练过程是稳定的。</p>
 <p>缺点：</p>
@@ -150,7 +151,7 @@ logp(z_N)=logp(z_0)-\sum_1^Nlog|\frac{df_i}{dz_{i-1}}|.</script><p>其中，由$
 <ul>
 <li>归一化流在平衡参数化模型的容量和效率方面存在困难。</li>
 </ul>
-<h3 id="Diffusion-Models"><a href="#Diffusion-Models" class="headerlink" title="Diffusion Models"></a>Diffusion Models</h3><p>扩散模型（Diffusion models）由一个马尔可夫链参数化，该链通过噪声调度（噪声逐渐增加）$\beta_{1:T}$将输入数据$x_0$进行处理，其中$T$表示时间步数。理论上，当$T \to ∞$时，$x_T$成为一个正态高斯分布。</p>
+<h3 id="Diffusion-Models"><a href="#Diffusion-Models" class="headerlink" title="Diffusion Models"></a>Diffusion Models</h3><p>扩散模型（Diffusion models）由一个<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/448575579">马尔可夫链</a>参数化，该链通过噪声调度（噪声逐渐增加）$\beta_{1:T}$将输入数据$x_0$进行处理，其中$T$表示时间步数。理论上，当$T \to ∞$时，$x_T$成为一个正态高斯分布。</p>
 <script type="math/tex; mode=display">
 q(x_t|x_{t-1})=N(x_t;\sqrt{1-\beta_t}x_{t-1},\beta_t I),\\
 q(x_{1:T}|x_0)=\prod_{t=1}^Tq(x_t|x_{t-1}).</script><p>通过学习扩散过程的反向过程，通过建模从噪声到数据的转换$q(x_{t−1}|x_t)$来重构输入。然而，后验推断$q(x_{t−1}|x_t)$也是不可计算的，因此使用参数化模型$p_\theta$来模拟条件转换概率，通过优化类似于VAE的ELBO。由于不可计算的长马尔可夫链，扩散模型可以合成高质量的数据，并以稳定的方式进行训练。</p>
@@ -158,6 +159,7 @@ q(x_{1:T}|x_0)=\prod_{t=1}^Tq(x_t|x_{t-1}).</script><p>通过学习扩散过程�
 <ul>
 <li>推断新样本的成本较高，采样过程比GAN和VAE更慢。</li>
 </ul>
+<p>更详细的Diffusion Models介绍可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/532402983">这里</a>。</p>
 <h3 id="Energy-based-model"><a href="#Energy-based-model" class="headerlink" title="Energy-based model"></a>Energy-based model</h3><p>能量基模型（Energy-based models）利用能量函数（energy function）来显式地建模数据的概率分布。它建立在一个基本思想之上，即任何概率函数都可以通过将其体积除以某个常数来转化为能量函数：</p>
 <script type="math/tex; mode=display">
 p(x)=\frac{exp(-E_\theta(x))}{\int_x exp(-E_\theta(x))},</script><p>其中$-E_\theta(x)$是能量函数。显然高似然的数据点有较低的能量，低似然的数据点有较高的能量。然而，由于计算高维数据的$\int_x exp(−E(x))$是困难的，优化似然函数是棘手的。为了缓解优化难题，对比散度（contrastive divergence）被提出，通过比较$p(x)$上的似然梯度和从能量分布$q_\theta (x)$中随机采样的数据的似然梯度来进行优化：</p>
