@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        archive: 2023 - RitzzzZ 
+        Numerical Optimization - RitzzzZ 
     </title>
      
     
@@ -93,122 +93,79 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-   
-   
-    
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.05
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/05/29/GIRAFFE%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
-            <time class="archive-time" itemprop="datePublished">
-              05.29
-            </time>
-            · GIRAFFE阅读笔记
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/05/26/DragGAN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
-            <time class="archive-time" itemprop="datePublished">
-              05.26
-            </time>
-            · DragGAN阅读笔记
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/05/24/NeRF%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">
-            <time class="archive-time" itemprop="datePublished">
-              05.24
-            </time>
-            · NeRF相关论文阅读
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.04
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/19/Image-Primitives-and-Correspondence/">
-            <time class="archive-time" itemprop="datePublished">
-              04.19
-            </time>
-            · Image Primitives and Correspondence
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/18/Image-Formation/">
-            <time class="archive-time" itemprop="datePublished">
-              04.18
-            </time>
-            · Image Formation
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/12/Representation-of-a-Three-Dimensional-Moving-Scene/">
-            <time class="archive-time" itemprop="datePublished">
-              04.12
-            </time>
-            · Representation of a Three-Dimensional Moving Scene
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/04/11/Introduction-An-Invitation-to-3-D-Vision/">
-            <time class="archive-time" itemprop="datePublished">
-              04.11
-            </time>
-            · Introduction - An Invitation to 3-D Vision
-          </a>
-        </h2>
-      </article>
-    
-</div>
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/07/04/Numerical-Optimization/">
+                    Numerical Optimization
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-07-04
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <h2 id="Chapter-1"><a href="#Chapter-1" class="headerlink" title="Chapter 1"></a>Chapter 1</h2><ul>
+<li><p>连续vs离散：离散优化问题需要考虑<strong>完整性约束</strong>，未知的参数$x$取自有限（通常非常大）的集合，具有非凸性（任何两个可行点的凸组合不一定可行）；连续优化问题更容易解决，因为函数具有光滑性，可行集一般是不可数无限集。</p>
+</li>
+<li><p>有约束vs无约束：当目标函数和约束条件都是线性函数时，问题被称为线性规划问题。</p>
+</li>
+<li><p>全局vs局部：在凸规划（包含线性规划）中，局部解就是全局解。</p>
+</li>
+<li><p>随机vs确定：随机优化会用不确定性的概率来优化模型的预期表现。</p>
+</li>
+</ul>
+<h3 id="凸性"><a href="#凸性" class="headerlink" title="凸性"></a>凸性</h3><ul>
+<li><p>凸集：凸集中任意两点连线上的每一点都属于这个集合，e.g. 单位球，多面体（用线性等式与不等式就可以定义）。</p>
+</li>
+<li><p>凸函数：函数域是凸集，并且对于任何两点$x, y\in S$, 下面的性质成立</p>
+<script type="math/tex; mode=display">
+  f(\alpha x+(1-\alpha)y) \leq \alpha f(x)+(1-\alpha)f(y), \forall \alpha \in [0,1].</script><p>  e.g. $f(x)=c^Tx+\alpha, f(x)=x^THx$，其中$H$是对称半定正矩阵.</p>
+<p>  如果当$x \neq y,\forall \alpha \in (0,1)$时，不等式严格成立，则$f$是严格凸函数。如果$-f$是凸的，则$f$是凹的。</p>
+</li>
+<li><p>凸规划：满足下面条件的优化问题</p>
+<ol>
+<li><p>目标函数是凸函数，</p>
+</li>
+<li><p>等式约束是线性函数，</p>
+</li>
+<li><p>不等式约束是凹的。</p>
+</li>
+</ol>
+</li>
+</ul>
 
-    <ol class="page-navigator">
-      <a class="extend prev" rel="prev" href="/archives/2023/">«</a><a class="page-number" href="/archives/2023/">1</a><span class="page-number current">2</span>
-    </ol>
-  
              
+        </div>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/07/03/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/">深度学习模型压缩 &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023
