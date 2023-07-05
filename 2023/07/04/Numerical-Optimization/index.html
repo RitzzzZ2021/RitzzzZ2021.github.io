@@ -112,7 +112,10 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="Chapter-1"><a href="#Chapter-1" class="headerlink" title="Chapter 1"></a>Chapter 1</h2><ul>
+            <blockquote>
+<p>Notes for Numerical Optimization 2nd, Jorge Nocedal, Stephen J. Wright</p>
+</blockquote>
+<h2 id="Chapter-1-简介"><a href="#Chapter-1-简介" class="headerlink" title="Chapter 1 简介"></a>Chapter 1 简介</h2><ul>
 <li><p>连续vs离散：离散优化问题需要考虑<strong>完整性约束</strong>，未知的参数$x$取自有限（通常非常大）的集合，具有非凸性（任何两个可行点的凸组合不一定可行）；连续优化问题更容易解决，因为函数具有光滑性，可行集一般是不可数无限集。</p>
 </li>
 <li><p>有约束vs无约束：当目标函数和约束条件都是线性函数时，问题被称为线性规划问题。</p>
@@ -127,7 +130,7 @@
 </li>
 <li><p>凸函数：函数域是凸集，并且对于任何两点$x, y\in S$, 下面的性质成立</p>
 <script type="math/tex; mode=display">
-  f(\alpha x+(1-\alpha)y) \leq \alpha f(x)+(1-\alpha)f(y), \forall \alpha \in [0,1].</script><p>  e.g. $f(x)=c^Tx+\alpha, f(x)=x^THx$，其中$H$是对称半定正矩阵.</p>
+  f(\alpha x+(1-\alpha)y) \leq \alpha f(x)+(1-\alpha)f(y), \forall \alpha \in [0,1].</script><p>  e.g. $f(x)=c^Tx+\alpha, f(x)=x^THx$，其中$H$是对称半正定矩阵.</p>
 <p>  如果当$x \neq y,\forall \alpha \in (0,1)$时，不等式严格成立，则$f$是严格凸函数。如果$-f$是凸的，则$f$是凹的。</p>
 </li>
 <li><p>凸规划：满足下面条件的优化问题</p>
@@ -141,6 +144,16 @@
 </ol>
 </li>
 </ul>
+<h3 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h3><p>优化算法是迭代的，从一个初始值开始，通过一系列改进，直到终止。</p>
+<p>好的优化算法：robustness, efficiency, accuracy. 这些目标可能是矛盾的：</p>
+<ul>
+<li><p>收敛速度和内存需求之间的矛盾</p>
+</li>
+<li><p>鲁棒性和速度之间的矛盾 </p>
+</li>
+</ul>
+<h2 id="Chapter-2-无约束优化"><a href="#Chapter-2-无约束优化" class="headerlink" title="Chapter 2 无约束优化"></a>Chapter 2 无约束优化</h2><h3 id="什么是解？"><a href="#什么是解？" class="headerlink" title="什么是解？"></a>什么是解？</h3><h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>线性搜索</p>
+<p>信赖域</p>
 
              
         </div>
