@@ -144,7 +144,13 @@
 </ol>
 </li>
 </ul>
-<h3 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h3><p>优化算法是迭代的，从一个初始值开始，通过一系列改进，直到终止。</p>
+<h3 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h3><p>优化算法是迭代的，从一个初始值开始，通过一系列改进，直到终止。终止的两种情况：</p>
+<ol>
+<li><p>不能做出更多改进；</p>
+</li>
+<li><p>近似求得一个足够准确的解.</p>
+</li>
+</ol>
 <p>好的优化算法：robustness, efficiency, accuracy. 这些目标可能是矛盾的：</p>
 <ul>
 <li><p>收敛速度和内存需求之间的矛盾</p>
@@ -152,8 +158,25 @@
 <li><p>鲁棒性和速度之间的矛盾 </p>
 </li>
 </ul>
-<h2 id="Chapter-2-无约束优化"><a href="#Chapter-2-无约束优化" class="headerlink" title="Chapter 2 无约束优化"></a>Chapter 2 无约束优化</h2><h3 id="什么是解？"><a href="#什么是解？" class="headerlink" title="什么是解？"></a>什么是解？</h3><h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>线性搜索</p>
-<p>信赖域</p>
+<h2 id="Chapter-2-无约束优化"><a href="#Chapter-2-无约束优化" class="headerlink" title="Chapter 2 无约束优化"></a>Chapter 2 无约束优化</h2><h3 id="什么是解？"><a href="#什么是解？" class="headerlink" title="什么是解？"></a>什么是解？</h3><p>全局最小：在所有$x$中，$f(x^*)\leq f(x)$.</p>
+<p>局部最小：在$x^*$的邻域中，$f(x^*) \leq f(x)$.</p>
+<p>孤立局部最小：如果存在一个$x^*$的邻域，使得$x^*$是唯一的局部最小。</p>
+<p><strong>一阶必要条件</strong></p>
+<p>如果$x^*$是局部最小点，$f$在$x^*$的某个开邻域上连续可导，那么$\nabla f(x^*)=0$.</p>
+<p>对于满足$\nabla f(x^*)=0$的点$x^*$，我们称为驻点。</p>
+<p><strong>二阶必要条件</strong></p>
+<p>如果$x^*$是局部最小点，并且$f$在$x^*$的某个开邻域上的二阶导存在并且连续（即光滑），那么$\nabla f(x^*)=0$，并且$\nabla^2 f(x^*)$半正定.</p>
+<p>对于任何$p \neq 0$，如果矩阵$B$满足$p^TBp &gt; 0$，我们称$B$正定；$p^TBp \geq 0$，我们称$B$半正定。</p>
+<p><strong>二阶充分条件</strong></p>
+<p>如果$f$在$x^*$的某个开邻域上的二阶导连续，并且$\nabla f(x^*)=0$，$\nabla^2 f(x^*)$正定，那么$x^*$是$f$的严格局部最小点.</p>
+<p><strong>定理</strong></p>
+<p>如果$f$是凸的，任何局部最小点$x^*$是全局最小点。在此之上，如果$f$可微，那么任何驻点$x^*$是全局最小点。</p>
+<h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><ul>
+<li><p>线性搜索：选择某个方向，从当前迭代值出发，在这个方向上找到一个使得函数值更小的新的迭代值。步长可以用一维最小化方法来近似求解。</p>
+</li>
+<li><p>信赖域：</p>
+</li>
+</ul>
 
              
         </div>
