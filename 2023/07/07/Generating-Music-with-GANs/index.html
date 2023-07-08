@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Numerical Optimization - RitzzzZ 
+        Generating Music with GANs - RitzzzZ 
     </title>
      
     
@@ -96,14 +96,14 @@
     <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/07/04/Numerical-Optimization/">
-                    Numerical Optimization
+                <a itemprop="url" href="/2023/07/07/Generating-Music-with-GANs/">
+                    Generating Music with GANs
                 </a>
             </h1>
         </div>
         <ul class="post-meta post-meta-atpage">
             <li class="post-time">
-                2023-07-04
+                2023-07-07
             </li>
             <li>
                 <div class="article-category">
@@ -113,71 +113,61 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>Notes for Numerical Optimization 2nd, Jorge Nocedal, Stephen J. Wright</p>
+<p>Notes for tutorial “<a target="_blank" rel="noopener" href="https://salu133445.github.io/ismir2019tutorial/">Generating Music with GANs—An Overview and Case Studies</a>” at ISMIR 2019</p>
 </blockquote>
-<h2 id="Chapter-1-简介"><a href="#Chapter-1-简介" class="headerlink" title="Chapter 1 简介"></a>Chapter 1 简介</h2><ul>
-<li><p>连续vs离散：离散优化问题需要考虑<strong>完整性约束</strong>，未知的参数$x$取自有限（通常非常大）的集合，具有非凸性（任何两个可行点的凸组合不一定可行）；连续优化问题更容易解决，因为函数具有光滑性，可行集一般是不可数无限集。</p>
-</li>
-<li><p>有约束vs无约束：当目标函数和约束条件都是线性函数时，问题被称为线性规划问题。</p>
-</li>
-<li><p>全局vs局部：在凸规划（包含线性规划）中，局部解就是全局解。</p>
-</li>
-<li><p>随机vs确定：随机优化会用不确定性的概率来优化模型的预期表现。</p>
-</li>
+<h2 id="Overview-of-music-generation-research"><a href="#Overview-of-music-generation-research" class="headerlink" title="Overview of music generation research"></a>Overview of music generation research</h2><h3 id="音乐制作角度"><a href="#音乐制作角度" class="headerlink" title="音乐制作角度"></a>音乐制作角度</h3><ul>
+<li>作曲（songwriting）：旋律，和弦，歌词</li>
+<li>编曲（arranging）：器乐，结构</li>
+<li>混音（mixing）：音色，平衡</li>
 </ul>
-<h3 id="凸性"><a href="#凸性" class="headerlink" title="凸性"></a>凸性</h3><ul>
-<li><p>凸集：凸集中任意两点连线上的每一点都属于这个集合，e.g. 单位球，多面体（用线性等式与不等式就可以定义）。</p>
-</li>
-<li><p>凸函数：函数域是凸集，并且对于任何两点$x, y\in S$, 下面的性质成立</p>
-<script type="math/tex; mode=display">
-  f(\alpha x+(1-\alpha)y) \leq \alpha f(x)+(1-\alpha)f(y), \forall \alpha \in [0,1].</script><p>  e.g. $f(x)=c^Tx+\alpha, f(x)=x^THx$，其中$H$是对称半正定矩阵.</p>
-<p>  如果当$x \neq y,\forall \alpha \in (0,1)$时，不等式严格成立，则$f$是严格凸函数。如果$-f$是凸的，则$f$是凹的。</p>
-</li>
-<li><p>凸规划：满足下面条件的优化问题</p>
-<ol>
-<li><p>目标函数是凸函数，</p>
-</li>
-<li><p>等式约束是线性函数，</p>
-</li>
-<li><p>不等式约束是凹的。</p>
-</li>
-</ol>
-</li>
-</ul>
-<h3 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h3><p>优化算法是迭代的，从一个初始值开始，通过一系列改进，直到终止。终止的两种情况：</p>
-<ol>
-<li><p>不能做出更多改进；</p>
-</li>
-<li><p>近似求得一个足够准确的解.</p>
-</li>
-</ol>
-<p>好的优化算法：robustness, efficiency, accuracy. 这些目标可能是矛盾的：</p>
+<p>音乐人工智能的应用场景：</p>
 <ul>
-<li><p>收敛速度和内存需求之间的矛盾</p>
-</li>
-<li><p>鲁棒性和速度之间的矛盾 </p>
-</li>
+<li>激发音乐人的创作灵感</li>
+<li>让每个人都可以制作音乐</li>
+<li>为视频或游戏生产版权自由的音乐</li>
+<li>音乐教育（比如自动伴奏）</li>
 </ul>
-<h2 id="Chapter-2-无约束优化"><a href="#Chapter-2-无约束优化" class="headerlink" title="Chapter 2 无约束优化"></a>Chapter 2 无约束优化</h2><h3 id="什么是解？"><a href="#什么是解？" class="headerlink" title="什么是解？"></a>什么是解？</h3><p>全局最小：在所有$x$中，$f(x^*)\leq f(x)$.</p>
-<p>局部最小：在$x^*$的邻域中，$f(x^*) \leq f(x)$.</p>
-<p>孤立局部最小：如果存在一个$x^*$的邻域，使得$x^*$是唯一的局部最小。</p>
-<p><strong>一阶必要条件</strong></p>
-<p>如果$x^*$是局部最小点，$f$在$x^*$的某个开邻域上连续可导，那么$\nabla f(x^*)=0$.</p>
-<p>对于满足$\nabla f(x^*)=0$的点$x^*$，我们称为驻点。</p>
-<p><strong>二阶必要条件</strong></p>
-<p>如果$x^*$是局部最小点，并且$f$在$x^*$的某个开邻域上的二阶导存在并且连续（即光滑），那么$\nabla f(x^*)=0$，并且$\nabla^2 f(x^*)$半正定.</p>
-<p>对于任何$p \neq 0$，如果矩阵$B$满足$p^TBp &gt; 0$，我们称$B$正定；$p^TBp \geq 0$，我们称$B$半正定。</p>
-<p><strong>二阶充分条件</strong></p>
-<p>如果$f$在$x^*$的某个开邻域上的二阶导连续，并且$\nabla f(x^*)=0$，$\nabla^2 f(x^*)$正定，那么$x^*$是$f$的严格局部最小点.</p>
-<p><strong>定理</strong></p>
-<p>如果$f$是凸的，任何局部最小点$x^*$是全局最小点。在此之上，如果$f$可微，那么任何驻点$x^*$是全局最小点。</p>
-<h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><ul>
-<li><p>线性搜索：选择某个方向，从当前迭代值出发，在这个方向上找到一个使得函数值更小的新的迭代值。步长可以用一维最小化方法来近似求解。</p>
-</li>
-<li><p>信赖域：</p>
-</li>
+<p>相关公司：参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/556608208">这篇文章</a></p>
+<h3 id="深度学习的角度"><a href="#深度学习的角度" class="headerlink" title="深度学习的角度"></a>深度学习的角度</h3><ul>
+<li>输入表示</li>
+<li>模型<ul>
+<li>基于规则的方法</li>
+<li>基于连接的方法</li>
+<li>基于机器学习的方法：VAE，GAN</li>
 </ul>
-
+</li>
+<li>输出表示</li>
+</ul>
+<p>输入/输出表示</p>
+<ul>
+<li>符号输出：<strong>钢琴卷</strong>（类似图像），MIDI（类似文本），乐谱（混合）</li>
+<li>音频输出：<strong>频谱</strong>（类似图像），波形</li>
+</ul>
+<h3 id="scope"><a href="#scope" class="headerlink" title="scope"></a>scope</h3><ul>
+<li>从头开始生成：由某个输入得到旋律，钢琴卷或音频</li>
+<li>条件生成：由旋律得到钢琴卷（伴奏），由钢琴卷得到音频（合成），由钢琴卷A得到钢琴卷B（重新编曲），由音频A得到音频B</li>
+</ul>
+<p>一些重要的工作：</p>
+<ol>
+<li>Symbolic melody generation: MidiNet [1], SSMGAN [2]</li>
+<li>Arrangement generation: MuseGAN [3], BinaryMuseGAN [4], LeadSheetGAN [5]</li>
+<li>Style transfer: CycleGAN [6], TimbreTron [7], Play-as-you-like [8], CycleBEGAN [9]</li>
+<li>Audio generation: WaveGAN [10], GANSynth [11]</li>
+</ol>
+<p>&gt;<br>[1] “MidiNet: A convolutional GAN for symbolic-domain music generation,” ISMIR 2017<br>[2] “Modeling self-repetition in music generation using structured adversaries,” ML4MD 2019<br>[3] “MuseGAN: Multi-track sequential GANs for symbolic music generation and accompaniment,” AAAI 2018<br>[4] “Convolutional GANs with binary neurons for polyphonic music generation,” ISMIR 2018<br>[5] “Lead sheet generation and arrangement by conditional GAN,” ISMIR-LBD 2018<br>[6] “Symbolic music genre transfer with CycleGAN,” ICTAI 2018<br>[7] “TimbreTron: A WaveNet(CycleGAN(CQT(Audio))) pipeline for musical timbre transfer,” ICLR 2019<br>[8] “Play as You Like: Timbre-enhanced multi-modal music style transfer,” AAAI 2019<br>[9] “Singing style transfer using cycle-consistent boundary equilibrium GANs,” ICML workshop 2018<br>[10] “Adversarial audio synthesis,” ICLR 2019<br>[11] “GANSynth: Adversarial neural audio synthesis,” ICLR 2019  </p>
+<h2 id="Introduction-to-GANs"><a href="#Introduction-to-GANs" class="headerlink" title="Introduction to GANs"></a>Introduction to GANs</h2><p>训练生成模型的损失函数定义为对数损失函数。流向判别器的损失是将真实样本判断为假和将假样本判断为真。流向生成器的损失是被判别器判断为假的样本数，因为我们希望生成的样本尽可能让判别器认为是真的。</p>
+<p><img src="GAN.png" alt="GAN"></p>
+<p>不规范的GANs存在一些问题。关键在于，判别器为生成器提供的梯度指出了改进方向。判别比生成简单，而判别器倾向于提供大的梯度（在图像中体现为明显的颜色变化），导致生成器的训练不够稳定。常见的失败情况有模式损坏（mode collapse，被判断为假的区域中有一块缺失判断），模式缺失（missing modes，被判断为真的区域中有一块缺失判断）。</p>
+<p>规范化的GANs：为生成器提供更光滑的引导，减轻问题。</p>
+<p><a target="_blank" rel="noopener" href="https://colab.research.google.com/github/salu133445/ismir2019tutorial/blob/main/gan.ipynb#scrollTo=716vG6H-ldA7">demo: GAN for images （Google Colab)</a></p>
+<h3 id="GANs-vs-VAEs"><a href="#GANs-vs-VAEs" class="headerlink" title="GANs vs VAEs"></a>GANs vs VAEs</h3><p><img src="GANvsVAE.png" alt="GANs vs VAEs"></p>
+<h3 id="State-of-the-Art"><a href="#State-of-the-Art" class="headerlink" title="State of the Art"></a>State of the Art</h3><p>可以在<a target="_blank" rel="noopener" href="https://github.com/hindupuravinash/the-gan-zoo">这个网站</a>查看各种各样的GANs模型。</p>
+<p><strong>BigGANs</strong>：在潜空间上插值。<a target="_blank" rel="noopener" href="https://colab.research.google.com/github/tensorflow/hub/blob/master/examples/colab/biggan_generation_with_tf_hub.ipynb">demo (Google Colab)</a></p>
+<p><strong>Conditional GAN (CGAN)</strong><br><img src="cgan.png" alt="CGAN"></p>
+<p>关键：对生成器和判别器都输入条件。</p>
+<p><strong>pix2pix</strong>：用逐像素点的损失来监督。</p>
+<p><strong>Cycle-consistent GAN (CycleGAN)</strong>：</p>
+<h2 id="Case-studies-of-GAN-based-systems"><a href="#Case-studies-of-GAN-based-systems" class="headerlink" title="Case studies of GAN-based systems"></a>Case studies of GAN-based systems</h2><h2 id="Current-limitations-amp-Future-research-directions"><a href="#Current-limitations-amp-Future-research-directions" class="headerlink" title="Current limitations &amp; Future research directions"></a>Current limitations &amp; Future research directions</h2>
              
         </div>
         
@@ -185,13 +175,13 @@
     <div class="post-near">
     <div class="post-near-child post-near-child-left "> 
         
-            <a href="/2023/07/03/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/">深度学习模型优化 &laquo; </a>
+            <a href="/2023/07/06/PyTorch/">PyTorch补漏 &laquo; </a>
         
         <br /> Prev  &laquo;
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a href="/2023/07/06/PyTorch/"> &raquo; PyTorch补漏</a>
+            <a>None</a>
         
         <br /> &raquo; Next 
     </div>
