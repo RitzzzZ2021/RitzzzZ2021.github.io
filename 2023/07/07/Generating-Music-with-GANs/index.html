@@ -166,8 +166,21 @@
 <p><strong>Conditional GAN (CGAN)</strong><br><img src="cgan.png" alt="CGAN"></p>
 <p>关键：对生成器和判别器都输入条件。</p>
 <p><strong>pix2pix</strong>：用逐像素点的损失来监督。</p>
-<p><strong>Cycle-consistent GAN (CycleGAN)</strong>：</p>
-<h2 id="Case-studies-of-GAN-based-systems"><a href="#Case-studies-of-GAN-based-systems" class="headerlink" title="Case studies of GAN-based systems"></a>Case studies of GAN-based systems</h2><h2 id="Current-limitations-amp-Future-research-directions"><a href="#Current-limitations-amp-Future-research-directions" class="headerlink" title="Current limitations &amp; Future research directions"></a>Current limitations &amp; Future research directions</h2>
+<p><img src="pix2pix.png" alt="pix2pix"></p>
+<p><strong>Cycle-consistent GAN (CycleGAN)</strong>：用循环一致的损失来监督。用于image-to-image translation（比如风格迁移）。</p>
+<p><img src="cyclegan.png" alt="cyclegan"></p>
+<p>pix2pix和CycleGAN的损失计算如下图：</p>
+<p><img src="cmp.png" alt="cmp"></p>
+<h2 id="Case-studies-of-GAN-based-systems"><a href="#Case-studies-of-GAN-based-systems" class="headerlink" title="Case studies of GAN-based systems"></a>Case studies of GAN-based systems</h2><p>音乐生成的分类：</p>
+<ol>
+<li>符号旋律生成：X-&gt;旋律</li>
+<li>编曲生成：X-&gt;钢琴卷，旋律-&gt;钢琴卷</li>
+<li>风格迁移：钢琴卷A-&gt;钢琴卷B，音频A-&gt;音频B</li>
+<li>音频生成：X-&gt;音频，钢琴卷-&gt;音频</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/wayne391/symbolic-music-datasets">symbolic datasets collection</a></p>
+<h3 id="符号旋律生成"><a href="#符号旋律生成" class="headerlink" title="符号旋律生成"></a>符号旋律生成</h3><p><strong>MidiNet</strong>:</p>
+<h2 id="Current-limitations-amp-Future-research-directions"><a href="#Current-limitations-amp-Future-research-directions" class="headerlink" title="Current limitations &amp; Future research directions"></a>Current limitations &amp; Future research directions</h2>
              
         </div>
         
