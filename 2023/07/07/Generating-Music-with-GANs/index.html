@@ -161,7 +161,7 @@
 <p><img src="GAN.png" alt="GAN"></p>
 <p>不规范的GANs存在一些问题。判别器为生成器提供的梯度指出了改进方向。判别比生成简单，而判别器倾向于提供大梯度（在图像中体现为明显、急剧的颜色变化），导致生成器的训练不够稳定。常见的失败情况有模式损坏（mode collapse，被判断为假的区域中有一块缺失判断），模式缺失（missing modes，被判断为真的区域中有一块缺失判断）。</p>
 <p>规范化的GANs：为生成器提供更光滑的引导，减轻mode collapse和missing modes问题。</p>
-<p><a target="_blank" rel="noopener" href="https://colab.research.google.com/github/salu133445/ismir2019tutorial/blob/main/gan.ipynb#scrollTo=716vG6H-ldA7">demo: GAN for images （Google Colab)</a></p>
+<p><a target="_blank" rel="noopener" href="https://colab.research.google.com/github/salu133445/ismir2019tutorial/blob/main/gan.ipynb#scrollTo=716vG6H-ldA7">demo: GAN for images（Google Colab)</a></p>
 <h3 id="GANs-vs-VAEs"><a href="#GANs-vs-VAEs" class="headerlink" title="GANs vs VAEs"></a>GANs vs VAEs</h3><p><img src="GANvsVAE.png" alt="GANs vs VAEs"></p>
 <h3 id="SOTA方法"><a href="#SOTA方法" class="headerlink" title="SOTA方法"></a>SOTA方法</h3><p>可以在<a target="_blank" rel="noopener" href="https://github.com/hindupuravinash/the-gan-zoo">这个网站</a>查看各种各样的GANs模型。</p>
 <p><strong>BigGANs</strong>：在潜空间上插值。<a target="_blank" rel="noopener" href="https://colab.research.google.com/github/tensorflow/hub/blob/master/examples/colab/biggan_generation_with_tf_hub.ipynb">demo (Google Colab)</a></p>
@@ -184,8 +184,7 @@
 <li>器乐：多个音轨，要考虑乐器的作用</li>
 </ul>
 <p>在真实世界的音乐中，这些元素以非常复杂的方式组织起来。</p>
-<p>钢琴卷</p>
-<p><img src="pianoroll.png" alt="pianoroll"></p>
+<p><strong>钢琴卷</strong><br><img src="pianoroll.png" alt="pianoroll"></p>
 <p>优点：</p>
 <ol>
 <li>非常好的符号化——用节拍来量化</li>
@@ -223,7 +222,23 @@
 </table>
 </div>
 <p><img src="musegan.png" alt="musegan"></p>
-<h2 id="Current-limitations-amp-Future-research-directions"><a href="#Current-limitations-amp-Future-research-directions" class="headerlink" title="Current limitations &amp; Future research directions"></a>Current limitations &amp; Future research directions</h2>
+<p><a target="_blank" rel="noopener" href="https://colab.research.google.com/github/salu133445/ismir2019tutorial/blob/main/musegan.ipynb">demo: GAN for pianorolls (Google Colab)</a></p>
+<p><strong>BinaryMuseGAN</strong>：简单的二值化方法容易导致音符过于碎片化。BinaryMuseGAN的生成器输出层使用二值化神经元，用straight-through estimator估计梯度（使用不可微的操作符）。</p>
+<p><strong>LeadSheetGAN</strong>：分为三步</p>
+<ol>
+<li>用非条件GAN生成时域，小节（称为lead sheet）</li>
+<li>将上一步的输出组合成feature</li>
+<li>将feature作为条件，和潜变量一起输入一个条件GAN，生成每个小节的编曲</li>
+</ol>
+<p><img src="leadsheetgan.png" alt="leadsheetgan"></p>
+<h3 id="风格迁移（Style-transfer）"><a href="#风格迁移（Style-transfer）" class="headerlink" title="风格迁移（Style transfer）"></a>风格迁移（Style transfer）</h3><p>分类：</p>
+<ol>
+<li>作曲风格迁移（保留内容，改变风格）：可以用标准CycleGAN，输入输出使用单轨钢琴卷。</li>
+<li>演奏风格迁移：这方面的工作基本不使用深度学习）</li>
+<li>音色风格迁移：修改过的CycleGAN，输入输出使用4s长度的<a target="_blank" rel="noopener" href="https://iphysresearch.github.io/blog/post/signal_processing/cqt/">CQT</a></li>
+</ol>
+<p><strong>MUNIT</strong>：在CycleGAN基础上加入encoders/decoders，让内容和风格解耦。比起只能一次在两个域上进行转换的CycleGAN，MUNIT可以同时在多个域上进行转换。</p>
+<h2 id="目前局限-amp-未来研究方向"><a href="#目前局限-amp-未来研究方向" class="headerlink" title="目前局限&amp;未来研究方向"></a>目前局限&amp;未来研究方向</h2>
              
         </div>
         
