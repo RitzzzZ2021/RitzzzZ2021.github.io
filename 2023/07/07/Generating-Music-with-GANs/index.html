@@ -140,9 +140,10 @@
 </ul>
 <p>输入/输出表示</p>
 <ul>
-<li>符号输出：<strong>钢琴卷</strong>（类似图像），MIDI（类似文本），乐谱（混合）</li>
-<li>音频输出：<strong>频谱</strong>（类似图像），波形</li>
+<li>离散的符号输出：<strong>钢琴卷</strong>（类似图像），MIDI（类似文本），乐谱（混合）</li>
+<li>连续的音频输出：<strong>频谱</strong>（类似图像），信号波</li>
 </ul>
+<p>这些表示方法的介绍可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/166660784">这里</a>。</p>
 <h3 id="问题分类"><a href="#问题分类" class="headerlink" title="问题分类"></a>问题分类</h3><ul>
 <li>从头开始生成：由某个输入得到旋律，钢琴卷或音频</li>
 <li>条件生成：由旋律得到钢琴卷（伴奏），由钢琴卷得到音频（合成），由钢琴卷A得到钢琴卷B（重新编曲），由音频A得到音频B</li>
@@ -235,9 +236,25 @@
 <ol>
 <li>作曲风格迁移（保留内容，改变风格）：可以用标准CycleGAN，输入输出使用单轨钢琴卷。</li>
 <li>演奏风格迁移：这方面的工作基本不使用深度学习）</li>
-<li>音色风格迁移：修改过的CycleGAN，输入输出使用4s长度的<a target="_blank" rel="noopener" href="https://iphysresearch.github.io/blog/post/signal_processing/cqt/">CQT</a></li>
+<li>音色风格迁移</li>
 </ol>
-<p><strong>MUNIT</strong>：在CycleGAN基础上加入encoders/decoders，让内容和风格解耦。比起只能一次在两个域上进行转换的CycleGAN，MUNIT可以同时在多个域上进行转换。</p>
+<p><strong>Sony CSL Flow Machine</strong>：对音乐风格（genre）进行风格迁移。<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=buXqNqBFd6E">demo</a></p>
+<p><strong>TimbreTron</strong>：通过三个步骤对音色进行风格迁移。</p>
+<ol>
+<li>计算<a target="_blank" rel="noopener" href="https://iphysresearch.github.io/blog/post/signal_processing/cqt/">CQT（Constant Q Transform)</a> 频谱图并将其对数幅度值视为图像（丢弃相位信息）</li>
+<li>使用改进的CycleGAN在对数CQT域中执行音色转换</li>
+<li>使用条件的WaveNet生成器将生成的log-CQT转换为音频（这必须推断出丢失的相位信息）</li>
+</ol>
+<p><img src="timbretron.png" alt="timbretron"></p>
+<p>TimbreTron可以在某些乐器对上成功进行音乐音色转换，同时保留相同的音乐内容（例如，节奏，响度，音调）。CQT表示法是TimbreTron中的关键组成部分，与STFT对应部分相比，它能实现低频的高频率分辨率和高频的高时间分辨率，从而得到更好的转换音质。</p>
+<p><strong>CycleGAN vs MUNIT</strong>：MUNIT (Multimodal unsupervised Image-to-Image Translation) 在CycleGAN基础上加入encoders/decoders，让内容和风格解耦。比起只能一次在两个域上进行转换的CycleGAN，MUNIT可以同时在多个域上进行转换。</p>
+<p><strong>Play-as-you-like</strong>：使用MUNIT进行无监督的音色转换，这一方法的核心是分离出domain invariant（音乐的内容）和domain specific（音乐的音色）的特征，然后通过不同的domain的部分进行转换生成。对每个domain有一个编码器$E$将原始音乐编码为内容$c$和风格$s$，一个生成器$G$根据输入的$c$和$s$生成对应的音乐，还有就是一个域鉴别器$D$，训练时使用Relativistic average GAN（RaGAN）的损失。该方法通过自身的重建、跨域生成鉴别损失、生成后再编码的编码一致性损失学习跨域的转换。由于这个方法中没有使用Cycle Consistency，所以基于上述损失不能保证转换后保留原始的音乐结构。所以该方法设计了一个Intrinsic Consistency Loss，约束转换前后的音乐的一些自相关的频域特征不变（mel-frequency cepstral coefficients (MFCC), spectral difference, and spectral envelope），从而约束音乐的自身结构不变。</p>
+<p><strong>CycleBEGAN</strong>：用BEGAN模型替换GAN，使用skip connections &amp; recurrent layer。skip connections保持了歌声的清晰、自然，recurrent layers提高了各方面，尤其是音高准确性。在男女歌声之间进行transfer。</p>
+<h3 id="音频生成（Audio-generation）"><a href="#音频生成（Audio-generation）" class="headerlink" title="音频生成（Audio generation）"></a>音频生成（Audio generation）</h3><p><strong>SpecGAN</strong>：模型基于DCGAN。将2D卷积平铺成1D（例如，5*5 2D conv变成25 1D conv），步长也相应进行增加（例如，2*2变成步长为4）。DCGAN生成$64\times 64$的图像，SpecGAN再增加一层，生成有16,384个点，即16kHz的频谱。</p>
+<p><strong>GANSynth</strong>：模型基于PGGAN（progressive growing GAN），从低到高逐渐增加分辨率，生成信号波。</p>
+<p><img src="gansynth.png" alt="gansynth"></p>
+<p>训练过程中，在两种不同分辨率的输出之间以权重$\alpha$进行插值，$\alpha$线性地从0增长到1。最终输出的是mel-spectrogram + instantaneous freq (IF)。用 IF 可以推导出相位，然后用inverse STFT可以得到波形。</p>
+<p><img src="gansynth2.png" alt="gansynth2"></p>
 <h2 id="目前局限-amp-未来研究方向"><a href="#目前局限-amp-未来研究方向" class="headerlink" title="目前局限&amp;未来研究方向"></a>目前局限&amp;未来研究方向</h2>
              
         </div>
@@ -252,7 +269,7 @@
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a>None</a>
+            <a href="/2023/07/11/Audiovisual-Music-Performance-Analysis/"> &raquo; Audiovisual Music Performance Analysis</a>
         
         <br /> &raquo; Next 
     </div>
