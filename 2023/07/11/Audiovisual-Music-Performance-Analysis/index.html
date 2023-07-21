@@ -123,10 +123,25 @@
 </ul>
 <h3 id="静态的audiovisual-correspondence"><a href="#静态的audiovisual-correspondence" class="headerlink" title="静态的audiovisual correspondence"></a>静态的audiovisual correspondence</h3><ol>
 <li><p>Play/Nonplay 活动检测</p>
-<p>对 Play/Nonplay 活动进行检测，有助于提高多音高分析和记谱。使用层次聚类：</p>
-<p>a. 对音乐演奏者进行聚类<br>b. 对 Play/Nonplay 活动进行聚类</p>
+<p>对 Play/Nonplay 活动进行检测，有助于提高多音高分析和记谱。</p>
+<p><img src="image.png" alt="P/NP"></p>
+<p>使用层次聚类：</p>
+<p>a. 对音乐演奏者按照演奏乐器的类型进行聚类<br>b. 对 Play/Nonplay 活动进行聚类</p>
 </li>
+<li>Audiovisual 音乐分离<br><img src="image2.png" alt="Alt text"></li>
 </ol>
+<h3 id="动态的audiovisual-correspondence"><a href="#动态的audiovisual-correspondence" class="headerlink" title="动态的audiovisual correspondence"></a>动态的audiovisual correspondence</h3><ol>
+<li><p>Vibrato Analysis （弦乐）</p>
+<p>将左手的rolling motion和音高浮动关联起来。用OpenPose跟踪手的动作，用光流估计（optical flow estimation）更精准地提取动作，用score-informed pitch estimation进行音高估计。</p>
+<p><img src="image4.png" alt="Alt text"></p>
+</li>
+<li><p>动作数据和频谱的协同作用</p>
+</li>
+<li>motion’s sound<br><img src="image3.png" alt="Alt text"></li>
+</ol>
+<h3 id="Audiovisual-Source-Association"><a href="#Audiovisual-Source-Association" class="headerlink" title="Audiovisual Source Association"></a>Audiovisual Source Association</h3><p>将video, audio, score进行匹配。</p>
+<p>用带adaptive weights的线性组合。</p>
+<p><img src="image5.png" alt="Alt text"></p>
 
              
         </div>
