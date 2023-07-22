@@ -113,7 +113,7 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>Notes for tutorial “Audiovisual Music Performance Analysis” (ISMIR 2019)</p>
+<p>Notes for tutorial “Audiovisual Music Performance Analysis” at ISMIR 2019</p>
 </blockquote>
 <h2 id="Audiovisual-Music-Performance-Analysis"><a href="#Audiovisual-Music-Performance-Analysis" class="headerlink" title="Audiovisual Music Performance Analysis"></a>Audiovisual Music Performance Analysis</h2><p>可以将这一类研究问题总结成研究听觉-视觉对应性的问题，大致分为下面三类：</p>
 <ul>
@@ -140,8 +140,68 @@
 <li>motion’s sound<br><img src="image3.png" alt="Alt text"></li>
 </ol>
 <h3 id="Audiovisual-Source-Association"><a href="#Audiovisual-Source-Association" class="headerlink" title="Audiovisual Source Association"></a>Audiovisual Source Association</h3><p>将video, audio, score进行匹配。</p>
-<p>用带adaptive weights的线性组合。</p>
+<ul>
+<li>身体动作和音符起始位置的相互转换（弦乐）：用OpenPose提取身体关节，用PCA检测主要动作，从主要动作中得到音符起始位置的概率曲线。</li>
+<li>手指动作和音符起始位置的相互转换（风笛/管乐）：用OpenPose跟踪手的位置，用光流估计提取motion。</li>
+</ul>
+<p>用带adaptive weights的线性变换将以上方法组合起来：</p>
 <p><img src="image5.png" alt="Alt text"></p>
+<h3 id="分析任务分类"><a href="#分析任务分类" class="headerlink" title="分析任务分类"></a>分析任务分类</h3><ol>
+<li>识别与检测</li>
+<li>关联与分离</li>
+<li>演奏者活动分析</li>
+<li>记谱</li>
+</ol>
+<p>通用的framework：</p>
+<p><img src="image6.png" alt="Alt text"></p>
+<p><strong>如何建模多模态之间的依赖关系？</strong>将子空间联合起来进行学习。$T_i^*,T_a^*=\arg\max\limits_{T_i,T_a} S(T_i(I)T_a(A))$，其中$S$可以是correlation, covariance, mutual information，$T_i, T_a$可以用深度结构建模。</p>
+<h3 id="Co-factorization"><a href="#Co-factorization" class="headerlink" title="Co-factorization"></a>Co-factorization</h3><p>用矩阵分解来解释数据：$V_{(F\times N)} \approx W_{(F\times K)} \times H_{(K\times N)}$.</p>
+<p><img src="image7.png" alt="Alt text"></p>
+<p>解释性更好的模型：非负矩阵分解（Nonnegative Matrix Factorisation, NMF）</p>
+<p><img src="image8.png" alt="Alt text"></p>
+<p>将多模态的特征结合的方法：</p>
+<ol>
+<li>连接feature矩阵：对不同模态使用同一个损失函数，并不总能达到最优<script type="math/tex; mode=display">
+V=\begin{bmatrix}V_1\\V_2\end{bmatrix} \approx WH</script></li>
+<li>hard co-factorisation：施加约束使得activations相同，但不能解释跨模态的局部差异，另外，在audio和visual上的temporal activations理论上相近，而不必完全相同<script type="math/tex; mode=display">
+V_1 \approx W_1H,V_2\approx W_2H \\
+\min \limits_{W_1, W_2,H}D_1(V_1,W_1H)+\beta_2D_2(V_2,W_2H)</script></li>
+<li><p><a target="_blank" rel="noopener" href="http://www.telecom-paristech.fr/~essid">soft co-factorisation</a>：$D_1,D_2$分别是两个模态的相似度度量，$P(H_1,H_2)$是惩罚项，用来耦合分解后的矩阵；用最大-最小算法按顺序更新$H_1,H_2,W_1,W_2,S$</p>
+<ul>
+<li>cost functions: Kullback-Liebler and Itakura-Saito</li>
+<li>penalties: $l_1$ and $l_2$-coupling</li>
+</ul>
+</li>
+</ol>
+<h3 id="Motion-Informed-Audio-Source-Separation"><a href="#Motion-Informed-Audio-Source-Separation" class="headerlink" title="Motion Informed Audio Source Separation"></a>Motion Informed Audio Source Separation</h3><p>动作捕捉：以小提琴为例，将琴身看作平面，在琴弓上放置传感器，获取倾斜度和速度数据。</p>
+<p><img src="image9.png" alt="Alt text"></p>
+<p>模型：soft non-negative matrix co-factorisation的变体</p>
+<p><img src="image10.png" alt="Alt text"></p>
+<p>数据集：Ensemble Expressive Performance dataset (Marchini et al., 2014) 贝多芬的协奏曲弦乐演奏的多模态数据集</p>
+<p>在视频中，source separation面临的困难是，动作的表示不那么直接。</p>
+<ul>
+<li>一种解决方法是在每个演奏者的bounding box中提取motion clusters，用平均速度来表示。</li>
+<li>另一种方法是联合分解音频频谱，用audio activations对cluster velocities做回归。</li>
+<li>但这两种方法都很难解决两个小提琴的case。</li>
+</ul>
+<h2 id="基于audiovisual内容的分类和检索"><a href="#基于audiovisual内容的分类和检索" class="headerlink" title="基于audiovisual内容的分类和检索"></a>基于audiovisual内容的分类和检索</h2><p>motivation - 视觉传达了音乐风格信息</p>
+<h3 id="现有工作"><a href="#现有工作" class="headerlink" title="现有工作"></a>现有工作</h3><ul>
+<li>基于专辑封面和宣传图片，进行风格标注和艺术家相似性计算<ul>
+<li>颜色，材质</li>
+<li>距离计算，最近邻标签向量平均化</li>
+</ul>
+</li>
+<li>基于音乐视频的风格分类<ul>
+<li>音频特征：psychoacoustic music descriptors, MFCCs</li>
+<li>视觉特征：颜色统计值，情绪值，颜色丰富程度，Wang emotional factors，Itten’s contrast，颜色名，亮度变化模式</li>
+<li>分类器：SVM, KNN, random forest, naive Bayes</li>
+</ul>
+</li>
+<li>基于音频，专辑封面和文本的风格分类<ul>
+<li>对音频、视觉和文本表示使用深度神经网络进行学习、融合以及多标签分类</li>
+</ul>
+</li>
+</ul>
 
              
         </div>
@@ -162,7 +222,7 @@
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a>None</a>
+            <a href="/2023/07/22/SSDNeRF-ICCV-2023/"> &raquo; SSDNeRF (ICCV 2023)</a>
         
         <br /> &raquo; Next 
     </div>
