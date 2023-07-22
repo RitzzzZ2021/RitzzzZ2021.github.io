@@ -115,6 +115,8 @@
             <blockquote>
 <p>Notes for <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2304.06714.pdf">“Single-Stage Diffusion NeRF: A Unified Approach to<br>3D Generation and Reconstruction” (ICCV 2023)</a></p>
 </blockquote>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>3D-aware图像合成包括一系列任务，比如场景生成和新视角合成。尽管针对特定任务的方法有很多，建立一个全面的模型仍然具有挑战性。SSDNeRF提出了一种综合的方法，使用扩散模型从多视角的图像中学习一个通用的隐式神经场（NeRF）。作为对比，我们提出了一个端到端的新的训练范式，联合优化NeRF自动解码器和潜扩散模型，使3D重建和预学习同时完成，甚至可以处理稀疏视角。在测试时，我们可以直接采样前扩散，用于非条件生成，或者将它和任意的观察结合起来，用于NeRF重建。相比于其他非条件生成和单/稀疏视角3D重建的针对特定任务的方法，SSDNeRF能得到鲁棒性相当或者更好的结果。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>latent diffusion model (LDM)一般需要两阶段训练，其中第一阶段预训练可变自编码器（VAE）或解码器，没有扩散模型的参与。对于diffusion NeRFs，两阶段训练会把噪声引入潜在编码，尤其是用稀疏视角的数据训练时，因为inverse rendering天然具有不确定性。于是，本文提出了一种新的一步训练范式，支持diffussion和NeRF权重的端到端学习。该方法融合了生成和渲染的偏差，提升了模型表现，允许在稀疏视角数据上训练。另外，学习到的非条件扩散模型的3D先验可以被用于测试时的随机视角场景采样。</p>
 
              
         </div>
