@@ -113,17 +113,21 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>Notes for <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2304.06714.pdf">“Single-Stage Diffusion NeRF: A Unified Approach to<br>3D Generation and Reconstruction” (ICCV 2023)</a></p>
+<p>Notes for <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2304.06714.pdf">“Single-Stage Diffusion NeRF: A Unified Approach to 3D Generation and Reconstruction”</a> (ICCV 2023)</p>
 </blockquote>
-<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>3D-aware图像合成包括一系列任务，比如场景生成和新视角合成。尽管针对特定任务的方法有很多，建立一个全面的模型仍然具有挑战性。SSDNeRF提出了一种综合的方法，使用扩散模型从多视角的图像中学习一个通用的隐式神经场（NeRF）。作为对比，我们提出了一个端到端的新的训练范式，联合优化NeRF自动解码器和潜扩散模型，使3D重建和预学习同时完成，甚至可以处理稀疏视角。在测试时，我们可以直接采样前扩散，用于非条件生成，或者将它和任意的观察结合起来，用于NeRF重建。相比于其他非条件生成和单/稀疏视角3D重建的针对特定任务的方法，SSDNeRF能得到鲁棒性相当或者更好的结果。</p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>latent diffusion model (LDM)一般需要两阶段训练，其中第一阶段预训练可变自编码器（VAE）或解码器，没有扩散模型的参与。对于diffusion NeRFs，两阶段训练会把噪声引入潜在编码，尤其是用稀疏视角的数据训练时，因为inverse rendering天然具有不确定性。于是，本文提出了一种新的一步训练范式，支持diffussion和NeRF权重的端到端学习。该方法融合了生成和渲染的偏差，提升了模型表现，允许在稀疏视角数据上训练。另外，学习到的非条件扩散模型的3D先验可以被用于测试时的随机视角场景采样。</p>
-
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>3D-aware图像合成包括一系列任务，比如场景生成和新视角合成。尽管针对特定任务的方法有很多，建立一个全面的模型仍然具有挑战性。SSDNeRF (Single-Stage Diffusion NeRF) 提出了一种综合的方法，使用扩散模型从多视角的图像中学习一个通用的隐式神经场（NeRF）。本文提出新的端到端的训练范式，联合优化 NeRF auto-decoders 和 latent diffusion model，同时进行3D重建和学习先验，适用于稀疏视角输入。在测试时，可以直接采样扩散先验，用于非条件生成；或者将它和任意视角的观测数据结合起来，用于NeRF重建。相比于其他针对特定任务的非条件生成、单/稀疏视角3D重建方法，SSDNeRF能得到鲁棒性相当或者更好的结果。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>latent diffusion model (LDM)一般需要两阶段训练，其中第一阶段预训练可变自编码器（VAE）或解码器，没有扩散模型的参与。对于diffusion NeRFs，两阶段训练会把噪声引入潜在编码，尤其是用稀疏视角的数据训练时，因为逆向渲染天然具有不确定性。于是，本文提出了一种新的一步训练范式，支持diffussion和NeRF权重的端到端学习。该方法融合了生成和渲染的偏差，提升了模型表现，允许在稀疏视角数据上训练。另外，学习到的非条件扩散模型的3D先验可以被用于测试时的随机视角场景采样。</p>
+<h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><h3 id="3D-GANs"><a href="#3D-GANs" class="headerlink" title="3D GANs"></a>3D GANs</h3><p>通过将基于投影的渲染结合到生成器中，可以将GAN用于3D生成。3D GANs主要被应用于非条件生成。虽然通过GAN inversion可以从图片生成3D，有限的潜在表达能力无法保证忠实性。</p>
+<h3 id="以视角为条件的回归与生成"><a href="#以视角为条件的回归与生成" class="headerlink" title="以视角为条件的回归与生成"></a>以视角为条件的回归与生成</h3><p>稀疏视角3D重建可以通过对新视角进行线性回归来实现。一些结构将图片编码为volume feature，可以通过体渲染被投影到受到监督的目标视角。但是，这些方法不能解决ambiguity，无法生成多样的有意义的内容。</p>
+<p>对比之下，image-conditioned 生成模型能更好地合成差异显著的内容。3DiM提出从view-conditioned 图像扩散模型生成新视角，但是该模型缺少3D consistency bias。另外有一些工作将image-conditioned 2D 扩散模型的进行蒸馏，把得到的先验加入NeRF，从而加强3D约束。这些方法和我们的方法是并行的：它们在图像空间中建模跨视角的关系，而我们的模型本质上是3D的。</p>
+<h3 id="自解码器和扩散NeRF"><a href="#自解码器和扩散NeRF" class="headerlink" title="自解码器和扩散NeRF"></a>自解码器和扩散NeRF</h3><p>NeRF对每个场景的fitting scheme可以通过在所有场景之间<strong>共享部分参数</strong>被推广到多场景，其余参数可以被看做单个场景的编码。因此，多场景NeRF可以被训练成自解码器，code bank和共享的解码权重通过联合学习得到。场景编码可以被看成是带有高斯先验的latents，可以实现3D补全甚至生成。然而，latents和3D GANs一样，不能完全表达重建物体的细节。一些工作用潜在扩散先验对基本自解码方法进行改进。DiffRF利用扩散先验进行3D补全。这些方法用分开的两步训练自解码器和看扩散模型，会遇到3.2中提到的问题。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2>
              
         </div>
         
             <p itemprop="keywords" class="tags">
                 
-                    <a href="/tags/CG/"> CG </a>
+                    <a href="/tags/CV/"> CV </a>
                 
             </p>
         
