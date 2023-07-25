@@ -113,15 +113,29 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>Notes for <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2304.06714.pdf">“Single-Stage Diffusion NeRF: A Unified Approach to 3D Generation and Reconstruction”</a> (ICCV 2023)</p>
+<p>Notes for <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2304.06714.pdf">“Single-Stage Diffusion NeRF: A Unified Approach to 3D Generation and Reconstruction”</a> (ICCV 2023)<br>目录<br><a href="#摘要">一、摘要</a><br><a href="#简介">二、简介</a><br><a href="#相关工作">三、相关工作</a><br><a href="#背景">四、背景</a><br><a href="#方法">五、方法</a></p>
 </blockquote>
 <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>3D-aware图像合成包括一系列任务，比如场景生成和新视角合成。尽管针对特定任务的方法有很多，建立一个全面的模型仍然具有挑战性。SSDNeRF (Single-Stage Diffusion NeRF) 提出了一种综合的方法，使用扩散模型从多视角的图像中学习一个通用的隐式神经场（NeRF）。本文提出新的端到端的训练范式，联合优化 NeRF auto-decoders 和 latent diffusion model，同时进行3D重建和学习先验，适用于稀疏视角输入。在测试时，可以直接采样扩散先验，用于非条件生成；或者将它和任意视角的观测数据结合起来，用于NeRF重建。相比于其他针对特定任务的非条件生成、单/稀疏视角3D重建方法，SSDNeRF能得到鲁棒性相当或者更好的结果。</p>
+<p><img src="image.png" alt="Alt text"></p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>latent diffusion model (LDM)一般需要两阶段训练，其中第一阶段预训练可变自编码器（VAE）或解码器，没有扩散模型的参与。对于diffusion NeRFs，两阶段训练会把噪声引入潜在编码，尤其是用稀疏视角的数据训练时，因为逆向渲染天然具有不确定性。于是，本文提出了一种新的一步训练范式，支持diffussion和NeRF权重的端到端学习。该方法融合了生成和渲染的偏差，提升了模型表现，允许在稀疏视角数据上训练。另外，学习到的非条件扩散模型的3D先验可以被用于测试时的随机视角场景采样。</p>
 <h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><h3 id="3D-GANs"><a href="#3D-GANs" class="headerlink" title="3D GANs"></a>3D GANs</h3><p>通过将基于投影的渲染结合到生成器中，可以将GAN用于3D生成。3D GANs主要被应用于非条件生成。虽然通过GAN inversion可以从图片生成3D，有限的潜在表达能力无法保证忠实性。</p>
 <h3 id="以视角为条件的回归与生成"><a href="#以视角为条件的回归与生成" class="headerlink" title="以视角为条件的回归与生成"></a>以视角为条件的回归与生成</h3><p>稀疏视角3D重建可以通过对新视角进行线性回归来实现。一些结构将图片编码为volume feature，可以通过体渲染被投影到受到监督的目标视角。但是，这些方法不能解决ambiguity，无法生成多样的有意义的内容。</p>
 <p>对比之下，image-conditioned 生成模型能更好地合成差异显著的内容。3DiM提出从view-conditioned 图像扩散模型生成新视角，但是该模型缺少3D consistency bias。另外有一些工作将image-conditioned 2D 扩散模型的进行蒸馏，把得到的先验加入NeRF，从而加强3D约束。这些方法和我们的方法是并行的：它们在图像空间中建模跨视角的关系，而我们的模型本质上是3D的。</p>
 <h3 id="自解码器和扩散NeRF"><a href="#自解码器和扩散NeRF" class="headerlink" title="自解码器和扩散NeRF"></a>自解码器和扩散NeRF</h3><p>NeRF对每个场景的fitting scheme可以通过在所有场景之间<strong>共享部分参数</strong>被推广到多场景，其余参数可以被看做单个场景的编码。因此，多场景NeRF可以被训练成自解码器，code bank和共享的解码权重通过联合学习得到。场景编码可以被看成是带有高斯先验的latents，可以实现3D补全甚至生成。然而，latents和3D GANs一样，不能完全表达重建物体的细节。一些工作用潜在扩散先验对基本自解码方法进行改进。DiffRF利用扩散先验进行3D补全。这些方法用分开的两步训练自解码器和看扩散模型，会遇到3.2中提到的问题。</p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><h3 id="NeRF作为自解码器"><a href="#NeRF作为自解码器" class="headerlink" title="NeRF作为自解码器"></a>NeRF作为自解码器</h3><p>NeRF 将光场表示成通过一块体积沿着光线的 radiance 的积分，将场景的几何和外观表示成与位置和观察方向相关的函数。NeRF 通过在所有场景之间共享部分模型参数，可以推广到多场景问题。给出多个场景的观测数据$\{y_{ij}^{gt}, r_{ij}^{gt}\}$，其中$y_{ij}^{gt}, r_{ij}^{gt}$是第$i$个场景中的第$j$对RGB像素值和光线。通过最小化以下L2损失，可以优化每个场景的编码$\{x_i\}$和共享参数$\Psi$：</p>
+<script type="math/tex; mode=display">
+L_{rend}(\{x_i\}, \Psi) = \Bbb{E}_i \left[\sum_j \frac{1}{2}||y_{ij}^{gt}-y_\Psi(x_i,r_{ij}^{gt})||^2\right].</script><p>使用该目标函数，模型可以被训练成一个自解码器。场景编码$\{x_i\}$可以被看做latent codes，plenoptic函数可以被看做形为$p_\Psi(\{y_i\}|x,\{r_i\}) := \prod_j \mathcal{N}(y_j|y_\Psi(x,r_j),I)$的解码器，假设是独立高斯分布。</p>
+<p><strong>挑战：连接生成和重建</strong>：一个带有权重$\Psi$的自解码器可以进行非条件生成，但是，为了保证生成的连续性，我们需要低维的latent space和复杂的解码器，这使得优化latent code、重建真实感的任意视角变得更加困难。</p>
+<h3 id="Latent-Diffusion-Models"><a href="#Latent-Diffusion-Models" class="headerlink" title="Latent Diffusion Models"></a>Latent Diffusion Models</h3><p>LDM 学习 latent space 的先验分布$p_\phi(x)$，使得潜在表示（例如，被用于图像的2D网格）更具有表达性。针对神经场生成，之前的工作采用了一个两阶段的训练模式，先训练自解码器得到每个场景的latent $x_i$，然后被当做真实数据来训练LDM。LDM将高斯分布$\epsilon \sim \mathcal{N}(0,I)$加入编码$x_i$，从而得到带有噪声的编码$x_i^{(t)} := \alpha^{(t)}x_i+\sigma^{(t)}\epsilon$，其中$t$是time step，$\alpha^{(t)}$和$\sigma^{(t)}$是noise schedule functions。去噪网络由$x_i^{(t)}$预测去噪后的编码$\hat{x}_i$，一般用简化的L2损失来训练：</p>
+<script type="math/tex; mode=display">
+L_{diff}(\Phi)=\Bbb{E}_{i,t,\epsilon}\left[\frac{1}{2}\omega^{(t)}||\hat{x}_{\Phi}(x_i^{(t)},t) - x_i||^2\right],</script><p>其中$t \sim \mathcal{U}(0,T)$，$\omega(t)$是经验性的时间依赖的权重函数，$\hat{x}_{\Phi}(x_i^{(t)},t)$表示 time-conditioned 降噪网络。</p>
+<p><strong>Unconditioned/Guided Sampling</strong>：有了训练好的权重$\Phi$，我们可以通过一系列solvers（比如DDIM）从扩散先验中采样，迭代地对$x^{(x)}$去噪，直到$x^{(0)}$。另外，采样过程可以被rendering loss的梯度引导，这样在测试时能够从图像进行3D重建。</p>
+<p><strong>两阶段训练在3D任务中的局限性</strong>：通过基于渲染的优化得到的latent code是未定的，有噪声的pattern会干扰除噪网络。另外，不学习先验的稀疏视角重建NeRF非常困难。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="一阶段训练"><a href="#一阶段训练" class="headerlink" title="一阶段训练"></a>一阶段训练</h3><p>loss的组成：rendering loss + diffusion prior term。为了简化，忽略了latent codes的不确定性（方差）：</p>
+<script type="math/tex; mode=display">
+L=\Bbb{E}_i\left[-\log p_\Psi(\{y_{ij}^{gt}\}|x_i,\{r_{ij}^{gt}\})\right]+\Bbb{E}_i\left[-\log p_\Phi(x_i)\right]</script><p>场景编码$\{x_i\}$，先验参数$\Phi$和解码器参数$\Psi$在一个训练阶段中被连接优化。训练目标是最小化 negative log-likelihood (NLL) 的可变上限。</p>
+<p><img src="image1.png" alt="Alt text"></p>
+
              
         </div>
         
