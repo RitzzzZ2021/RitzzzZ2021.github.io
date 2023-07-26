@@ -135,6 +135,25 @@ L_{diff}(\Phi)=\Bbb{E}_{i,t,\epsilon}\left[\frac{1}{2}\omega^{(t)}||\hat{x}_{\Ph
 <script type="math/tex; mode=display">
 L=\Bbb{E}_i\left[-\log p_\Psi(\{y_{ij}^{gt}\}|x_i,\{r_{ij}^{gt}\})\right]+\Bbb{E}_i\left[-\log p_\Phi(x_i)\right]</script><p>场景编码$\{x_i\}$，先验参数$\Phi$和解码器参数$\Psi$在一个训练阶段中被连接优化。训练目标是最小化 negative log-likelihood (NLL) 的可变上限。</p>
 <p><img src="image1.png" alt="Alt text"></p>
+<p>我们用近似上限替换diffusion NLL，这个技术被称为 score distillation。再加上经验性的权重因子，我们最后得到训练目标函数：</p>
+<script type="math/tex; mode=display">
+L=\lambda_{rend}\mathcal{L}_{rend}(\{x_i\},\Psi)+\lambda_{diff}\mathcal{L}_{diff}(\{x_i\},\Phi).</script><p>学习到的先验可以用来补全对于渲染来说不可见的部分。这对在稀疏视角数据上进行的训练来说很有效，三平面编码的表达力被严重低估了。</p>
+<p><strong>权重比</strong>：渲染对扩散的权重比$\lambda_{rend}/\lambda_{diff}$对于单阶段训练至关重要。为了使得超参数更广泛地适用于不同的场景设定，我们设计了一个经验性的weighting mechanism。扩散损失用场景编码的Frobenius norms 的 exponential moving average (EMA) 来正规化，表示为$\lambda_{diff} := c_{diff}/EMA(||x_i||_F^2)$，其中$c_{diff}$是 scale 常数；渲染权重由可见的视角数量$N_v$决定，表示为$\lambda_{rend}:=c_{rend}(1-e^{-0.1N_v})/N_v$，其中$c_{rend}$是 scale 常数。直觉地解释，基于可见视角数量的权重是对解码器中光线独立性假设的校正，从而防止渲染损失随光线数量线性地放缩。</p>
+<p><strong>和两阶段生成式神经场的比较</strong>：两阶段的方法在第一阶段忽视先验项，这相当于将$\lambda_{rend}/\lambda_{diff}$设为无穷大，导致场景编码biased and noisy。</p>
+<ul>
+<li><p>Shue et al. 通过加入total variation (TV) regularization 得到较为光滑的先验，缓解这个问题；这和latent<br>space上的LDM约束相似。</p>
+</li>
+<li><p>Control3Diff：在单一视角图像上训练的3D GAN生成的数据，被用来训练一个条件扩散模型。本文的方法直接将扩散先验加入进来，提高了端到端的coherence。</p>
+</li>
+</ul>
+<h3 id="图像引导的采样和finetuning"><a href="#图像引导的采样和finetuning" class="headerlink" title="图像引导的采样和finetuning"></a>图像引导的采样和finetuning</h3><p>为了进行更普适性的NeRF重建（从单视角到密集观测），我们提出先用图像引导采样，然后对采样到的codes进行finetuning。</p>
+<p>近似的渲染梯度：</p>
+<p><img src="image3.png" alt="Alt text"></p>
+<p>其中，$(\alpha^{(t)}/\sigma^{(t)})^{2\omega}$是基于信噪比的权重系数，超参$\omega$等于0.5或0.25。引导梯度结合非条件score预测，作为对除噪输出的纠正。</p>
+<p><img src="image4.png" alt="Alt text"></p>
+<p>采用预测器-纠正器的采样方式，在DDIM的1个step和Langevin correction 的多个steps中修改，最终得到$x^{(0)}$。</p>
+<p>仅仅使用重建引导不能实现真实感重建。我们重新使用了前面的训练目标函数，来finetune采样到的场景编码$x$，同时固定扩散和解码参数。</p>
+<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><p><img src="image2.png" alt="algorithm"></p>
 
              
         </div>
@@ -155,7 +174,7 @@ L=\Bbb{E}_i\left[-\log p_\Psi(\{y_{ij}^{gt}\}|x_i,\{r_{ij}^{gt}\})\right]+\Bbb{E
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a>None</a>
+            <a href="/2023/07/26/Diffusion/"> &raquo; Diffusion</a>
         
         <br /> &raquo; Next 
     </div>
