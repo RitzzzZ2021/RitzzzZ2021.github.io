@@ -112,7 +112,10 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h3 id="NOVEL-VIEW-SYNTHESIS-WITH-DIFFUSION-MODELS"><a href="#NOVEL-VIEW-SYNTHESIS-WITH-DIFFUSION-MODELS" class="headerlink" title="NOVEL VIEW SYNTHESIS WITH DIFFUSION MODELS"></a>NOVEL VIEW SYNTHESIS WITH DIFFUSION MODELS</h3><p>本文提出了3DiM，一个用于3D新视角合成的扩散模型。3DiM的核心部分是pose-conditional image-to-image diffution model，将source view和它的pose作为输入，生成目标pose的新视角。3DiM用一种新技术，stochastic conditioning，生成3D consistent的多视角。输出视角是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E8%87%AA%E6%88%91%E8%BF%B4%E6%AD%B8%E6%A8%A1%E5%9E%8B">自回归</a>生成的，在每个新视角的生成过程中，在每一个denoising step中选一个随机的conditioning view。</p>
+            <h2 id="Geometry-Free"><a href="#Geometry-Free" class="headerlink" title="Geometry-Free"></a>Geometry-Free</h2><ul>
+<li>NOVEL VIEW SYNTHESIS WITH DIFFUSION MODELS</li>
+</ul>
+<p>本文提出了3DiM，一个用于3D新视角合成的扩散模型。3DiM的核心部分是pose-conditional image-to-image diffution model，将source view和它的pose作为输入，生成目标pose的新视角。3DiM用一种新技术，stochastic conditioning，生成3D consistent的多视角。输出视角是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E8%87%AA%E6%88%91%E8%BF%B4%E6%AD%B8%E6%A8%A1%E5%9E%8B">自回归</a>生成的，在每个新视角的生成过程中，在每一个denoising step中选一个随机的conditioning view。</p>
 <p><img src="image.png" alt="Alt text"></p>
 <p>贡献：</p>
 <ol>
@@ -122,6 +125,12 @@
 <li>对geometry-free视角合成模型的新的评估方法：3D consistency scoring，通过在模型输出上训练神经场来数值地衡量3D consistency</li>
 </ol>
 <p>实验：SRN ShapeNet dataset，单视角生成higher fidelity, approximately 3D consistent</p>
+<h2 id="Geometry-Aware"><a href="#Geometry-Aware" class="headerlink" title="Geometry-Aware"></a>Geometry-Aware</h2><h3 id="in-2D-image-space"><a href="#in-2D-image-space" class="headerlink" title="in 2D image space"></a>in 2D image space</h3><p><em>used in optimization</em></p>
+<p><strong>with pretrained models</strong></p>
+<ul>
+<li>DREAMFUSION: TEXT-TO-3D USING 2D DIFFUSION</li>
+</ul>
+<p>将扩散模型用于3D合成，需要大规模的带标签的3D数据集和高效的3D数据除噪结构，目前都不具备。这项工作通过使用预训练的2D text-to-image扩散模型进行text-to-3D合成，避免了这些限制。本文引入了基于概率密度蒸馏的loss，使2D扩散模型可以作为参数图像生成器优化的先验。将此loss用于类似DeepDream的过程，就可以通过梯度下降优化一个随机初始化的3D模型（NeRF），从任意视角渲染得到的2D图像都能达到较低的loss。文本对于的3D模型最终可以从任意视角被观察，重新打光，或加入任何3D环境。该方法不需要3D训练数据，也不需要修改图像扩散模型。</p>
 
              
         </div>

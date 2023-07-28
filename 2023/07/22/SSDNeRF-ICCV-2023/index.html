@@ -113,11 +113,17 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>Notes for <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2304.06714.pdf">“Single-Stage Diffusion NeRF: A Unified Approach to 3D Generation and Reconstruction”</a> (ICCV 2023)<br>目录<br><a href="#摘要">一、摘要</a><br><a href="#简介">二、简介</a><br><a href="#相关工作">三、相关工作</a><br><a href="#背景">四、背景</a><br><a href="#方法">五、方法</a></p>
+<p>Notes for <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2304.06714.pdf">“Single-Stage Diffusion NeRF: A Unified Approach to 3D Generation and Reconstruction”</a> (ICCV 2023)<br>目录<br><a href="#摘要">一、摘要</a><br><a href="#简介">二、简介</a><br><a href="#相关工作">三、相关工作</a><br><a href="#背景">四、背景</a><br><a href="#方法">五、方法</a><br><a href="#实验">六、实验</a></p>
 </blockquote>
 <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>3D-aware图像合成包括一系列任务，比如场景生成和新视角合成。尽管针对特定任务的方法有很多，建立一个全面的模型仍然具有挑战性。SSDNeRF (Single-Stage Diffusion NeRF) 提出了一种综合的方法，使用扩散模型从多视角的图像中学习一个通用的隐式神经场（NeRF）。本文提出新的端到端的训练范式，联合优化 NeRF auto-decoders 和 latent diffusion model，同时进行3D重建和学习先验，适用于稀疏视角输入。在测试时，可以直接采样扩散先验，用于非条件生成；或者将它和任意视角的观测数据结合起来，用于NeRF重建。相比于其他针对特定任务的非条件生成、单/稀疏视角3D重建方法，SSDNeRF能得到鲁棒性相当或者更好的结果。</p>
 <p><img src="image.png" alt="Alt text"></p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>latent diffusion model (LDM)一般需要两阶段训练，其中第一阶段预训练可变自编码器（VAE）或解码器，没有扩散模型的参与。对于diffusion NeRFs，两阶段训练会把噪声引入潜在编码，尤其是用稀疏视角的数据训练时，因为逆向渲染天然具有不确定性。于是，本文提出了一种新的一步训练范式，支持diffussion和NeRF权重的端到端学习。该方法融合了生成和渲染的偏差，提升了模型表现，允许在稀疏视角数据上训练。另外，学习到的非条件扩散模型的3D先验可以被用于测试时的随机视角场景采样。</p>
+<p>贡献：</p>
+<ol>
+<li>提出SSDNeRF，一个通用的非条件3D生成和基于图像重建的模型</li>
+<li>提出一阶段训练范式，同时从多视角图像中学到NeRF重建和扩散模型；可以在稀疏的（每个场景3个视角）数据上训练</li>
+<li>guidance-finetuning sampling scheme，测试时能将学到的扩散先验用于3D重建</li>
+</ol>
 <h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><h3 id="3D-GANs"><a href="#3D-GANs" class="headerlink" title="3D GANs"></a>3D GANs</h3><p>通过将基于投影的渲染结合到生成器中，可以将GAN用于3D生成。3D GANs主要被应用于非条件生成。虽然通过GAN inversion可以从图片生成3D，有限的潜在表达能力无法保证忠实性。</p>
 <h3 id="以视角为条件的回归与生成"><a href="#以视角为条件的回归与生成" class="headerlink" title="以视角为条件的回归与生成"></a>以视角为条件的回归与生成</h3><p>稀疏视角3D重建可以通过对新视角进行线性回归来实现。一些结构将图片编码为volume feature，可以通过体渲染被投影到受到监督的目标视角。但是，这些方法不能解决ambiguity，无法生成多样的有意义的内容。</p>
 <p>对比之下，image-conditioned 生成模型能更好地合成差异显著的内容。3DiM提出从view-conditioned 图像扩散模型生成新视角，但是该模型缺少3D consistency bias。另外有一些工作将image-conditioned 2D 扩散模型的进行蒸馏，把得到的先验加入NeRF，从而加强3D约束。这些方法和我们的方法是并行的：它们在图像空间中建模跨视角的关系，而我们的模型本质上是3D的。</p>
@@ -154,7 +160,11 @@ L=\lambda_{rend}\mathcal{L}_{rend}(\{x_i\},\Psi)+\lambda_{diff}\mathcal{L}_{diff
 <p>采用预测器-纠正器的采样方式，在DDIM的1个step和Langevin correction 的多个steps中修改，最终得到$x^{(0)}$。</p>
 <p>仅仅使用重建引导不能实现真实感重建。我们重新使用了前面的训练目标函数，来finetune采样到的场景编码$x$，同时固定扩散和解码参数。</p>
 <h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><p><img src="image2.png" alt="algorithm"></p>
-
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>数据集：ShapeNet SRN, Amazon Berkeley Objects (ABO) Tables</p>
+<h3 id="非条件生成"><a href="#非条件生成" class="headerlink" title="非条件生成"></a>非条件生成</h3><p>在SRN Cars和ABO Tables上测试。Cars的挑战在于生成sharp and intricate textures，Tables包含各种各样的geometries with realistic materials。模型在训练集的所有图像上训练1M iterations。</p>
+<p>生成问题的指标：FID, KID</p>
+<p><img src="image6.png" alt="Alt text"></p>
+<h3 id="稀疏视角NeRF重建"><a href="#稀疏视角NeRF重建" class="headerlink" title="稀疏视角NeRF重建"></a>稀疏视角NeRF重建</h3>
              
         </div>
         
