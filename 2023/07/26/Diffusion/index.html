@@ -130,8 +130,13 @@
 <ul>
 <li>DREAMFUSION: TEXT-TO-3D USING 2D DIFFUSION</li>
 </ul>
-<p>将扩散模型用于3D合成，需要大规模的带标签的3D数据集和高效的3D数据除噪结构，目前都不具备。这项工作通过使用预训练的2D text-to-image扩散模型进行text-to-3D合成，避免了这些限制。本文引入了基于概率密度蒸馏的loss，使2D扩散模型可以作为参数图像生成器优化的先验。将此loss用于类似DeepDream的过程，就可以通过梯度下降优化一个随机初始化的3D模型（NeRF），从任意视角渲染得到的2D图像都能达到较低的loss。文本对于的3D模型最终可以从任意视角被观察，重新打光，或加入任何3D环境。该方法不需要3D训练数据，也不需要修改图像扩散模型。</p>
+<p>将扩散模型用于3D合成，需要大规模的带标签的3D数据集和高效的3D数据除噪结构，而目前我们不具备这些条件。此项工作通过使用预训练的2D text-to-image扩散模型进行text-to-3D合成，避免了这些限制。本文引入了基于概率密度蒸馏（probability density distillation）的loss，使2D扩散模型可以作为参数图像生成器优化的先验。将此loss用于类似DeepDream的过程，就可以通过梯度下降优化一个随机初始化的3D模型（NeRF），从任意视角渲染得到的2D图像都能达到较低的loss。文本对于的3D模型最终可以从任意视角被观察，重新打光，或加入任何3D环境。该方法不需要3D训练数据，也不需要修改图像扩散模型。</p>
 <p><img src="image3.png" alt="Alt text"></p>
+<p>贡献：</p>
+<ol>
+<li>提出DreamFusion，一种新的类似NeRF的渲染引擎，但是DreamFusion不需要3D或者多视角的训练数据，只需要预训练的2D扩散模型</li>
+<li>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</li>
+</ol>
 
              
         </div>
@@ -152,7 +157,7 @@
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a>None</a>
+            <a href="/2023/07/30/Probability/"> &raquo; Probability</a>
         
         <br /> &raquo; Next 
     </div>
