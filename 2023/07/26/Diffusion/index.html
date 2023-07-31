@@ -148,9 +148,20 @@
 <li>指出了使用Perturb-and-Average Scoring作为梯度来进行优化的一些开放问题</li>
 <li>阐述了Score Jacobian Chaining在3D文本驱动生成问题上的有效性</li>
 </ol>
-<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384144179">Denoising Diffusion Probabilistic Model (DDPM)</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
-<p>Ancestral sampling</p>
+<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><h3 id="Denoising-Diffusion-Probabilistic-Model-DDPM"><a href="#Denoising-Diffusion-Probabilistic-Model-DDPM" class="headerlink" title="Denoising Diffusion Probabilistic Model (DDPM)"></a><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Model (DDPM)</a></h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV14c411J7f2/?spm_id_from=333.337.search-card.all.click&amp;vd_source=dd883cce367009200a0a78c39490e160">Diffusion Model讲解视频 - 李宏毅2023</a></p>
+</blockquote>
+<p>Reverse Process: 从噪声，进行N步denoise，得到图像</p>
+<p>输入：图像，i(-th step)</p>
+<p>Denoise模块内部做了什么：Noise Predictor预测图像中的噪声，图片减去噪声得到输出</p>
+<p><img src="image0.png" alt="Alt text"></p>
+<p>如何训练Noise Predictor？、</p>
+<ul>
+<li>在图像的每一个step加入随机采样的噪声，就能得到加了噪声的图片</li>
+<li>这个噪声在训练时被作为每一步Noise Predictor的GT</li>
+<li>这个过程叫Forward Process/Diffusion Process</li>
+</ul>
+<h3 id="Stable-Diffusion以及几种scheduler的对比"><a href="#Stable-Diffusion以及几种scheduler的对比" class="headerlink" title="Stable Diffusion以及几种scheduler的对比"></a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></h3><p>Ancestral sampling</p>
 
              
         </div>
