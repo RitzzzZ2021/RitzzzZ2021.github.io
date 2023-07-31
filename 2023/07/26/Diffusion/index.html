@@ -137,6 +137,20 @@
 <li>提出DreamFusion，一种新的类似NeRF的渲染引擎，但是DreamFusion不需要3D或者多视角的训练数据，只需要预训练的2D扩散模型</li>
 <li>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</li>
 </ol>
+<ul>
+<li>Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation</li>
+</ul>
+<p>扩散模型学习如何去预测梯度的向量场。本文提出对梯度使用链式法则，通过可微渲染器（被初始化为voxel radiance field）的Jacobian反向传播扩散模型的score。这种方法将多视角的2D scores融合进3D score，重新提出了用于3D生成的预训练2D模型。我们指出分布不匹配的技术难点，并提出了一种新的估计方法来解决它。我们在多个现成的扩散图像生成模型上跑了我们的算法，包括在LAION 5B数据集上训练的Stable Diffusion。</p>
+<p>贡献：</p>
+<ol>
+<li>提出了一种通过链式法则将2D扩散模型提升到3D的方法</li>
+<li>阐释了使用预训练降噪器会遇到的out-of-distribution (OOD)问题，并提出Perturb-and-Average Scoring来解决该问题</li>
+<li>指出了使用Perturb-and-Average Scoring作为梯度来进行优化的一些开放问题</li>
+<li>阐述了Score Jacobian Chaining在3D文本驱动生成问题上的有效性</li>
+</ol>
+<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384144179">Denoising Diffusion Probabilistic Model (DDPM)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
+<p>Ancestral sampling</p>
 
              
         </div>
