@@ -159,7 +159,6 @@ q(x_{1:T}|x_0)=\prod_{t=1}^Tq(x_t|x_{t-1}).</script><p>通过学习扩散过程�
 <ul>
 <li>推断新样本的成本较高，采样过程比GAN和VAE更慢。</li>
 </ul>
-<p>更详细的Diffusion Models介绍可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/532402983">这里</a>。</p>
 <h3 id="Energy-based-model"><a href="#Energy-based-model" class="headerlink" title="Energy-based model"></a>Energy-based model</h3><p>能量基模型（Energy-based models）利用能量函数（energy function）来显式地建模数据的概率分布。它建立在一个基本思想之上，即任何概率函数都可以通过将其体积除以某个常数来转化为能量函数：</p>
 <script type="math/tex; mode=display">
 p(x)=\frac{exp(-E_\theta(x))}{\int_x exp(-E_\theta(x))},</script><p>其中$-E_\theta(x)$是能量函数。显然高似然的数据点有较低的能量，低似然的数据点有较高的能量。然而，由于计算高维数据的$\int_x exp(−E(x))$是困难的，优化似然函数是棘手的。为了缓解优化难题，对比散度（contrastive divergence）被提出，通过比较$p(x)$上的似然梯度和从能量分布$q_\theta (x)$中随机采样的数据的似然梯度来进行优化：</p>
