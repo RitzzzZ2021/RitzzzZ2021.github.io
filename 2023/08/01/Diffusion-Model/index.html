@@ -131,11 +131,12 @@
 <li>每一步的weight不同，随着$t$增大，噪声占比增大</li>
 </ul>
 <h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p><img src="image7.png" alt="Alt text"></p>
-<p><strong>Maximum Likelihood Estimation</strong>：衡量两个distribution的相似程度。在数据中采样，也就是在一堆训练集的图片中随机抽取一部分图片。我们要最大化的目标是$\theta^*=\arg\max \limits_\theta \prod\limits_{i=1}^mp_\theta(x^i)$，也就是要得到生成图像$x^i$的几率更大的分布。为什么可以通过优化这个目标函数来使两个distribution更相似呢？以下推导证明maximize likelihood等价于minimize KL divergence，而KL divergence越小说明两个distribution越相似：</p>
+<p><strong>Maximum Likelihood Estimation</strong>：衡量两个distribution的相似程度。在数据中采样，也就是在一堆训练集的图片中随机抽取一部分图片。我们要最大化的目标是$\theta^*=\arg\max \limits_\theta \prod\limits_{i=1}^mp_\theta(x^i)$，也就是要得到生成图像$x^i$的几率更大的分布。</p>
+<p>为什么可以通过优化这个目标函数来使两个distribution更相似呢？以下推导证明maximize likelihood等价于minimize KL divergence，而KL divergence越小说明两个distribution越相似：</p>
 <p><img src="image.png" alt="Alt text"></p>
 <p>如何计算weight？</p>
-<pre><code>![Alt text](image3.png)
-</code></pre><p>如何最小化KL divergence？variance是固定的，所以我们在优化时要做的是让mean靠近目标distribution。</p>
+<p><img src="image3.png" alt="Alt text"></p>
+<p>如何最小化KL divergence？variance是固定的，所以我们在优化时要做的是让mean靠近目标distribution。</p>
 <p>为什么需要sample？（即Algorithm 2中的$\sigma_t$项）如果不sample，只取几率最大的，那么每次生成的都是一样的内容。</p>
 <ul>
 <li>语音合成也要sampling，通过在inference time加入dropout层，将variance引入</li>
@@ -158,14 +159,17 @@
 <p><img src="image2.png" alt="Alt text"></p>
 <h2 id="Diffusion-Model在语音、文字领域"><a href="#Diffusion-Model在语音、文字领域" class="headerlink" title="Diffusion Model在语音、文字领域"></a>Diffusion Model在语音、文字领域</h2><h3 id="for-speech"><a href="#for-speech" class="headerlink" title="for speech"></a>for speech</h3><p>WaveGrad</p>
 <h3 id="for-text"><a href="#for-text" class="headerlink" title="for text"></a>for text</h3><p>由于文字是离散的，很难加noise；解决方法是在latent space（比如word embedding）中加noise</p>
-<pre><code>* Diffusion-LM
-* DiffuSeq
-</code></pre><p>或者不加Gaussian noise，而是加mask。从这里介绍一类方法，Mask-Predict，运用在图像上时，叫Masked Visual Token Modeling (MVTM)</p>
-<pre><code>![Alt text](image8.png)
-
-* Training：先训练一个auto-encoder，可以将图像编码为latent representation，之后的一切处理都在latent representation上进行；把一些tokens变成masked tokens，训练一个predictor来预测完整的tokens。
-* Generation：全部都是masked tokens的图输入decoder，把一些confidence score低的tokens再加上mask，重新生图
-</code></pre><h2 id="图像评估指标"><a href="#图像评估指标" class="headerlink" title="图像评估指标"></a>图像评估指标</h2><p>FID：Frechet distance between the two Gaussians，值越小越好，假设两份采样是Guassians distribution</p>
+<ul>
+<li>Diffusion-LM</li>
+<li>DiffuSeq</li>
+</ul>
+<p>或者不加Gaussian noise，而是加mask。从这里介绍一类方法，Mask-Predict，运用在图像上时，叫Masked Visual Token Modeling (MVTM)</p>
+<p><img src="image8.png" alt="Alt text"></p>
+<ul>
+<li>Training：先训练一个auto-encoder，可以将图像编码为latent representation，之后的一切处理都在latent representation上进行；把一些tokens变成masked tokens，训练一个predictor来预测完整的tokens。</li>
+<li>Generation：全部都是masked tokens的图输入decoder，把一些confidence score低的tokens再加上mask，重新生图</li>
+</ul>
+<h2 id="图像评估指标"><a href="#图像评估指标" class="headerlink" title="图像评估指标"></a>图像评估指标</h2><p>FID：Frechet distance between the two Gaussians，值越小越好，假设两份采样是Guassians distribution</p>
 <p>CLIP：Contrastive Language-Image Pre-Training，用400 million image-text pair训练出来的模型，CLIP score越大越好</p>
 
              
