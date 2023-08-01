@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Diffusion - RitzzzZ 
+        Diffusion Model - RitzzzZ 
     </title>
      
     
@@ -96,14 +96,14 @@
     <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/07/26/Diffusion/">
-                    Diffusion
+                <a itemprop="url" href="/2023/08/01/Diffusion-Model/Diffusion-Model/">
+                    Diffusion Model
                 </a>
             </h1>
         </div>
         <ul class="post-meta post-meta-atpage">
             <li class="post-time">
-                2023-07-26
+                2023-08-01
             </li>
             <li>
                 <div class="article-category">
@@ -112,50 +112,51 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="Geometry-Free"><a href="#Geometry-Free" class="headerlink" title="Geometry-Free"></a>Geometry-Free</h2><ul>
-<li>NOVEL VIEW SYNTHESIS WITH DIFFUSION MODELS</li>
-</ul>
-<p>本文提出了3DiM，一个用于3D新视角合成的扩散模型。3DiM的核心部分是pose-conditional image-to-image diffution model，将source view和它的pose作为输入，生成目标pose的新视角。3DiM用一种新技术，stochastic conditioning，生成3D consistent的多视角。输出视角是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E8%87%AA%E6%88%91%E8%BF%B4%E6%AD%B8%E6%A8%A1%E5%9E%8B">自回归</a>生成的，在每个新视角的生成过程中，在每一个denoising step中选一个随机的conditioning view。</p>
-<p><img src="image.png" alt="Alt text"></p>
-<p>贡献：</p>
-<ol>
-<li>3DiM, geometry-free image-to-image diffusion model，用于新视角合成</li>
-<li>stochastic conditioning 采样算法，更3D-consistent的输出<br> <img src="image2.png" alt="Alt text"></li>
-<li>新的UNet结构变体 X-UNet，在两个输入帧（clean conditioning view, denoising target view）之间共享同一个UNet权重，加入了cross attention layers融合输入和输出视角的信息</li>
-<li>对geometry-free视角合成模型的新的评估方法：3D consistency scoring，通过在模型输出上训练神经场来数值地衡量3D consistency</li>
-</ol>
-<p>实验：SRN ShapeNet dataset，单视角生成higher fidelity, approximately 3D consistent</p>
-<h2 id="Geometry-Aware"><a href="#Geometry-Aware" class="headerlink" title="Geometry-Aware"></a>Geometry-Aware</h2><h3 id="in-2D-image-space"><a href="#in-2D-image-space" class="headerlink" title="in 2D image space"></a>in 2D image space</h3><p><em>used in optimization</em></p>
-<p><strong>with pretrained models</strong></p>
+            <blockquote>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Model (DDPM)</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV14c411J7f2/?spm_id_from=333.337.search-card.all.click&amp;vd_source=dd883cce367009200a0a78c39490e160">Diffusion Model讲解视频 - 李宏毅2023</a></p>
+</blockquote>
+<p>Reverse Process: 从噪声开始，进行N步denoise，得到图像</p>
+<p>Denoise模块内部做了什么：Noise Predictor预测图像中的噪声，图片减去噪声得到输出</p>
+<p>如何训练Noise Predictor？</p>
 <ul>
-<li>DREAMFUSION: TEXT-TO-3D USING 2D DIFFUSION</li>
+<li>在图像的每一个step加入随机采样的噪声，就能得到加了噪声的图片</li>
+<li>这个噪声在训练时被作为每一步Noise Predictor的GT</li>
+<li>这个过程叫Forward Process/Diffusion Process</li>
 </ul>
-<p>将扩散模型用于3D合成，需要大规模的带标签的3D数据集和高效的3D数据除噪结构，而目前我们不具备这些条件。此项工作通过使用预训练的2D text-to-image扩散模型进行text-to-3D合成，避免了这些限制。本文引入了基于概率密度蒸馏（probability density distillation）的loss，使2D扩散模型可以作为参数图像生成器优化的先验。将此loss用于类似DeepDream的过程，就可以通过梯度下降优化一个随机初始化的3D模型（NeRF），从任意视角渲染得到的2D图像都能达到较低的loss。文本对于的3D模型最终可以从任意视角被观察，重新打光，或加入任何3D环境。该方法不需要3D训练数据，也不需要修改图像扩散模型。</p>
-<p><img src="image3.png" alt="Alt text"></p>
-<p>贡献：</p>
-<ol>
-<li>提出DreamFusion，一种新的类似NeRF的渲染引擎，但是DreamFusion不需要3D或者多视角的训练数据，只需要预训练的2D扩散模型</li>
-<li>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</li>
-</ol>
+<p>Text-to-Image：在每个Denoise步骤中，输入加上一段文字描述；Noise Predictor工作过程可以由下图表示</p>
+<p><img src="image1.png" alt="Alt text"></p>
+<p>深入理解算法：</p>
+<p><img src="image4.png" alt="Alt text"></p>
 <ul>
-<li>Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation</li>
+<li>$\epsilon_\theta$是noise predictor，将带噪声的图和$t$作为这个函数的输入</li>
+<li>实际上，不是每一步在前一步上加一点噪音，而是将clean image和噪声图做weighted sum</li>
+<li>每一步的weight不同，随着$t$增大，噪声占比增大</li>
 </ul>
-<p>扩散模型学习如何去预测梯度的向量场。本文提出对梯度使用链式法则，通过可微渲染器（被初始化为voxel radiance field）的Jacobian反向传播扩散模型的score。这种方法将多视角的2D scores融合进3D score，重新提出了用于3D生成的预训练2D模型。我们指出分布不匹配的技术难点，并提出了一种新的估计方法来解决它。我们在多个现成的扩散图像生成模型上跑了我们的算法，包括在LAION 5B数据集上训练的Stable Diffusion。</p>
-<p>贡献：</p>
-<ol>
-<li>提出了一种通过链式法则将2D扩散模型提升到3D的方法</li>
-<li>阐释了使用预训练降噪器会遇到的out-of-distribution (OOD)问题，并提出Perturb-and-Average Scoring来解决该问题</li>
-<li>指出了使用Perturb-and-Average Scoring作为梯度来进行优化的一些开放问题</li>
-<li>阐述了Score Jacobian Chaining在3D文本驱动生成问题上的有效性</li>
-</ol>
-<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3><h3 id="Stable-Diffusion以及几种scheduler的对比"><a href="#Stable-Diffusion以及几种scheduler的对比" class="headerlink" title="Stable Diffusion以及几种scheduler的对比"></a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></h3><p>Ancestral sampling</p>
+<p><img src="image7.png" alt="Alt text"></p>
+<p>整个diffusion model可以分成3个部分：</p>
+<p><img src="image5.png" alt="Alt text"></p>
+<ul>
+<li>text encoder：对结果影响很大（Imagen那篇文章有写），好的text encoder可以帮助生成数据集中没有出现过的那些文字对应的图像</li>
+<li>decoder：将中间产物（小图/latent representation）还原成所需大小的图片，可以单独训练，不需要标签；如果中间产物是latent representation，可以训练一个auto-encoder</li>
+<li>generation model：输入文字，输出图像</li>
+</ul>
+<p>常见的diffusion model</p>
+<ul>
+<li>Stable Diffusion</li>
+<li>DALL-E series</li>
+<li>Imagen</li>
+</ul>
+<p>diffusion vs. VAE</p>
+<p><img src="image6.png" alt="Alt text"></p>
+<h3 id="评估指标"><a href="#评估指标" class="headerlink" title="评估指标"></a>评估指标</h3><p>FID：Frechet distance between the two Gaussians，值越小越好，假设两份采样是Guassians distribution</p>
+<p>CLIP：Contrastive Language-Image Pre-Training，用400 million image-text pair训练出来的模型，CLIP score越大越好</p>
 
              
         </div>
         
             <p itemprop="keywords" class="tags">
                 
-                    <a href="/tags/ML/"> ML </a>
+                    <a href="/tags/CV/"> CV </a>
                 
             </p>
         
@@ -163,13 +164,13 @@
     <div class="post-near">
     <div class="post-near-child post-near-child-left "> 
         
-            <a href="/2023/07/22/SSDNeRF-ICCV-2023/">SSDNeRF (ICCV 2023) &laquo; </a>
+            <a href="/2023/07/30/Probability/">Probability &laquo; </a>
         
         <br /> Prev  &laquo;
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a href="/2023/07/30/Probability/"> &raquo; Probability</a>
+            <a>None</a>
         
         <br /> &raquo; Next 
     </div>
