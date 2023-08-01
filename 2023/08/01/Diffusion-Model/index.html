@@ -96,7 +96,7 @@
     <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/08/01/Diffusion-Model/Diffusion-Model/">
+                <a itemprop="url" href="/2023/08/01/Diffusion-Model/">
                     Diffusion Model
                 </a>
             </h1>
@@ -113,35 +113,31 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Model (DDPM)</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV14c411J7f2/?spm_id_from=333.337.search-card.all.click&amp;vd_source=dd883cce367009200a0a78c39490e160">Diffusion Model讲解视频 - 李宏毅2023</a></p>
+<p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Model (DDPM)</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV14c411J7f2/?spm_id_from=333.337.search-card.all.click&amp;vd_source=dd883cce367009200a0a78c39490e160">Diffusion Model讲解视频 - 李宏毅 (2023)</a></p>
 </blockquote>
-<p>Reverse Process: 从噪声开始，进行N步denoise，得到图像</p>
+<h2 id="模型介绍"><a href="#模型介绍" class="headerlink" title="模型介绍"></a>模型介绍</h2><p>Reverse Process: 从纯噪声开始，进行N步denoise，得到干净的图像</p>
 <p>Denoise模块内部做了什么：Noise Predictor预测图像中的噪声，图片减去噪声得到输出</p>
-<p>如何训练Noise Predictor？</p>
-<ul>
+<h3 id="如何训练Noise-Predictor？"><a href="#如何训练Noise-Predictor？" class="headerlink" title="如何训练Noise Predictor？"></a>如何训练Noise Predictor？</h3><ul>
 <li>在图像的每一个step加入随机采样的噪声，就能得到加了噪声的图片</li>
 <li>这个噪声在训练时被作为每一步Noise Predictor的GT</li>
 <li>这个过程叫Forward Process/Diffusion Process</li>
 </ul>
 <p>Text-to-Image：在每个Denoise步骤中，输入加上一段文字描述；Noise Predictor工作过程可以由下图表示</p>
 <p><img src="image1.png" alt="Alt text"></p>
-<p>深入理解算法：</p>
-<p><img src="image4.png" alt="Alt text"></p>
+<h2 id="深入理解算法"><a href="#深入理解算法" class="headerlink" title="深入理解算法"></a>深入理解算法</h2><h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p><img src="image4.png" alt="Alt text"></p>
 <ul>
 <li>$\epsilon_\theta$是noise predictor，将带噪声的图和$t$作为这个函数的输入</li>
 <li>实际上，不是每一步在前一步上加一点噪音，而是将clean image和噪声图做weighted sum</li>
 <li>每一步的weight不同，随着$t$增大，噪声占比增大</li>
 </ul>
-<p><img src="image7.png" alt="Alt text"></p>
-<p>整个diffusion model可以分成3个部分：</p>
-<p><img src="image5.png" alt="Alt text"></p>
+<h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p><img src="image7.png" alt="Alt text"></p>
+<h2 id="完整的diffusion-model"><a href="#完整的diffusion-model" class="headerlink" title="完整的diffusion model"></a>完整的diffusion model</h2><p><img src="image5.png" alt="Alt text"></p>
 <ul>
 <li>text encoder：对结果影响很大（Imagen那篇文章有写），好的text encoder可以帮助生成数据集中没有出现过的那些文字对应的图像</li>
 <li>decoder：将中间产物（小图/latent representation）还原成所需大小的图片，可以单独训练，不需要标签；如果中间产物是latent representation，可以训练一个auto-encoder</li>
 <li>generation model：输入文字，输出图像</li>
 </ul>
-<p>常见的diffusion model</p>
-<ul>
+<h3 id="常见的diffusion-model"><a href="#常见的diffusion-model" class="headerlink" title="常见的diffusion model"></a>常见的diffusion model</h3><ul>
 <li>Stable Diffusion</li>
 <li>DALL-E series</li>
 <li>Imagen</li>
