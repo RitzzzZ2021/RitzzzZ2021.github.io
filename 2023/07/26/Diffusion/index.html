@@ -148,6 +148,40 @@
 <li>阐述了Score Jacobian Chaining在3D文本驱动生成问题上的有效性</li>
 </ol>
 </li>
+<li><p>NeRDi: Single-View NeRF Synthesis with Language-Guided Diffusion as General Image Priors</p>
+<p>  2D-to-3D重建是一个ill-posed problem，人们用3D世界的先验知识来解决这个问题。本文提出NeRDi，一个带有从2D扩散模型获得的图像先验的单视角NeRF合成框架。将单视角重建看做 image-conditioned 3D生成问题，利用输入视角约束下的预训练扩散模型，通过最小化任意视角渲染的diffusion loss来优化NeRF representations。我们用现有的视觉-语言模型，并引入two-section语言引导作为扩散模型的conditioning input，这对提高多视角内容的一致性有很大帮助，因为它缩小了基于单视角图片的语义和视觉特征的图像先验的范围。另外，我们引入了一个基于估计的深度图的geometric loss，用来正则化NeRF的3D geometry。在DTU MVS数据集上的实验结果表明，我们的模型可以进行高质量的新视角合成。我们还说明了该模型在zero-shot（零样本）NeRF合成上的通用性，用于野外的图像合成。</p>
+<p>  <img src="image4.png" alt="Alt text"></p>
+<p>  loss = 固定的输入视角的重建损失 + 任意采样视角diffusion loss + 输入视角的depth correlation loss</p>
+<p>  贡献：</p>
+<ol>
+<li>将单视角重建看成是conditioned 3D生成问题，并提出了单张图片的NeRF合成框架，不需要3D监督，而是使用在大规模图片数据集上训练的扩散模型的2D先验</li>
+<li>设计了一个two-section semantic guidance，将在所有图像上通用的先验narrow down到和输入图像$x_0$相关的；two-section分别指image captioning/classification network和textual inversion，将它们各自产生的text embedding连接起来，作为guidance</li>
+<li>在包含3D不确定性的估计的深度图中，引入geometric regularization term</li>
+<li><p>在DTU MVS上验证了zero-shot新视角合成的结果，在in-the-wild images的新视角合成中能生成高质量图像</p>
+<p>NeRDi vs. DreamFusion：都是利用2D image diffusions优化新视角的NeRF渲染结果；不同点是，DreamFusion是用用户指定的语言输入来进行无约束的NeRF生成，而NeRDi用单视角图像输入的特征来约束新视角的image distributions</p>
+</li>
+</ol>
+</li>
+<li><p>NeuralLift-360: Lifting An In-the-wild 2D Photo to A 3D Object with 360{\deg} Views </p>
+<p>  本文提出NeuralLift-360，使用depth-aware NeRF并学习用扩散模型描述场景，可以用一张图片生成3D物体。通过引入ranking loss，NeuralLift-360可以被野外粗糙的深度估计引导。我们同时也对扩散先验采用了CLIP-guided采样策略，从而提升一致的guidance。</p>
+<p>  <img src="image5.png" alt="Alt text"></p>
+<p>  贡献：</p>
+<ol>
+<li>野外单张图片可以被lift到3D</li>
+<li>提出CLIP-guided采样策略</li>
+<li>当reference image很难被描述时，我们finetune扩散模型，同时保持生成多样内容的能力</li>
+<li>介绍了一种利用ranking信息的scale-invariant depth supervision，从而减轻了对精确的多视角一致的深度估计的需求，拓展了本文算法的应用场景</li>
+</ol>
+</li>
+<li><p>SceneScape: Text-Driven Consistent Scene Generation</p>
+<p>  提出一种text-driven perpetual view generation的方法，对于一段描述场景和相机位姿的输入文字prompt，能够合成一段视频。我们的新模型将预训练的text-to-image模型的生成能力和预训练的单目深度预测模型的geometric priors结合起来，可以在线生成这样的视频。为了解决3D一致性的问题，我们部署了在线的测试时训练，鼓励预测得到的当前帧深度图和合成场景geometrically consistent。深度图被用来在视频生成过程中逐渐建立一个场景的unified mesh representation。</p>
+<p>  贡献：</p>
+<ol>
+<li>第一个text-driven perpetual view generation方法</li>
+<li>第一个zero-shot/test-time场景生成方法，无需在特性的目标domain中进行大规模训练，就能合成多样的场景</li>
+<li>通过逐步估计unified 3D representation，实现3D一致性生成</li>
+</ol>
+</li>
 </ul>
 <h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
 <p>Ancestral sampling</p>

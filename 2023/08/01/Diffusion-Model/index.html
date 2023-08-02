@@ -113,7 +113,7 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Model (DDPM)</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV14c411J7f2/?spm_id_from=333.337.search-card.all.click&amp;vd_source=dd883cce367009200a0a78c39490e160">Diffusion Model讲解视频 - 李宏毅 (2023)</a></p>
+<p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2006.11239.pdf">Denoising Diffusion Probabilistic Model (DDPM)</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2112.10752.pdf">High-Resolution Image Synthesis with Latent Diffusion Models (LDM)</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV14c411J7f2/?spm_id_from=333.337.search-card.all.click&amp;vd_source=dd883cce367009200a0a78c39490e160">Diffusion Model讲解视频 - 李宏毅 (2023)</a></p>
 </blockquote>
 <h2 id="模型介绍"><a href="#模型介绍" class="headerlink" title="模型介绍"></a>模型介绍</h2><p>Reverse Process: 从纯噪声开始，进行N步denoise，得到干净的图像</p>
 <p>Denoise模块内部做了什么：Noise Predictor预测图像中的噪声，图片减去噪声得到输出</p>
@@ -144,9 +144,9 @@
 </ul>
 <h2 id="完整的diffusion-model"><a href="#完整的diffusion-model" class="headerlink" title="完整的diffusion model"></a>完整的diffusion model</h2><p><img src="image5.png" alt="Alt text"></p>
 <ul>
-<li>text encoder：对结果影响很大（Imagen那篇文章有写），好的text encoder可以帮助生成数据集中没有出现过的那些文字对应的图像</li>
-<li>decoder：将中间产物（小图/latent representation）还原成所需大小的图片，可以单独训练，不需要标签；如果中间产物是latent representation，可以训练一个auto-encoder</li>
-<li>generation model：输入文字，输出图像</li>
+<li>text encoder：用来编码conditional text，一般是一个预训练好的模型；对结果影响很大（Imagen那篇文章进行了对比），好的text encoder可以帮助生成数据集中没有出现过的那些文字对应的图像</li>
+<li>decoder：将中间产物（小图/latent representation）还原成所需大小的图片，可以单独训练，不需要带标签的训练集；如果中间产物是latent representation，可以训练一个auto-encoder，将图像映射到latent space，能够提高计算效率，因为diffusion model很吃计算资源</li>
+<li>generation model：输入文字，输出图像，即text-to-image</li>
 </ul>
 <h3 id="常见的diffusion-model"><a href="#常见的diffusion-model" class="headerlink" title="常见的diffusion model"></a>常见的diffusion model</h3><ul>
 <li>Stable Diffusion</li>
