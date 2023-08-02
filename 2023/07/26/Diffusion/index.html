@@ -175,6 +175,7 @@
 </li>
 <li><p>SceneScape: Text-Driven Consistent Scene Generation</p>
 <p>  提出一种text-driven perpetual view generation的方法，对于一段描述场景和相机位姿的输入文字prompt，能够合成一段视频。我们的新模型将预训练的text-to-image模型的生成能力和预训练的单目深度预测模型的geometric priors结合起来，可以在线生成这样的视频。为了解决3D一致性的问题，我们部署了在线的测试时训练，鼓励预测得到的当前帧深度图和合成场景geometrically consistent。深度图被用来在视频生成过程中逐渐建立一个场景的unified mesh representation。</p>
+<p>  <img src="image6.png" alt="Alt text"></p>
 <p>  贡献：</p>
 <ol>
 <li>第一个text-driven perpetual view generation方法</li>
@@ -183,7 +184,17 @@
 </ol>
 </li>
 </ul>
-<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
+<p><em>without pretrained models</em></p>
+<ul>
+<li><p>SparseFusion: Distilling View-conditioned Diffusion for 3D Reconstruction</p>
+<p>  本文提出SparseFusion，一种稀疏视角3D重建方法，将神经渲染和概率图像生成的优势结合起来。目前的方法一般使用重新投影特征进行神经渲染，但是无法生成看不见的区域，也不能处理视角变化很大时的不确定性。其他方法将此看做一个概率2D合成任务，虽然能生成很好的2D图像，但是很难在3D空间中推理出一致性。我们发现这种3D一致性和概率生成之间的矛盾是没有必要的。实际上，我们展示了geometric consistency和生成推理可以以mode-seeking的形式互为补充。通过从view-conditioned latent diffusion model中蒸馏3D一致的场景表示，我们可以恢复出很好的3D表示，能够渲染出精准的、有真实感的图像。</p>
+</li>
+</ul>
+<ul>
+<li>NerfDiff: Single-image View Synthesis with NeRF-guided Distillation from 3D-aware Diffusion</li>
+</ul>
+<p><strong>used in generation</strong></p>
+<h3 id="in-3D-Latent-space"><a href="#in-3D-Latent-space" class="headerlink" title="in 3D/Latent space"></a>in 3D/Latent space</h3><h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
 <p>Ancestral sampling</p>
 
              
