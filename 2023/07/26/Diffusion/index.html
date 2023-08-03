@@ -129,13 +129,21 @@
 <h2 id="Geometry-Aware"><a href="#Geometry-Aware" class="headerlink" title="Geometry-Aware"></a>Geometry-Aware</h2><h3 id="in-2D-image-space"><a href="#in-2D-image-space" class="headerlink" title="in 2D image space"></a>in 2D image space</h3><p><strong>used in optimization</strong></p>
 <p><em>with pretrained models</em></p>
 <ul>
-<li><p>DREAMFUSION: TEXT-TO-3D USING 2D DIFFUSION</p>
-<p>  将扩散模型用于3D合成，需要大规模的带标签的3D数据集和高效的3D数据除噪结构，而目前我们不具备这些条件。此项工作通过使用预训练的2D text-to-image扩散模型进行text-to-3D合成，避免了这些限制。本文引入了基于概率密度蒸馏（probability density distillation）的loss，使2D扩散模型可以为参数化的图像生成器的优化步骤提供先验。将此loss用于类似DeepDream的过程，就可以通过梯度下降优化一个随机初始化的3D模型（NeRF），使得从任意视角渲染得到的2D图像都能达到较低的loss。文本对应的3D模型最终可以从任意视角被观察，重新打光，或加入任何3D环境。该方法不需要3D训练数据，也不需要修改图像扩散模型。</p>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2209.14988">DreamFusion: Text-to-3D Using 2D Diffusion</a> (ICLR 2023)</p>
+<p>  Motivation：将扩散模型用于3D合成，需要大规模的成对的3D-text数据集和高效的3D数据降噪结构，而目前这些是稀缺的。目前从vision-language model知识迁移到text-to-3D的方法有两种，CLIP &amp; Diffusion Model</p>
+<p>  Method：用NeRF渲染某个视角下的图像，作为扩散模型的输入；用扩散模型（这篇论文中用的是Imagen）对加噪后的图像和文本之间的匹配程度进行打分，利用扩散模型计算出来的损失来更新NeRF的参数。扩散模型是预训练的，参数是固定的。</p>
 <p>  <img src="image3.png" alt="Alt text"></p>
+<p>  DDPM用的是Ancestral Sampling，本文介绍了一种新的采样方法——基于probability density distillation的loss，用扩散模型指导NeRF的更新，通过梯度下降优化一个随机初始化的3D模型，使得任意视角渲染得到的2D图像都有较低的loss。</p>
+<p>  <img src="image8.png" alt="pseudocode"></p>
 <p>  贡献：</p>
 <ol>
-<li>提出DreamFusion，一种新的类似NeRF的渲染引擎，但是DreamFusion不需要3D或者多视角的训练数据，只需要预训练的2D扩散模型</li>
-<li>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</li>
+<li>提出DreamFusion，不需要3D或者多视角的训练数据，只需要预训练的2D扩散模型来引导NeRF的优化从而进行text-to-3D的合成，具有zero-shot生成能力</li>
+<li><p>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</p>
+<p>问题：</p>
+</li>
+<li>分辨率低（64*64）</li>
+<li>训练时间比较长（1.5h for each caption）</li>
+<li>生成结果和目标文本不一致</li>
 </ol>
 </li>
 <li><p>Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation</p>
