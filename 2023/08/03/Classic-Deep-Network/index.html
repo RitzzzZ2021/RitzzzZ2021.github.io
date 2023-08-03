@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Tag: ML - RitzzzZ 
+        Classic Deep Network - RitzzzZ 
     </title>
      
     
@@ -93,116 +93,157 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-   
-   
-    <h3 class="archive-title">
-        Tags: ML 
-    </h3>
-   
-    
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.08
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/08/03/Classic-Deep-Network/">
-            <time class="archive-time" itemprop="datePublished">
-              08.03
-            </time>
-            · Classic Deep Network
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.07
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/07/30/Probability/">
-            <time class="archive-time" itemprop="datePublished">
-              07.30
-            </time>
-            · Probability
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/07/26/Diffusion/">
-            <time class="archive-time" itemprop="datePublished">
-              07.26
-            </time>
-            · Diffusion for 3D Generation
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/07/03/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/">
-            <time class="archive-time" itemprop="datePublished">
-              07.03
-            </time>
-            · 深度学习模型优化
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.06
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/06/14/Transformer%E7%AC%94%E8%AE%B0/">
-            <time class="archive-time" itemprop="datePublished">
-              06.14
-            </time>
-            · Transformer笔记
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/06/05/NeuroSEED%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
-            <time class="archive-time" itemprop="datePublished">
-              06.05
-            </time>
-            · NeuroSEED阅读笔记
-          </a>
-        </h2>
-      </article>
-    
-</div>
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/08/03/Classic-Deep-Network/">
+                    Classic Deep Network
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-08-03
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <h2 id="ResNet"><a href="#ResNet" class="headerlink" title="ResNet"></a><a target="_blank" rel="noopener" href="http://www.arxiv.org/pdf/1512.03385.pdf">ResNet</a></h2><p>加深神经网络不一定带来更好的结果。对于Non-nested function classes来说，由于学习偏差，更大的模型可能离最优点更远了。我们希望更大的模型严格包含小的模型，即nested function classes。ResNet的motivation就是想解决这个问题。</p>
+<h3 id="怎么做？"><a href="#怎么做？" class="headerlink" title="怎么做？"></a>怎么做？</h3><p>核心思想：加入一个残差块$f(x)=g(x)+x$，使得很深的网络更容易训练</p>
+<p><img src="image.png" alt="Alt text"></p>
+<h3 id="两种ResNet-block"><a href="#两种ResNet-block" class="headerlink" title="两种ResNet block"></a>两种ResNet block</h3><ol>
+<li><p>BasicBlock</p>
+<p> <img src="image1.png" alt="Alt text"></p>
+<pre><code class="lang-python"> #定义BasicBlock
+ class BasicBlock(nn.Module):
+     expansion = 1
+
+     def __init__(self, inplanes, planes, stride=1, downsaple=None, groups=1,
+                 base_width=64, dilation=1, norm_layer=None):
+         super(BasicBlock, self).__init__()
+         if norm_layer is None:
+             norm_layer = nn.BatchNorm2d
+         if groups !=1 or base_width != 64:
+             raise ValueError(&#39;BasicBlock only supports groups=1 and base_width=64&#39;)
+         if dilation &gt; 1:
+             raise NotImplementedError(&quot;Dilation &gt; 1 not supported in BasicBlock&quot;)
+
+         #下面定义BasicBlock中的各个层
+         self.conv1 = con3x3(inplanes, planes, stride)
+         self.bn1 = norm_layer(planes)
+         self.relu = nn.ReLU(inplace=True) #inplace为True表示进行原地操作，一般默认为False，表示新建一个变量存储操作
+         self.conv2 = con3x3(planes, planes)
+         self.bn2 = norm_layer(planes)
+         self.dowansample = downsaple
+         self.stride = stride
+
+     #定义前向传播函数将前面定义的各层连接起来
+     def forward(self, x):
+         identity = x #这是由于残差块需要保留原始输入
+
+         out = self.conv1(x)
+         out = self.bn1(out)
+         out = self.relu(out)
+
+         out = self.conv2(out)
+         out = self.bn2(out)
+
+         if self.dowansample is not None: #这是为了保证原始输入与卷积后的输出层叠加时维度相同
+             identity = self.dowansample(x)
+
+         out += identity
+         out = self.relu(out)
+
+         return out
+</code></pre>
+</li>
+<li><p>BottleNeck</p>
+<p> <img src="image2.png" alt="Alt text"></p>
+<p> $1\ times 1$ Conv的作用是改变特征图的通道数，可以降低网络参数量，所以更深的网络会采用BottleNeck而不是BasicBlock</p>
+<pre><code class="lang-python"> #下面定义Bottleneck层（Resnet50以上用到的基础块）
+ class Bottleneck(nn.Module):
+     expansion = 4 #Bottleneck层输出通道都是输入的4倍
+
+     def __init__(self, inplanes, planes, stride=1, downnsaple=None, groups=1,
+                 base_width=64, dilation=1, norm_layer=None):
+         super(Bottleneck, self).__init__()
+         if norm_layer is None:
+             norm_layer = nn.BatchNorm2d
+         width = int(planes * (base_width / 64.)) * groups
+         #定义Bottleneck中各层
+         self.conv1 = con1x1(inplanes, width)
+         self.bn1 = norm_layer(width)
+         self.conv2 = con3x3(width, width, stride, groups, dilation)
+         self.bn2 = norm_layer(width)
+         self.conv3 = con1x1(width, planes * self.expansion)
+         self.bn3 = norm_layer(planes * self.expansion)
+         self.relu = nn.ReLU(inplanes=True)
+         self.downsaple = downnsaple
+         self.stride = stride
+
+     #定义Bottleneck的前向传播
+     def forward(self, x):
+         identity = x
+
+         out = self.conv1(x)
+         out = self.bn1(out)
+         out = self.relu(out)
+
+         out = self.conv2(out)
+         out = self.bn2(out)
+         out = self.relu(out)
+
+         out = self.conv3(out)
+         out = self.bn3(out)
+         out = self.relu(out)
+
+         if self.downsaple is not None:
+             identity = self.downsaple(x)
+
+         out += identity
+         out = self.relu(out)
+
+         return out
+</code></pre>
+</li>
+</ol>
+<p>ResNet架构：类似VGG和GoogleNet，但替换成ResNet block</p>
+<p><img src="image3.png" alt="Alt text"></p>
 
              
+        </div>
+        
+            <p itemprop="keywords" class="tags">
+                
+                    <a href="/tags/ML/"> ML </a>
+                
+            </p>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/08/01/Diffusion-Model/">Diffusion Model &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a href="/2023/08/03/CLIP/"> &raquo; CLIP</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023

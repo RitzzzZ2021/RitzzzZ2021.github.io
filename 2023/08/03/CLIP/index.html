@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Tag: ML - RitzzzZ 
+        CLIP - RitzzzZ 
     </title>
      
     
@@ -93,116 +93,76 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-   
-   
-    <h3 class="archive-title">
-        Tags: ML 
-    </h3>
-   
-    
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.08
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/08/03/Classic-Deep-Network/">
-            <time class="archive-time" itemprop="datePublished">
-              08.03
-            </time>
-            · Classic Deep Network
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.07
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/07/30/Probability/">
-            <time class="archive-time" itemprop="datePublished">
-              07.30
-            </time>
-            · Probability
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/07/26/Diffusion/">
-            <time class="archive-time" itemprop="datePublished">
-              07.26
-            </time>
-            · Diffusion for 3D Generation
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/07/03/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/">
-            <time class="archive-time" itemprop="datePublished">
-              07.03
-            </time>
-            · 深度学习模型优化
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.06
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/06/14/Transformer%E7%AC%94%E8%AE%B0/">
-            <time class="archive-time" itemprop="datePublished">
-              06.14
-            </time>
-            · Transformer笔记
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/06/05/NeuroSEED%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">
-            <time class="archive-time" itemprop="datePublished">
-              06.05
-            </time>
-            · NeuroSEED阅读笔记
-          </a>
-        </h2>
-      </article>
-    
-</div>
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/08/03/CLIP/">
+                    CLIP
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-08-03
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <h2 id="CLIP"><a href="#CLIP" class="headerlink" title="CLIP"></a>CLIP</h2><p>论文地址：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2103.00020.pdf">Learning Transferable Visual Models From Natural Language Supervision</a> (ICML 2021)</p>
+<h3 id="CLIP的特点"><a href="#CLIP的特点" class="headerlink" title="CLIP的特点"></a>CLIP的特点</h3><ul>
+<li>利用自然语言的监督信号，将文字的语义和图片的语义联系在了一起，是一个多模态的模型</li>
+<li>迁移效果非常好，能进行zero-shot推理，不需要在新的domain上重新训练</li>
+</ul>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><ul>
+<li>模型输入是text-image pair（text指的是句子），形成一个$n \times n$矩阵，很自然地可以进行自监督的对比学习，其中对角线上的是正样本（即文本和图像是匹配的），其他位置上是负样本</li>
+<li>需要大量的text-image pair数据</li>
+</ul>
+<h3 id="推理"><a href="#推理" class="headerlink" title="推理"></a>推理</h3><ul>
+<li>对于ImageNet的数据集，将分类标签通过<strong>prompt template</strong>转换成一个句子，通过一个预训练好的text encoder转化成文本特征。prompt的模型中也有很多trick，有两种方式，prompt engineering &amp; prompt ensemble</li>
+<li>对输入的图像，通过image encoder得到特征，再和上一步得到的所有文本特征进行cosine similarity的计算和比对，找到最相似的那个特征</li>
+</ul>
+<p><img src="image.png" alt="Alt text"></p>
+<h2 id="后续工作"><a href="#后续工作" class="headerlink" title="后续工作"></a>后续工作</h2><ul>
+<li>StyleCLIP</li>
+<li>CLIPDraw</li>
+<li>目标检测，open-vocabulary detector</li>
+<li>视频检索，每一帧和文本做对比</li>
+</ul>
 
              
+        </div>
+        
+            <p itemprop="keywords" class="tags">
+                
+                    <a href="/tags/CV/"> CV </a>
+                
+            </p>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/08/03/Classic-Deep-Network/">Classic Deep Network &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023

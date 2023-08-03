@@ -130,7 +130,7 @@
 <p><em>with pretrained models</em></p>
 <ul>
 <li><p>DREAMFUSION: TEXT-TO-3D USING 2D DIFFUSION</p>
-<p>  将扩散模型用于3D合成，需要大规模的带标签的3D数据集和高效的3D数据除噪结构，而目前我们不具备这些条件。此项工作通过使用预训练的2D text-to-image扩散模型进行text-to-3D合成，避免了这些限制。本文引入了基于概率密度蒸馏（probability density distillation）的loss，使2D扩散模型可以作为参数图像生成器优化的先验。将此loss用于类似DeepDream的过程，就可以通过梯度下降优化一个随机初始化的3D模型（NeRF），从任意视角渲染得到的2D图像都能达到较低的loss。文本对于的3D模型最终可以从任意视角被观察，重新打光，或加入任何3D环境。该方法不需要3D训练数据，也不需要修改图像扩散模型。</p>
+<p>  将扩散模型用于3D合成，需要大规模的带标签的3D数据集和高效的3D数据除噪结构，而目前我们不具备这些条件。此项工作通过使用预训练的2D text-to-image扩散模型进行text-to-3D合成，避免了这些限制。本文引入了基于概率密度蒸馏（probability density distillation）的loss，使2D扩散模型可以为参数化的图像生成器的优化步骤提供先验。将此loss用于类似DeepDream的过程，就可以通过梯度下降优化一个随机初始化的3D模型（NeRF），使得从任意视角渲染得到的2D图像都能达到较低的loss。文本对应的3D模型最终可以从任意视角被观察，重新打光，或加入任何3D环境。该方法不需要3D训练数据，也不需要修改图像扩散模型。</p>
 <p>  <img src="image3.png" alt="Alt text"></p>
 <p>  贡献：</p>
 <ol>
@@ -139,7 +139,7 @@
 </ol>
 </li>
 <li><p>Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation</p>
-<p>  扩散模型学习如何去预测梯度的向量场。本文提出对梯度使用链式法则，通过可微渲染器（被初始化为voxel radiance field）的Jacobian反向传播扩散模型的score。这种方法将多视角的2D scores融合进3D score，重新提出了用于3D生成的预训练2D模型。我们指出分布不匹配的技术难点，并提出了一种新的估计方法来解决它。我们在多个现成的扩散图像生成模型上跑了我们的算法，包括在LAION 5B数据集上训练的Stable Diffusion。</p>
+<p>  本文提出对梯度使用链式法则，通过可微渲染器（被初始化为voxel radiance field）的Jacobian反向传播扩散模型的score。这种方法将多视角的2D scores融合进3D score，重新提出了用于3D生成的预训练2D模型。我们指出分布不匹配的技术难点，并提出了一种新的估计方法来解决它。我们在多个现成的扩散图像生成模型上跑了我们的算法，包括在LAION 5B数据集上训练的Stable Diffusion。</p>
 <p>  贡献：</p>
 <ol>
 <li>提出了一种通过链式法则将2D扩散模型提升到3D的方法</li>
