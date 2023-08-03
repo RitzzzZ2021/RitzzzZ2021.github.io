@@ -146,13 +146,13 @@
 <li>生成结果和目标文本不一致</li>
 </ol>
 </li>
-<li><p>Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation</p>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.00774.pdf">Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation</a>（CVPR 2023）</p>
 <p>  本文提出对梯度使用链式法则，通过可微渲染器（被初始化为voxel radiance field）的Jacobian反向传播扩散模型的score。这种方法将多视角的2D scores融合进3D score，重新提出了用于3D生成的预训练2D模型。我们指出分布不匹配的技术难点，并提出了一种新的估计方法来解决它。我们在多个现成的扩散图像生成模型上跑了我们的算法，包括在LAION 5B数据集上训练的Stable Diffusion。</p>
 <p>  贡献：</p>
 <ol>
 <li>提出了一种通过链式法则将2D扩散模型提升到3D的方法</li>
-<li>阐释了使用预训练降噪器会遇到的out-of-distribution (OOD)问题，并提出Perturb-and-Average Scoring来解决该问题</li>
-<li>指出了使用Perturb-and-Average Scoring作为梯度来进行优化的一些开放问题</li>
+<li>阐释了使用预训练降噪器会遇到的 out-of-distribution (OOD) 问题（比如输入的就是一个无噪声的图像），并提出Perturb-and-Average Scoring (PAAS)，也就是加上一个噪声来解决该问题</li>
+<li>指出了使用Perturb-and-Average Scoring作为梯度进行优化会造成的一些开放问题</li>
 <li>阐述了Score Jacobian Chaining在3D文本驱动生成问题上的有效性</li>
 </ol>
 </li>
@@ -166,7 +166,7 @@
 <li>设计了一个two-section semantic guidance，将在所有图像上通用的先验narrow down到和输入图像$x_0$相关的；two-section分别指image captioning/classification network和textual inversion，将它们各自产生的text embedding连接起来，作为guidance</li>
 <li>在包含3D不确定性的估计的深度图中，引入geometric regularization term</li>
 <li><p>在DTU MVS上验证了zero-shot新视角合成的结果，在in-the-wild images的新视角合成中能生成高质量图像</p>
-<p>NeRDi vs. DreamFusion：都是利用2D image diffusions优化新视角的NeRF渲染结果；不同点是，DreamFusion是用用户指定的语言输入来进行无约束的NeRF生成，而NeRDi用单视角图像输入的特征来约束新视角的image distributions</p>
+<p>NeRDi vs. DreamFusion：都是利用2D image diffusions优化新视角的NeRF渲染结果；不同点是，DreamFusion是用用户指定的语言输入来进行无约束的NeRF生成，而NeRDi用单视角图像输入的特征来约束新视角的image distributions。</p>
 </li>
 </ol>
 </li>
@@ -194,11 +194,17 @@
 </ul>
 <p><em>without pretrained models</em></p>
 <ul>
-<li><p>SparseFusion: Distilling View-conditioned Diffusion for 3D Reconstruction</p>
-<p>  本文提出SparseFusion，一种稀疏视角3D重建方法，将神经渲染和概率图像生成的优势结合起来。目前的方法一般使用重新投影特征进行神经渲染，但是无法生成看不见的区域，也不能处理视角变化很大时的不确定性。其他方法将此看做一个概率2D合成任务，虽然能生成很好的2D图像，但是很难在3D空间中推理出一致性。我们发现这种3D一致性和概率生成之间的矛盾是没有必要的。实际上，我们展示了geometric consistency和生成推理可以以mode-seeking的形式互为补充。通过从view-conditioned latent diffusion model中蒸馏3D一致的场景表示，我们可以恢复出很好的3D表示，能够渲染出精准的、有真实感的图像。</p>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.00792.pdf">SparseFusion: Distilling View-conditioned Diffusion for 3D Reconstruction</a> (CVPR 2023)</p>
+<p>  本文提出SparseFusion，一种稀疏视角3D重建方法，将神经渲染和概率图像生成的优势结合起来。目前的方法一般使用reprojected feature进行神经渲染，但是无法生成看不见的区域，也不能处理视角变化很大时的不确定性。其他方法将此看做一个概率2D合成任务，虽然能生成很好的2D图像，但是很难在3D空间中推理出一致性。我们发现这种3D一致性和概率生成之间的矛盾是没有必要的。本文展示了geometric consistency和生成推理可以以mode-seeking的形式互为补充。通过从view-conditioned latent diffusion model (VLDM)中蒸馏3D一致的场景表示，我们可以恢复出很好的3D representation，能够渲染出精准的、真实感的图像。</p>
 <p>  <img src="image7.png" alt="Alt text"></p>
+<p>  Epipolar Feature Transformer (EFT)：从query camera射出一条光线，沿着epipolar line采样得到的feature，将feature输入EFT，预测得到RGB color和一个特征向量；在整个图像上进行该操作，就能得到一张RGB图像和一个view-aligned feature grid $y$，将RGB图像当做baseline，用$y$作为扩散模型的condition input。<br>  diffusion distillation：实现3D一致性；在latent space中计算loss和梯度比在pixel space中更好。</p>
 </li>
-<li><p>NerfDiff: Single-image View Synthesis with NeRF-guided Distillation from 3D-aware Diffusion</p>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2302.10109.pdf">NerfDiff: Single-image View Synthesis with NeRF-guided Distillation from 3D-aware Diffusion</a> (ICML 2023)</p>
+<p>  目前的方法用局部图像特征来condition NeRF，结合2D特征进行体渲染。然而，在严重的遮挡情况下，投影难以解决不确定性，造成渲染结果模糊、缺失细节。本文提出用NerfDiff解决此类问题。通过在test-time合成并精细化一组virtual views，将3D-aware conditional diffusion model (CDM)的知识迁移到NeRF。我们进一步提出一种新的NeRF-guided distillation算法，从CDM samples中生成3D一致的virtual views的同时，基于这些virtual views对NeRF进行finetune。</p>
+<p>  <img src="image9.png" alt="Alt text"></p>
+<p>  Training：分别训练一个single-image NeRF和一个以NeRF的渲染结果作为condition的2D CDM。<br>  Finetuning：在测试时，用学习到的网络参数预测一个初始的NeRF representation，然后用CDM去噪后的图像来监督NeRF。</p>
+<p>  <img src="image10.png" alt="Alt text"></p>
+<p>  结构：用UNet将输入图像映射到相机对齐的triplane-based NeRF representation，可以很好地从对体渲染进行目标视角的约束。渲染结果将会作为扩散过程的condition，从而使CDM在目标视角能够一致地进行去噪。</p>
 </li>
 </ul>
 <p><strong>used in generation</strong></p>

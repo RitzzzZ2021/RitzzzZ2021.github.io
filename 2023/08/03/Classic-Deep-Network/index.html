@@ -163,7 +163,7 @@
 </li>
 <li><p>BottleNeck</p>
 <p> <img src="image2.png" alt="Alt text"></p>
-<p> $1\ times 1$ Conv的作用是改变特征图的通道数，可以降低网络参数量，所以更深的网络会采用BottleNeck而不是BasicBlock</p>
+<p> $1 \times 1$ Conv的作用是改变特征图的通道数，可以降低网络参数量，所以更深的网络会采用BottleNeck而不是BasicBlock</p>
 <pre><code class="lang-python"> #下面定义Bottleneck层（Resnet50以上用到的基础块）
  class Bottleneck(nn.Module):
      expansion = 4 #Bottleneck层输出通道都是输入的4倍
@@ -213,7 +213,7 @@
 </ol>
 <p>ResNet架构：类似VGG和GoogleNet，但替换成ResNet block</p>
 <p><img src="image3.png" alt="Alt text"></p>
-
+<h2 id="UNet"><a href="#UNet" class="headerlink" title="UNet"></a>UNet</h2>
              
         </div>
         
