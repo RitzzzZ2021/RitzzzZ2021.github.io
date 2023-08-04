@@ -208,7 +208,20 @@
 </li>
 </ul>
 <p><strong>used in generation</strong></p>
-<h3 id="in-3D-Latent-space"><a href="#in-3D-Latent-space" class="headerlink" title="in 3D/Latent space"></a>in 3D/Latent space</h3><h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.09869v1.pdf">RenderDiffusion: Image Diffusion for 3D Reconstruction, Inpainting and Generation</a></p>
+<p>  RenderDiffusion是第一个用于3D生成和推理的扩散模型，可以被训练成只使用单目2D监督。该方法的核心在于一个在每个denoising step中可以生成、渲染场景的中间3D表示的新的图像去噪结构。这将一个很强的推理结构加入了扩散过程，让我们能得到3D一致的表示，同时只需要单目2D监督。另外，我们可以用2D inpainting来编辑3D场景。</p>
+<p>  <img src="image11.png" alt="Alt text"></p>
+<p>  结构：denoiser $g_\theta$和传统的2D扩散模型不一样，它包含3D结构——triplane representation $P$。$P$由一个带噪声的输入图像通过encoder $e_\Phi$推理得到。MLP $s_\Psi$将任意采样点处的triplane features转换成颜色和密度，用来渲染去噪后的输出图像。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.14108.pdf">3DDesigner: Towards Photorealistic 3D Object Generation and Editing with Text-guided Diffusion Models</a></p>
+</li>
+</ul>
+<pre><code>![Alt text](image12.png)
+</code></pre><h3 id="in-3D-Latent-space"><a href="#in-3D-Latent-space" class="headerlink" title="in 3D/Latent space"></a>in 3D/Latent space</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.16677.pdf">3D Neural Field Generation using Triplane Diffusion</a> (CVPR 2023)</li>
+</ul>
+<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
 <p>Ancestral sampling</p>
 
              
