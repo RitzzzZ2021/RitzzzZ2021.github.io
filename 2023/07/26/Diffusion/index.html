@@ -212,17 +212,33 @@
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.09869v1.pdf">RenderDiffusion: Image Diffusion for 3D Reconstruction, Inpainting and Generation</a></p>
 <p>  RenderDiffusion是第一个用于3D生成和推理的扩散模型，可以被训练成只使用单目2D监督。该方法的核心在于一个在每个denoising step中可以生成、渲染场景的中间3D表示的新的图像去噪结构。这将一个很强的推理结构加入了扩散过程，让我们能得到3D一致的表示，同时只需要单目2D监督。另外，我们可以用2D inpainting来编辑3D场景。</p>
 <p>  <img src="image11.png" alt="Alt text"></p>
-<p>  结构：denoiser $g_\theta$和传统的2D扩散模型不一样，它包含3D结构——triplane representation $P$。$P$由一个带噪声的输入图像通过encoder $e_\Phi$推理得到。MLP $s_\Psi$将任意采样点处的triplane features转换成颜色和密度，用来渲染去噪后的输出图像。</p>
+<p>  传统的denoiser预测每一步图片上加的噪声，而我们还想同时重建3D场景作为中间表示，所以我们训练的$g_\theta$预测的是$x_0$，也就是clean image，而不是噪声，于是训练损失相应变成$L := ||g_\theta(x_t,t)-x_0||_1$。</p>
+<p>  结构：denoiser $g_\theta$和传统的用UNet实现的2D扩散模型不一样，它包含3D结构——triplane representation $P$。$P$由一个带噪声的输入图像通过encoder $e_\Phi$推理得到。MLP $s_\Psi$将任意采样点处的triplane features转换成颜色和密度，用来渲染去噪后的输出图像。</p>
+<p>  triplane representation：将3D feature grid分解成3个2D feature maps，沿着坐标平面放置，能够更紧凑地表示3D信息。每个feature map的分辨率是$N \times N \times n_f$，其中$n_f$是通道数。把一个3D点$p$投影到每个坐标平面上，进行双线性插值并求和，就能得到一个大小为$n_f$的特征向量，表示为$P[p]$。</p>
+<p>  triplane encoder：将$M \times M \times 3$的输入图片转化成$N \times N \times 3n_f$的triplane representation，其中$N \geq M$。在UNet的基础上，加上一层使输出的feature maps大小和triplane一样。</p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.14108.pdf">3DDesigner: Towards Photorealistic 3D Object Generation and Editing with Text-guided Diffusion Models</a></p>
+<p>  我们用text-guided扩散模型实现3D一致的生成，用类似NeRF的神经场来生成某个相机视角下低分辨率的图像，作为接下来扩散过程的condition。在去噪过程中，我们使用一种新的双流异步扩散过程，通过建模跨视角的对应性来加强3D一致性。我们研究了3D局部编辑，并提出生成360°可操控图像的两步解决方案，第一步是通过融合预测的噪声进行2D局部编辑，第二步是进行noise-to-text逆过程，将融合的噪声映射到视角无关的text embedding space。获得对应的text embedding后，就能生成360°图像。最后，我们将模型扩展，在单张照片上finetuning从而进行one-shot新视角合成。</p>
+<p>  <img src="image12.png" alt="Alt text"></p>
+<p>  结构：基于NeRF的condition module接受的输入是一对 <one coarse text, two camera views>，生成低分辨率的coarse results。双流异步扩散模块接受的输入是四元组<one full text, two coarse results, two timesteps, two noised images>，并预测加上的噪声，每一条流是一个vanilla text-guided diffusion model，除了每个attention block后的特征交互。timesteps是随机产生的，并且两个streams之间参数是共享的。</p>
 </li>
 </ul>
-<pre><code>![Alt text](image12.png)
-</code></pre><h3 id="in-3D-Latent-space"><a href="#in-3D-Latent-space" class="headerlink" title="in 3D/Latent space"></a>in 3D/Latent space</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.16677.pdf">3D Neural Field Generation using Triplane Diffusion</a> (CVPR 2023)</li>
+<h3 id="in-3D-Latent-space"><a href="#in-3D-Latent-space" class="headerlink" title="in 3D/Latent space"></a>in 3D/Latent space</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2207.13751.pdf">GAUDI: A Neural Architect for Immersive 3D Scene Generation</a></p>
+<p>  GAUDI是一个能捕捉复杂、真实的3D场景分布的生成模型。我们首先优化解耦radiance fields和相机位姿的latent representation，然后被用来学习能进行条件和非条件生成3D场景的生成模型。相比于之前的关注单个物体的工作，我们并不假定相机位姿的分布能在样本之间共享。</p>
+</li>
+</ul>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.16677.pdf">3D Neural Field Generation using Triplane Diffusion</a> (CVPR 2023)</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.06135.pdf">Rodin: A Generative Model for Sculpting 3D Digital Avatars Using Diffusion</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.01206.pdf">DiffRF: Rendering-Guided 3D Radiance Field Diffusion</a> (CVPR 2023)</p>
+<p>  DiffRF是一个基于DDPM的3D radiance field合成方法。目前基于扩散的方法在图像、latent codes或者点云数据上操作，DiffRF在体素网格上操作，是第一个直接生成volumetric radiance fields的工作。由于从posed images中生成的radiance field是有二义性的，获取radiance field的GT并不容易，我们结合denoise损失和渲染损失，使模型学到一个有偏的先验，最终能合成更高质量的图像，避免漂浮物一类的artifacts。相较于2D扩散模型，DiffRF学到多视角一致的先验。相较于3D GANs，基于扩散的方法能更自然地进行<strong>条件生成</strong>，比如遮盖补全和单视角合成。</p>
+<p>  <img src="image13.png" alt="Alt text"></p>
+</li>
 </ul>
 <h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
-<p>Ancestral sampling</p>
 
              
         </div>
