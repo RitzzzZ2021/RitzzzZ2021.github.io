@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>
+        NeRF Baking: SNeRG, Instant-NGP and MERF - RitzzzZ 
+    </title>
+     
+    
+<link rel="stylesheet" href="/css/grid.css">
+
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+<link rel="stylesheet" href="/css/ringo.css">
+
+     
+        <link rel="icon" type="image/x-icon" href="/img/icon.png " />
+     
+     
+     
+        <meta name=" " content="" />
+     
+        <meta name=" " content="" />
+     
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header id="header" class="clearfix" onclick="window.open('/', '_self')">
+    <div class="site-name">
+        <a href="/" id="logo" class="site-title">
+            RitzzzZ
+        </a>
+        <p class="description site-description">
+            <span style="padding-top:20px; font-size: 10px">
+                An infinite journey
+            </span>
+        </p>
+    </div>
+</header>
+<div id="sidebar" role="complementary">
+    <section class="widget">
+        <ul class="menu widget-list">
+            
+                <li class="menu-item">
+                    <a href="/" class="menu-item-link">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/about" class="menu-item-link">
+                        About
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/archives" class="menu-item-link">
+                        Archives
+                    </a>
+                </li>
+                
+        </ul>
+    </section>
+    <section class="widget sidebar-foot">
+        <ul class="widget-list">
+            <li>Theme <a rel="nofollow" target="_blank" href="https://github.com/HeliumOI/hexo-theme-ringo">Ringo</a>
+                by <a target="_blank" href="/ "> RitzzzZ  </a></li>
+            <li>Proudly powered by  <a rel="nofollow" target="_blank" href="https://hexo.io/">Hexo</a></li>
+        </ul>
+    </section>
+</div>
+
+<div id="helpbar">
+    <div class="back-to-top">
+        <button id="back2top">↑</button>
+        <script>
+            back2top.onclick = function() {
+                var movement = document.body.scrollTop || document.documentElement.scrollTop;
+                scrollBy(0, -movement);
+            }
+        </script>
+    </div>
+</div>
+      <main class="main">
+        <div id="body">
+          <div class="container">
+            <div class="col-12" id="main" role="main">
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/08/05/NeRF-Baking-SNeRG-Instant-NGP-and-MERF/">
+                    NeRF Baking: SNeRG, Instant-NGP and MERF
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-08-05
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1dk4y1v7Xi/?spm_id_from=333.337.search-card.all.click&amp;vd_source=dd883cce367009200a0a78c39490e160">参考视频</a></p>
+</blockquote>
+<h2 id="SNeRG-2021"><a href="#SNeRG-2021" class="headerlink" title="SNeRG (2021)"></a><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2103.14645.pdf">SNeRG</a> (2021)</h2><p>key idea：把NeRF模型bake到一个稀疏网格模型Sparse Neural Radiance Grid，从而加速渲染</p>
+<h3 id="Defered-NeRF-Model"><a href="#Defered-NeRF-Model" class="headerlink" title="Defered NeRF Model"></a>Defered NeRF Model</h3><ul>
+<li>基于JAXNeRF模型，采样到的值被存储在一个稀疏3D体素网格里，在渲染时查询</li>
+<li>输出视角无关的diffuse color，视角相关的体密度，specular feature；前两个用来构建$\alpha$-composite模型，后两个和视角$d$结合，用一个很小的神经网络解码得到specular color，这就是所谓的“延迟”——在原先的NeRF中，视角$d$是直接输入MLP模型的，这样对一条采样射线只用做一次解码</li>
+</ul>
+<h3 id="SNeRG-vs-vanilla-NeRF"><a href="#SNeRG-vs-vanilla-NeRF" class="headerlink" title="SNeRG vs. vanilla NeRF"></a>SNeRG vs. vanilla NeRF</h3><p><img src="image.png" alt="Alt text"></p>
+<ol>
+<li>公式(5) (6)可以被预计算，储存在一个稀疏的体素网格里，在训练之后进行（也就是bake），渲染时只需要查询体素网格和(7)中的小MLP。</li>
+<li>对不透明度进行正则化。加了一个柯西损失项，让空间中的不透明度分布变得稀疏，即让透明的地方更透明，不透明的地方更不透明。</li>
+</ol>
+<p><img src="image1.png" alt="Alt text"></p>
+<ul>
+<li>原版NeRF进行了两阶段（coarse to fine）采样，柯西损失只应用于coarse阶段</li>
+<li>对外点（high density）鲁棒，也就是说让一条射线上高体密度的地方分布越稀疏越好</li>
+</ul>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>Indirect Grids：表明空间中哪些位置包含了模型，空的地方什么都不存，其他的会存储一个指向macroblock指针</p>
+<p>Macroblocks：存储模型信息（diffuse color, volume density, specular feature）</p>
+<h3 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h3><ol>
+<li>沿射线查询非空的macroblocks</li>
+<li>在macroblocks的3D texture map中按采样位置进行三线性插值，只采样体密度非零的值</li>
+<li>不透明度饱和时终止采样射线</li>
+<li>对射线上的采样值进行$\alpha$-compositing</li>
+<li>用MLP和视角方向一起解码，获得像素值</li>
+</ol>
+<h3 id="Baking"><a href="#Baking" class="headerlink" title="Baking"></a>Baking</h3><p>Baking：生成加速的数据结构的模型的过程</p>
+<ol>
+<li>将空间划分成$N^3$的体素网格</li>
+<li>根据不透明度、体素能见度剔除空体素网格</li>
+<li>高斯采样后求平均，实现anti-aliasing</li>
+</ol>
+<h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><p>SNeRG实际上是用空间换时间，但是也不希望占用太多空间。</p>
+<p>压缩用到的方法：</p>
+<ol>
+<li>8 bits量化</li>
+<li>将indirect grids切片压缩为PNG</li>
+<li>将3D texture maps压缩成PNG/JPEG/H264</li>
+</ol>
+<p>为什么有损压缩对结果影响不大？原因是查询到的specular features还会和视角一起输入到MLP中，这个MLP会对颜色的损失做补偿，优化它利用的是稀疏体素网格的渲染loss。</p>
+<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><ul>
+<li>反射或透明的部分太复杂的时候，建模不准确，因为一些视角依赖效果是逐像素渲染而不是逐采样点渲染</li>
+<li>对大场景没有适应性</li>
+</ul>
+<h2 id="Instant-NGP-2022"><a href="#Instant-NGP-2022" class="headerlink" title="Instant-NGP (2022)"></a><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2201.05989">Instant-NGP</a> (2022)</h2><p>key idea: hash encoding，将输入坐标编码为多尺度哈希表索引的可训练的特征向量，用较小的MLP实现训练和渲染的加速</p>
+<h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>在不同的分辨率下，查询当前像素所在的体素网格，进行插值得到特征向量，其中，对周边几个点的特征向量的查询需要用哈希表索引。将不同分辨率得到的特征向量以及视角拼接起来，作为MLP的输入，解码得到渲染结果。</p>
+<p><img src="image3.png" alt="Alt text"></p>
+<h3 id="多分辨率哈希网格"><a href="#多分辨率哈希网格" class="headerlink" title="多分辨率哈希网格"></a>多分辨率哈希网格</h3><ul>
+<li>多层哈希网格，各层之间独立，网格顶点存储特征向量</li>
+<li>按几何级数设置网格分辨率（等比数列）</li>
+</ul>
+<p><img src="image2.png" alt="Alt text"></p>
+<p>其中质数$\Pi_1=1$，$\Pi_2,\Pi_3$是很大的质数</p>
+<p>线性同余的好处：</p>
+<ol>
+<li>让维度和哈希值去相关</li>
+<li>减少哈希碰撞</li>
+</ol>
+<p>本文采用特征向量长度$F=2$，层数$L=16$</p>
+<h2 id="MERF-2023"><a href="#MERF-2023" class="headerlink" title="MERF (2023)"></a>MERF (2023)</h2><p>结合低分辨率的稀疏特征网格和3个高分辨率2D特征平面减少内存消耗。</p>
+<h3 id="场景表示"><a href="#场景表示" class="headerlink" title="场景表示"></a>场景表示</h3><p>$L^3$体素网格：实际上采用$L=512$，对某个点$x$，取周边8个顶点，通过三线性插值得到特征向量$V(x,y,z)$</p>
+<p>$R^2$平面：实际上采用$R=2048$，把$x$投影到三个平面上，在每个平面上取周边四个顶点做双线性插值，得到3个特征向量$P_x,P_y,P_z$</p>
+<p>将上面的特征向量进行求和，得到一个长度是4+K的特征向量$t$，其中体密度$\tau$占1个，视角无关的颜色占3个，视角相关的特征向量占K（实际操作中取4）个。注意是先进行插值再进行非线性映射（来自DVGO，显著提升网格表达能力），$\sigma$指sigmoid函数。</p>
+<p><img src="image4.png" alt="Alt text"></p>
+<h3 id="无边界场景映射"><a href="#无边界场景映射" class="headerlink" title="无边界场景映射"></a>无边界场景映射</h3><p>Mip-NeRF 360的球形收缩函数将直线映射为曲线，让跳过空体素的计算消耗更高（很难进行ray-AABB计算）。</p>
+<p><img src="image5.png" alt="Alt text"></p>
+<p>训练时模拟查询格点、插值等网格采样过程；渲染时采用传统的跳过空体素的方法。</p>
+<p>训练模型时量化：</p>
+<p><img src="image6.png" alt="Alt text"></p>
+
+             
+        </div>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/08/03/CLIP/">CLIP &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
+            <footer id="footer" role="contentinfo">
+    
+        &copy; 2022 - 2023
+        <br />
+    
+    
+    <br />
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_value_site_pv">......</span> visits ·
+        <span id="busuanzi_value_site_uv">......</span> visitors 
+    
+</footer>
+          </div>
+        </div>
+      </main>
+      <!-- highlight support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
+ 
+<script>
+        hljs.initHighlightingOnLoad();
+</script>
+ 
+<!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
+ 
+<!-- mathjax support -->
+
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- fancybox support -->
+ 
+<!-- viewerjs support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.js"></script>
+
+<script type="text/javascript">
+    Viewer.setDefaults({
+        zoomRatio: [0.5],
+        show: function () {
+            this.viewer.zoomTo(1);
+        },
+    });
+    
+    var imageList = document.querySelector('.post-content').getElementsByTagName('img');
+    
+    var imageArray = new Array();
+    Array.prototype.forEach.call(imageList, element => {
+        if (element.alt != "no-view" && element.className != "no-view") {
+            imageArray.push(element);
+        }
+    });
+    
+    Array.prototype.forEach.call(imageArray, element => {
+        var viewer1 = new Viewer(element);
+        viewer1.images = imageArray;
+        viewer1.length = imageArray.length;
+    });
+</script>
+ 
+<!-- google analytics support -->
+
+
+
+ 
+ 
+
+<!-- lazyload support -->
+
+    
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
+
+<script>
+    new LazyLoad({
+        elements_selector: '.post-content img'
+    });
+</script>
+ 
+  </body>
+
+</html>
