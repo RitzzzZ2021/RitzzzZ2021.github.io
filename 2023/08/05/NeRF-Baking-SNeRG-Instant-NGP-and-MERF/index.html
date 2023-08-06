@@ -139,7 +139,7 @@
 <li>对射线上的采样值进行$\alpha$-compositing</li>
 <li>用MLP和视角方向一起解码，获得像素值</li>
 </ol>
-<h3 id="Baking"><a href="#Baking" class="headerlink" title="Baking"></a>Baking</h3><p>Baking：生成加速的数据结构的模型的过程</p>
+<h3 id="Baking"><a href="#Baking" class="headerlink" title="Baking"></a>Baking</h3><p>baking指的是生成加速的数据结构的模型的过程。</p>
 <ol>
 <li>将空间划分成$N^3$的体素网格</li>
 <li>根据不透明度、体素能见度剔除空体素网格</li>
@@ -165,13 +165,13 @@
 <li>按几何级数设置网格分辨率（等比数列）</li>
 </ul>
 <p><img src="image2.png" alt="Alt text"></p>
-<p>其中质数$\Pi_1=1$，$\Pi_2,\Pi_3$是很大的质数</p>
+<p>其中质数$\pi_1=1$，$\pi_2,\pi_3$是很大的质数。</p>
 <p>线性同余的好处：</p>
 <ol>
-<li>让维度和哈希值去相关</li>
+<li>让每个坐标轴上的值和哈希值去相关</li>
 <li>减少哈希碰撞</li>
 </ol>
-<p>本文采用特征向量长度$F=2$，层数$L=16$</p>
+<p>本文采用特征向量长度$F=2$，层数$L=16$。</p>
 <h2 id="MERF-2023"><a href="#MERF-2023" class="headerlink" title="MERF (2023)"></a>MERF (2023)</h2><p>结合低分辨率的稀疏特征网格和3个高分辨率2D特征平面减少内存消耗。</p>
 <h3 id="场景表示"><a href="#场景表示" class="headerlink" title="场景表示"></a>场景表示</h3><p>$L^3$体素网格：实际上采用$L=512$，对某个点$x$，取周边8个顶点，通过三线性插值得到特征向量$V(x,y,z)$</p>
 <p>$R^2$平面：实际上采用$R=2048$，把$x$投影到三个平面上，在每个平面上取周边四个顶点做双线性插值，得到3个特征向量$P_x,P_y,P_z$</p>
