@@ -225,14 +225,35 @@
 </ul>
 <h3 id="in-3D-Latent-space"><a href="#in-3D-Latent-space" class="headerlink" title="in 3D/Latent space"></a>in 3D/Latent space</h3><ul>
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2207.13751.pdf">GAUDI: A Neural Architect for Immersive 3D Scene Generation</a></p>
-<p>  GAUDI是一个能捕捉复杂、真实的3D场景分布的生成模型。我们首先优化解耦radiance fields和相机位姿的latent representation，然后被用来学习能进行条件和非条件生成3D场景的生成模型。相比于之前的关注单个物体的工作，我们并不假定相机位姿的分布能在样本之间共享。</p>
+<p>  GAUDI是一个能捕捉复杂、真实的3D场景分布的生成模型。我们首先优化解耦场景和相机位姿的latent representation，然后被用来学习能进行条件和非条件生成3D场景的生成模型。相比于之前的关注单个物体的工作，我们并不假定相机位姿的分布能在样本之间共享。</p>
+<p>  <img src="image14.png" alt="Alt text"></p>
+<p>  camera pose decoder：用来预测在规范化的临时位置的相机位姿。</p>
+<p>  scene decoder：将场景解码成triplane的表示形式。</p>
+<p>  radiance field decoder：对某个点$x$，在triplane中进行双线性插值得到特征向量，作为radiance field的condition。输出体密度$\sigma$和信号$a$，然后进行体渲染。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.16677.pdf">3D Neural Field Generation using Triplane Diffusion</a> (CVPR 2023)</p>
+<p>  本文的方法对训练集（比如ShapeNet meshes）进行预处理，将它们转换到连续的occupancy fields中，并分解成一系列坐标轴对齐的triplane features（可以看成是多通道的特征图）。于是，3D场景就能被表示成2D特征平面，在这些场景表示上直接训练现有2D扩散模型，从而生成3D神经场。我们需要对triplane factorization pipeline进行必要的修改，使feature容易被扩散模型所学习。</p>
+<p>  扩散过程：</p>
+<p>  <img src="image15.png" alt="Alt text"></p>
+<p>  结构：</p>
+<p>  <img src="image16.png" alt="Alt text"></p>
+<ol>
+<li>用训练好的DDPM将latent noise去噪得到triplane features</li>
+<li><p>用局部条件的Occupancy Network解码triplane，得到神经场</p>
+<p>Triplane Diffusion Framework：使用occupancy fields 的3D场景表示，这样的神经场的输出是二进制的，来表明在对象的内部还是外部。</p>
+<p>Triplane representation: 是一种显隐式混合的神经场网络架构，使用三个二维特征平面$f_x,f_y,f_z \in \Bbb{R}^{N \times N \times C}$和一个轻量级decoder(MLP)解释平面特征。通过将3D坐标投影到每个轴向平面，查询和聚合各自的特征，并利用MLP解码feature（通过求和来进行特征聚合）。在扩散模型中，将三个平面上的特征堆叠成一张图，</p>
+<p>贡献：</p>
+</li>
+<li><p>提出了利用2D diffusion model backbone并且有内置3D inductive bias的框架来用于三维场景的扩散</p>
+</li>
+<li>该方法有能力生成高保真和多样化的3D场景，优于SOTA 3D GANs</li>
+</ol>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.06135.pdf">Rodin: A Generative Model for Sculpting 3D Digital Avatars Using Diffusion</a> (CVPR 2023)</p>
 </li>
 </ul>
+<p>参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/614298526">这篇文章</a>。</p>
 <ul>
-<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.16677.pdf">3D Neural Field Generation using Triplane Diffusion</a> (CVPR 2023)</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.06135.pdf">Rodin: A Generative Model for Sculpting 3D Digital Avatars Using Diffusion</a></p>
-</li>
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.01206.pdf">DiffRF: Rendering-Guided 3D Radiance Field Diffusion</a> (CVPR 2023)</p>
 <p>  DiffRF是一个基于DDPM的3D radiance field合成方法。目前基于扩散的方法在图像、latent codes或者点云数据上操作，DiffRF在体素网格上操作，是第一个直接生成volumetric radiance fields的工作。由于从posed images中生成的radiance field是有二义性的，获取radiance field的GT并不容易，我们结合denoise损失和渲染损失，使模型学到一个有偏的先验，最终能合成更高质量的图像，避免漂浮物一类的artifacts。相较于2D扩散模型，DiffRF能学到多视角一致的先验。相较于3D GANs，基于扩散的方法能更自然地进行<strong>条件生成</strong>，比如遮盖补全和单视角合成。</p>
 <p>  <img src="image13.png" alt="Alt text"></p>
