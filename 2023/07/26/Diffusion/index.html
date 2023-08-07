@@ -252,7 +252,7 @@
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.06135.pdf">Rodin: A Generative Model for Sculpting 3D Digital Avatars Using Diffusion</a> (CVPR 2023)</p>
 <p>  参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/614298526">这篇文章</a>。</p>
 <p>  Robustness：为了让triplane decoder在渲染不同分辨率的图像时都有较好的表现，训练时，我们随机地放缩triplane。</p>
-<p>  Latent Conditioned 3D Diffusion Model：先用一个base diffusion model生成coarse triplanes，使用<strong>3D-aware convolution</strong>对三个平面上的feature进行组合，</p>
+<p>  Latent Conditioned 3D Diffusion Model：先用一个base diffusion model生成coarse triplanes，使用<strong>3D-aware convolution</strong>对三个平面上的feature进行组合，某一个平面上的一个点对应到另外两个平面上的一条线。</p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.01206.pdf">DiffRF: Rendering-Guided 3D Radiance Field Diffusion</a> (CVPR 2023)</p>
 <p>  DiffRF是一个基于DDPM的3D radiance field合成方法。目前基于扩散的方法在图像、latent codes或者点云数据上操作，DiffRF在体素网格上操作，是第一个直接生成volumetric radiance fields的工作。由于从posed images中生成的radiance field是有二义性的，获取radiance field的GT并不容易，我们结合denoise损失和渲染损失，使模型学到一个有偏的先验，最终能合成更高质量的图像，避免漂浮物一类的artifacts。相较于2D扩散模型，DiffRF能学到多视角一致的先验。相较于3D GANs，基于扩散的方法能更自然地进行<strong>条件生成</strong>，比如遮盖补全和单视角合成。</p>
