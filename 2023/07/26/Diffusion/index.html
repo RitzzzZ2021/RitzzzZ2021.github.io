@@ -138,14 +138,15 @@
 <p>  贡献：</p>
 <ol>
 <li>提出DreamFusion，不需要3D或者多视角的训练数据，只需要预训练的2D扩散模型来引导NeRF的优化从而进行text-to-3D的合成，具有zero-shot生成能力</li>
-<li><p>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</p>
-<p>问题：</p>
-</li>
-<li>分辨率低（64*64）</li>
-<li>训练时间比较长（1.5h for each caption）</li>
-<li>生成结果和目标文本不一致</li>
+<li>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</li>
 </ol>
 </li>
+</ul>
+<p>问题：</p>
+<pre><code>1. 分辨率低（64*64）
+2. 训练时间比较长（1.5h for each caption）
+3. 生成结果和目标文本不一致
+</code></pre><ul>
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.00774.pdf">Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation</a>（CVPR 2023）</p>
 <p>  本文提出对梯度使用链式法则，通过可微渲染器（被初始化为voxel radiance field）的Jacobian反向传播扩散模型的score。这种方法将多视角的2D scores融合进3D score，重新提出了用于3D生成的预训练2D模型。我们指出分布不匹配的技术难点，并提出了一种新的估计方法来解决它。我们在多个现成的扩散图像生成模型上跑了我们的算法，包括在LAION 5B数据集上训练的Stable Diffusion。</p>
 <p>  贡献：</p>
