@@ -113,7 +113,7 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>Notes for Numerical Optimization 2nd, Jorge Nocedal, Stephen J. Wright</p>
+<p>Notes for Numerical Optimization 2nd, Jorge Nocedal, Stephen J. Wright<br>Chapter 1, 2, 3, 14  </p>
 </blockquote>
 <h2 id="Chapter-1-简介"><a href="#Chapter-1-简介" class="headerlink" title="Chapter 1 简介"></a>Chapter 1 简介</h2><ul>
 <li><p>连续vs离散：离散优化问题需要考虑<strong>完整性约束</strong>，未知的参数$x$取自有限（通常非常大）的集合，具有非凸性（任何两个可行点的凸组合不一定可行）；连续优化问题更容易解决，因为函数具有光滑性，可行集一般是不可数无限集。</p>
@@ -174,9 +174,11 @@
 <h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><ul>
 <li><p>线性搜索：选择某个方向，从当前迭代值出发，在这个方向上找到一个使得函数值更小的新的迭代值。步长可以用一维最小化方法来近似求解。</p>
 </li>
-<li><p>信赖域：</p>
+<li><p>信赖域：建模函数$m_k$，在邻域中近似$f$，也就是求目标函数$\min \limits_{p}m_k(x_k+p)$，其中$x_k+p$在信赖域中。信赖域一般是一个球$||p||_2 \leq \Delta$，标量$\Delta &gt; 0$被称为信赖域半径。$m_k$一般被定义成四元函数：$m_k(x_k+p)=f_k+p^T\nebla f_k+\frac{1}{2}p^TB_kp$，其中$\nebla f_k$是$f$的一阶导，矩阵$B_k$是Hessian $\nebla^2f_k$或它的近似。先选定一个candidate step $p_k$，然后找到某个最优方向；如果都不满足，再减小$p_k$。</p>
 </li>
 </ul>
+<p>这两种方法的差异：选定distance和direction的顺序不同。</p>
+<p><strong>线性搜索的方向</strong>：steepest descent direction，沿着梯度的反方向$p_k=-\nebla f_k$移动，但面对复杂问题时非常慢；Newton direction，当$\nebla^2 f_k$正定时，$p_k^N=-(\nebla^2 f_k)^{-1}\nebla f_k$，局部收敛更快，缺点是二阶导难以计算；Quasi-Newton是Newton方法的变种，不需要计算Hessian但收敛速率相似，用$B_k$代替$\nebla^2 f_k$，每一步之后更新$B_k$，</p>
 
              
         </div>
