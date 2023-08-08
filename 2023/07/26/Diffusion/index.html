@@ -113,7 +113,7 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <h2 id="Geometry-Free"><a href="#Geometry-Free" class="headerlink" title="Geometry-Free"></a>Geometry-Free</h2><ul>
-<li><p>NOVEL VIEW SYNTHESIS WITH DIFFUSION MODELS</p>
+<li><p>Novel View Synthesis with Diffusion Models</p>
 <p>  本文提出了3DiM，一个用于3D新视角合成的扩散模型。3DiM的核心部分是pose-conditional image-to-image diffution model，将source view和它的pose作为输入，生成目标pose的新视角。3DiM用一种新技术，stochastic conditioning，生成3D consistent的多视角。输出视角是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E8%87%AA%E6%88%91%E8%BF%B4%E6%AD%B8%E6%A8%A1%E5%9E%8B">自回归</a>生成的，在每个新视角的生成过程中，在每一个denoising step中选一个随机的conditioning view。</p>
 <p>  <img src="image.png" alt="Alt text"></p>
 <p>贡献：</p>
@@ -138,15 +138,15 @@
 <p>  贡献：</p>
 <ol>
 <li>提出DreamFusion，不需要3D或者多视角的训练数据，只需要预训练的2D扩散模型来引导NeRF的优化从而进行text-to-3D的合成，具有zero-shot生成能力</li>
-<li>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</li>
+<li><p>为了将2D图像扩散模型迁移到3D空间，本文提出一种新的方法，Score Distillation Sampling（SDS）</p>
+<p>问题：</p>
+</li>
+<li><p>分辨率低（64*64）</p>
+</li>
+<li>训练时间比较长（1.5h for each caption）</li>
+<li>生成结果和目标文本不一致</li>
 </ol>
 </li>
-</ul>
-<p>问题：</p>
-<pre><code>1. 分辨率低（64*64）
-2. 训练时间比较长（1.5h for each caption）
-3. 生成结果和目标文本不一致
-</code></pre><ul>
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2212.00774.pdf">Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation</a>（CVPR 2023）</p>
 <p>  本文提出对梯度使用链式法则，通过可微渲染器（被初始化为voxel radiance field）的Jacobian反向传播扩散模型的score。这种方法将多视角的2D scores融合进3D score，重新提出了用于3D生成的预训练2D模型。我们指出分布不匹配的技术难点，并提出了一种新的估计方法来解决它。我们在多个现成的扩散图像生成模型上跑了我们的算法，包括在LAION 5B数据集上训练的Stable Diffusion。</p>
 <p>  贡献：</p>
@@ -238,15 +238,12 @@
 <p>  <img src="image15.png" alt="Alt text"></p>
 <p>  结构：</p>
 <p>  <img src="image16.png" alt="Alt text"></p>
+<p>  用训练好的DDPM将latent noise去噪得到triplane features；用局部条件的Occupancy Network解码triplanes，得到神经场。</p>
+<p>  Triplane Diffusion Framework：使用occupancy fields 的3D场景表示，这样的神经场的输出是二进制的，来表明在对象的内部还是外部。</p>
+<p>  Triplane representation: 是一种显隐式混合的神经场网络架构，使用三个二维特征平面$f_x,f_y,f_z \in \Bbb{R}^{N \times N \times C}$和一个轻量级decoder(MLP)解释平面特征。通过将3D坐标投影到每个轴向平面，查询和聚合各自的特征，并利用MLP解码feature（通过求和来进行特征聚合）。在扩散模型中，将三个平面上的特征堆叠成一张图，</p>
+<p>  贡献：</p>
 <ol>
-<li>用训练好的DDPM将latent noise去噪得到triplane features</li>
-<li><p>用局部条件的Occupancy Network解码triplane，得到神经场</p>
-<p>Triplane Diffusion Framework：使用occupancy fields 的3D场景表示，这样的神经场的输出是二进制的，来表明在对象的内部还是外部。</p>
-<p>Triplane representation: 是一种显隐式混合的神经场网络架构，使用三个二维特征平面$f_x,f_y,f_z \in \Bbb{R}^{N \times N \times C}$和一个轻量级decoder(MLP)解释平面特征。通过将3D坐标投影到每个轴向平面，查询和聚合各自的特征，并利用MLP解码feature（通过求和来进行特征聚合）。在扩散模型中，将三个平面上的特征堆叠成一张图，</p>
-<p>贡献：</p>
-</li>
-<li><p>提出了利用2D diffusion model backbone并且有内置3D inductive bias的框架来用于三维场景的扩散</p>
-</li>
+<li>提出了利用2D diffusion model backbone并且有内置3D inductive bias的框架来用于三维场景的扩散</li>
 <li>该方法有能力生成高保真和多样化的3D场景，优于SOTA 3D GANs</li>
 </ol>
 </li>
@@ -263,7 +260,6 @@
 <p>  diffusion model：$\epsilon_\theta$是一个3D-UNet，把卷积层和attention层都换成3D的。</p>
 </li>
 </ul>
-<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612572004">Stable Diffusion以及几种scheduler的对比</a></p>
 
              
         </div>
