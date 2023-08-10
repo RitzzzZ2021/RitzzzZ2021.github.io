@@ -251,11 +251,29 @@
 <p><strong>Play-as-you-like</strong>：使用MUNIT进行无监督的音色转换，这一方法的核心是分离出domain invariant（音乐的内容）和domain specific（音乐的音色）的特征，然后通过不同的domain的部分进行转换生成。对每个domain有一个编码器$E$将原始音乐编码为内容$c$和风格$s$，一个生成器$G$根据输入的$c$和$s$生成对应的音乐，还有就是一个域鉴别器$D$，训练时使用Relativistic average GAN（RaGAN）的损失。该方法通过自身的重建、跨域生成鉴别损失、生成后再编码的编码一致性损失学习跨域的转换。由于这个方法中没有使用Cycle Consistency，所以基于上述损失不能保证转换后保留原始的音乐结构。所以该方法设计了一个Intrinsic Consistency Loss，约束转换前后的音乐的一些自相关的频域特征不变（mel-frequency cepstral coefficients (MFCC), spectral difference, and spectral envelope），从而约束音乐的自身结构不变。</p>
 <p><strong>CycleBEGAN</strong>：用BEGAN模型替换GAN，使用skip connections &amp; recurrent layer。skip connections保持了歌声的清晰、自然，recurrent layers提高了各方面，尤其是音高准确性。在男女歌声之间进行transfer。</p>
 <h3 id="音频生成（Audio-generation）"><a href="#音频生成（Audio-generation）" class="headerlink" title="音频生成（Audio generation）"></a>音频生成（Audio generation）</h3><p><strong>SpecGAN</strong>：模型基于DCGAN。将2D卷积平铺成1D（例如，5*5 2D conv变成25 1D conv），步长也相应进行增加（例如，2*2变成步长为4）。DCGAN生成$64\times 64$的图像，SpecGAN再增加一层，生成有16,384个点，即16kHz的频谱。</p>
+<p><strong>PGGAN</strong>：每个step不断增加latent的分辨率，在不同分辨率下训练generator和discriminator。</p>
 <p><strong>GANSynth</strong>：模型基于PGGAN（progressive growing GAN），从低到高逐渐增加分辨率，生成信号波。</p>
 <p><img src="gansynth.png" alt="gansynth"></p>
 <p>训练过程中，在两种不同分辨率的输出之间以权重$\alpha$进行插值，$\alpha$线性地从0增长到1。最终输出的是mel-spectrogram + instantaneous freq (IF)。用 IF 可以推导出相位，然后用inverse STFT可以得到波形。</p>
 <p><img src="gansynth2.png" alt="gansynth2"></p>
-<h2 id="目前局限-amp-未来研究方向"><a href="#目前局限-amp-未来研究方向" class="headerlink" title="目前局限&amp;未来研究方向"></a>目前局限&amp;未来研究方向</h2>
+<h2 id="目前局限-amp-未来研究方向"><a href="#目前局限-amp-未来研究方向" class="headerlink" title="目前局限&amp;未来研究方向"></a>目前局限&amp;未来研究方向</h2><h3 id="GANs的局限性"><a href="#GANs的局限性" class="headerlink" title="GANs的局限性"></a>GANs的局限性</h3><ul>
+<li>训练有些困难</li>
+<li>只能学到一个方向的映射，而不是双向的</li>
+<li>解释性较差</li>
+<li>不太清楚GANs如何建模文本类的数据或者乐谱</li>
+<li>不清楚GANs（以及所有其他的作曲模型）如何生成新的音乐类型</li>
+</ul>
+<p>其他的生成模型：VAEs, flow-based models, autoregressive models, attention mechanisms, restricted Boltzmann machines, hidden Markov models…</p>
+<h3 id="未来研究方向"><a href="#未来研究方向" class="headerlink" title="未来研究方向"></a>未来研究方向</h3><ul>
+<li>更好的适用于音乐数据的网络结构，多样性，可解释性，可控性</li>
+<li>数据集和评估标准</li>
+<li>跨模态生成</li>
+<li>交互</li>
+<li>表演风格迁移</li>
+<li>在乐句级别上进行生成，而不是音符级别</li>
+<li>多声部，无歌词，EDM的生成，…</li>
+</ul>
+
              
         </div>
         
