@@ -190,7 +190,46 @@ var apples = 4, oranges = 3, lemons = 8, bananas = 10;
 ~galaApples; // still exists
 apples; // gone
 </code></pre>
-<h2 id="2-Patterns"><a href="#2-Patterns" class="headerlink" title="2. Patterns"></a>2. Patterns</h2><h2 id="其他参考资料"><a href="#其他参考资料" class="headerlink" title="其他参考资料"></a>其他参考资料</h2><p><a target="_blank" rel="noopener" href="https://sccode.org/">代码资源</a></p>
+<p>本章代码示例：<a href="../../../ComputerMusic/example_1.scd">example_1</a></p>
+<h2 id="2-Patterns"><a href="#2-Patterns" class="headerlink" title="2. Patterns"></a>2. Patterns</h2><p><code>Pbind</code>和<code>Pseries</code>中的大写P指的就是Pattern。</p>
+<pre><code class="lang-c">Pbind(\degree, 0).play;
+</code></pre>
+<p>关键字<code>\degree</code>表示scale degrees，数字0意味着第一个scale degree（默认中央C大调）。C, D, E, F, G…被表示为0, 1, 2, 3, 4…</p>
+<p>关键字<code>\dur</code>指定持续时间，单位是秒。</p>
+<pre><code class="lang-c">// C大调音阶
+Pbind(\degree, Pseq([0, 1, 2, 3, 4, 5, 6, 7], 1), \dur, 0.2).play;
+</code></pre>
+<p><code>Pseq</code>可以作为<code>\degree</code>和<code>\dur</code>的输入，由两部分组成：</p>
+<ul>
+<li>一个有序的列表，列表用方括号包起来</li>
+<li>列表重复的次数</li>
+</ul>
+<p>如果要用十二平均律的音符，用<code>\note</code>替换<code>\degree</code>；如果要用MIDI音符数字表示，用<code>\midinote</code>替换<code>\degree</code>（60=middle C, 61=C#, etc）；如果要用频率表示，用<code>\freq</code>替换<code>\degree</code>。</p>
+<p><img src="image.png" alt="Alt text"></p>
+<p>其他关键字：<code>\amp</code>表示强度，范围是0到1；<code>\legato</code>表示连奏，在0.1到1之间比较好。</p>
+<p><code>\Prand</code>类似<code>Pseq</code>，但是从列表里随机挑选音符。<code>\PWhite</code>是均匀分布的随机数生成器。</p>
+<pre><code class="lang-c">(
+Pbind(
+    \note, Prand([0, 2, 3, 5, 7, 9, 11], inf),
+    \dur, Prand([0.1, 0.2, 0.3, 0.4], inf),
+    \amp, 0.2,
+    \legato, 0.5
+).play;
+)
+
+(
+Pbind(
+    \note, Pwhite(100, 500),
+    \dur, Prand([0.1, 0.2, 0.3, 0.4], inf),
+    \amp, 0.2,
+    \legato, 0.3
+).trace.play;
+)
+</code></pre>
+<p>如果<code>Pwhite</code>后面括号中的数字不带小数点，那么随机产生的值都是整数；如果想产生浮点数，其中某个数字就必须是浮点数，比如<code>Pwhite(0, 1.0)</code>。</p>
+<p><strong>有用的trick</strong>：在<code>play</code>前面加上<code>trace</code>，就可以在Post window中输出每次活动的值。</p>
+<p>更多Pattern可以看<a href="../../..//example_2.scd">example_2</a>。在<a target="_blank" rel="noopener" href="http://doc.sccode.org/Tutorials/A-Practical-Guide/PG_01_Introduction.html">这里</a>能看到更多Pattern相关的帮助。</p>
+<h2 id="其他参考资料"><a href="#其他参考资料" class="headerlink" title="其他参考资料"></a>其他参考资料</h2><p><a target="_blank" rel="noopener" href="https://sccode.org/">代码资源</a></p>
 <p><a target="_blank" rel="noopener" href="https://scsynth.org/">论坛</a></p>
 <p><a target="_blank" rel="noopener" href="https://leanpub.com/ScoringSound/read">Scoring Sound</a></p>
 
