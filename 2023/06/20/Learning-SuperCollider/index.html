@@ -191,7 +191,7 @@ var apples = 4, oranges = 3, lemons = 8, bananas = 10;
 apples; // gone
 </code></pre>
 <p>本章代码示例：<a href="../../../ComputerMusic/example_1.scd">example_1</a></p>
-<h2 id="2-Patterns"><a href="#2-Patterns" class="headerlink" title="2. Patterns"></a>2. Patterns</h2><p><code>Pbind</code>和<code>Pseries</code>中的大写P指的就是Pattern。</p>
+<h2 id="2-Patterns"><a href="#2-Patterns" class="headerlink" title="2. Patterns"></a>2. Patterns</h2><h3 id="Pattern-Family"><a href="#Pattern-Family" class="headerlink" title="Pattern Family"></a>Pattern Family</h3><p><code>Pbind</code>和<code>Pseries</code>中的大写P指的就是Pattern。</p>
 <pre><code class="lang-c">Pbind(\degree, 0).play;
 </code></pre>
 <p>关键字<code>\degree</code>表示scale degrees，数字0意味着第一个scale degree（默认中央C大调）。C, D, E, F, G…被表示为0, 1, 2, 3, 4…</p>
@@ -204,7 +204,7 @@ Pbind(\degree, Pseq([0, 1, 2, 3, 4, 5, 6, 7], 1), \dur, 0.2).play;
 <li>一个有序的列表，列表用方括号包起来</li>
 <li>列表重复的次数</li>
 </ul>
-<p>如果要用十二平均律的音符，用<code>\note</code>替换<code>\degree</code>；如果要用MIDI音符数字表示，用<code>\midinote</code>替换<code>\degree</code>（60=middle C, 61=C#, etc）；如果要用频率表示，用<code>\freq</code>替换<code>\degree</code>。</p>
+<p>如果要用十二平均律的音符，用<code>\note</code>替换<code>\degree</code>；如果要用MIDI音符数字表示，用<code>\midinote</code>替换<code>\degree</code>（60=middle C, 61=C#, etc）；如果要用频率表示，用<code>\freq</code>替换<code>\degree</code>。<code>\midinote</code>和<code>\note</code>还能用浮点数表示微分音。</p>
 <p><img src="image.png" alt="Alt text"></p>
 <p>其他关键字：<code>\amp</code>表示强度，范围是0到1；<code>\legato</code>表示连奏，在0.1到1之间比较好。</p>
 <p><code>\Prand</code>类似<code>Pseq</code>，但是从列表里随机挑选音符。<code>\PWhite</code>是均匀分布的随机数生成器。</p>
@@ -228,7 +228,19 @@ Pbind(
 </code></pre>
 <p>如果<code>Pwhite</code>后面括号中的数字不带小数点，那么随机产生的值都是整数；如果想产生浮点数，其中某个数字就必须是浮点数，比如<code>Pwhite(0, 1.0)</code>。</p>
 <p><strong>有用的trick</strong>：在<code>play</code>前面加上<code>trace</code>，就可以在Post window中输出每次活动的值。</p>
-<p>更多Pattern可以看<a href="../../..//example_2.scd">example_2</a>。在<a target="_blank" rel="noopener" href="http://doc.sccode.org/Tutorials/A-Practical-Guide/PG_01_Introduction.html">这里</a>能看到更多Pattern相关的帮助。</p>
+<p>更多Pattern可以看<a href="../../../example_2.scd">example_2</a>。在<a target="_blank" rel="noopener" href="http://doc.sccode.org/Tutorials/A-Practical-Guide/PG_01_Introduction.html">这里</a>能看到更多Pattern相关的帮助。</p>
+<h3 id="更多的Pattern-tricks"><a href="#更多的Pattern-tricks" class="headerlink" title="更多的Pattern tricks"></a>更多的Pattern tricks</h3><p><strong>和弦</strong>：<code>Pseq</code>中本来存的是单音的序列，把单音替换成列表，就可以表示一个和弦。</p>
+<p><code>\strum</code>关键字表示琶音，后面的数字表示琶音之间的间隔。</p>
+<p>用<code>\degree</code>指定音高时，可以用<code>\scale</code>指定调式。如果不特意指定调式，默认为大调<code>Scale.major</code>。可以用<code>Scale.directory;</code>查看所有可用的调式。</p>
+<p><code>\ctranspose</code>可以进行转调，不可以和<code>freq</code>同时使用。</p>
+<p><strong>速度</strong>：默认的速度是60 BPM。</p>
+<pre><code class="lang-c">(
+Pbind(
+    \degree, Pseq([0, 0.1, 1, 2, 3, 4, 5, 6, 7]), // repeats=1 by default
+    \dur, 1
+).play(TempoClock(120/60)); // 120 beats over 60 seconds: 120 BPM
+)
+</code></pre>
 <h2 id="其他参考资料"><a href="#其他参考资料" class="headerlink" title="其他参考资料"></a>其他参考资料</h2><p><a target="_blank" rel="noopener" href="https://sccode.org/">代码资源</a></p>
 <p><a target="_blank" rel="noopener" href="https://scsynth.org/">论坛</a></p>
 <p><a target="_blank" rel="noopener" href="https://leanpub.com/ScoringSound/read">Scoring Sound</a></p>
