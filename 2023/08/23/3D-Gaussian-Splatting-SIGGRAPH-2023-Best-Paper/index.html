@@ -115,12 +115,28 @@
             <blockquote>
 <p>Notes for paper: <a target="_blank" rel="noopener" href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/3d_gaussian_splatting_high.pdf">3D Gaussian Splatting for Real-Time Radiance Field Rendering</a></p>
 </blockquote>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>无边界、完整的场景的高分辨率（1080p）实时（$\geq$ 100 fps）渲染。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>无边界、完整的场景的高分辨率（1080p）实时（$\geq$ 30 fps）渲染。</p>
 <h3 id="key-idea"><a href="#key-idea" class="headerlink" title="key idea"></a>key idea</h3><ol>
 <li>从相机校准过程中产生的稀疏点开始，用3D Gaussians表示场景，既保留了连续的volumetric radiance fields的性质以便优化，又避免了对空白位置的不必要的计算；</li>
 <li>对3D Gaussians内联的优化/密度控制，显著优化anisotropic covariance，得到更精确的表示；</li>
 <li>visibility-aware的渲染算法，能实现anisotropic splatting，加快训练的同时还能进行实时渲染。</li>
 </ol>
+<p>radiance field常用的连续表示（voxel, hash grids, points）便于优化，但是渲染过程中随机采样的消耗比较大，而且可能有噪声。本文的方法结合了以下两点：</p>
+<ul>
+<li>3D Gaussian representation：SOTA级别的高质量视觉效果 + 训练时间短；</li>
+<li>tile-based splatting：实时渲染 + 1080p分辨率。</li>
+</ul>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><h3 id="传统的场景重建和渲染"><a href="#传统的场景重建和渲染" class="headerlink" title="传统的场景重建和渲染"></a>传统的场景重建和渲染</h3><ul>
+<li>最早的新视角合成基于light fields: densely sampled [Gortler et al. 1996; Levoy and Hanrahan 1996] —&gt; allowing unstructured capture [Buehler et al. 2001]</li>
+<li>Structure-from-Motion (SfM) [Snavely et al. 2006]使得一系列照片可以被用来进行新视角合成</li>
+<li>Multi-view stereo (MVS) [Goesele et al. 2007]以及后续的几种视角合成算法 [Chaurasia et al. 2013; Eisemann et al. 2008; Hedman<br>et al. 2018; Kopanas et al. 2021] 的基本思想都是re-project and blend，用geometry引导re-projection。问题：cannot completely recover from unreconstructed regions, or from “over-reconstruction”, when MVS generates inexistent geometry</li>
+<li>Neural rendering algorithms [Tewari et al. 2022] 显著减少了这些 artifacts，避免将所有输入图像存储到GPU，在诸多方面都超越了前面的方法。</li>
+</ul>
+<h3 id="Point-based-Rendering"><a href="#Point-based-Rendering" class="headerlink" title="Point-based Rendering"></a>Point-based Rendering</h3><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="3D-Gaussians"><a href="#3D-Gaussians" class="headerlink" title="3D Gaussians"></a>3D Gaussians</h3><p>用SfM校正的相机输入，用自由生成的稀疏点云初始化3D Gaussians。</p>
+<p>有点：可微分的体积表示，并且可以高效地光栅化（通过投影到2D），应用$\alpha$-blending，使用和NeRF等价的图像生成模型。</p>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>3D position, opacity $\alpha$, anisotropic covariance, and spherical harmonic (SH) coefficients – interleaved with adaptive density control steps, where we add and occasionally remove 3D Gaussians during optimization</p>
+<h3 id="实时渲染"><a href="#实时渲染" class="headerlink" title="实时渲染"></a>实时渲染</h3><p>fast GPU sorting algorithms, inspired by tile-based rasterization</p>
+<p>Thanks to our 3D Gaussian representation, we can perform anisotropic splatting that respects visibility ordering – thanks to sorting and 𝛼-blending – and enable a fast and accurate backward pass by tracking the traversal of as many sorted splats as required.</p>
 <h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><ul>
 <li>full set of scenes presented in Mip-Nerf360 [Barron 2022] — <strong>state-of-the-art in NeRF rendering quality</strong></li>
 <li>two scenes from the Tanks and Temples dataset [Knapitsch 2017]</li>
