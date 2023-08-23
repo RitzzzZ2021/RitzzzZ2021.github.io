@@ -178,7 +178,7 @@
 </li>
 </ul>
 <p>这两种方法的差异：选定distance和direction的顺序不同。</p>
-<p><strong>线性搜索的方向</strong>：steepest descent direction，沿着梯度的反方向$p_k=-\nebla f_k$移动，但面对复杂问题时非常慢；Newton direction，当$\nebla^2 f_k$正定时，$p_k^N=-(\nebla^2 f_k)^{-1}\nebla f_k$，局部收敛更快，缺点是二阶导难以计算；Quasi-Newton是Newton方法的变种，不需要计算Hessian但收敛速率相似，用$B_k$代替$\nebla^2 f_k$，每一步之后更新$B_k$，</p>
+<p><strong>线性搜索的方向</strong>：steepest descent direction，沿着梯度的反方向$p_k=-\nebla f_k$移动，但面对复杂问题时非常慢；Newton direction，当$\nebla^2 f_k$正定时，$p_k^N=-(\nebla^2 f_k)^{-1}\nebla f_k$，局部收敛更快，缺点是二阶导难以计算；Quasi-Newton是Newton方法的变种，不需要计算Hessian但收敛速率相似，用$B_k$代替$\nebla^2 f_k$，每一步之后更新$B_k$，实践中，许多方法更新的是$B_k^{-1}$。</p>
 
              
         </div>
