@@ -132,9 +132,30 @@
 <li>Multi-view stereo (MVS) [Goesele et al. 2007]以及后续的几种视角合成算法 [Chaurasia et al. 2013; Eisemann et al. 2008; Hedman<br>et al. 2018; Kopanas et al. 2021] 的基本思想都是re-project and blend，用geometry引导re-projection。问题：cannot completely recover from unreconstructed regions, or from “over-reconstruction”, when MVS generates inexistent geometry</li>
 <li>Neural rendering algorithms [Tewari et al. 2022] 显著减少了这些 artifacts，避免将所有输入图像存储到GPU，在诸多方面都超越了前面的方法。</li>
 </ul>
-<h3 id="Point-based-Rendering"><a href="#Point-based-Rendering" class="headerlink" title="Point-based Rendering"></a>Point-based Rendering</h3><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="3D-Gaussians"><a href="#3D-Gaussians" class="headerlink" title="3D Gaussians"></a>3D Gaussians</h3><p>用SfM校正的相机输入，用自由生成的稀疏点云初始化3D Gaussians。</p>
-<p>有点：可微分的体积表示，并且可以高效地光栅化（通过投影到2D），应用$\alpha$-blending，使用和NeRF等价的图像生成模型。</p>
-<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>3D position, opacity $\alpha$, anisotropic covariance, and spherical harmonic (SH) coefficients – interleaved with adaptive density control steps, where we add and occasionally remove 3D Gaussians during optimization</p>
+<h3 id="Point-based-Rendering"><a href="#Point-based-Rendering" class="headerlink" title="Point-based Rendering"></a>Point-based Rendering</h3><p>最简单的形式：point sample rendering，特点是能光栅化无结构的、大小固定的点的集合。</p>
+<ul>
+<li>优点：能利用图形API中原生的点的数据类型，在GPU上进行并行的软件光栅化。</li>
+<li>缺点：洞，走样，不连续。</li>
+<li>解决这些问题的方法：”splatting” point primitives with an extent larger than a pixel, e.g., circular or elliptic discs, ellipsoids, or surfels [Botsch et al. 2005; Pfister et al. 2000; Ren et al. 2002; Zwicker et al. 2001b]</li>
+</ul>
+<p><strong>differentiable point-based rendering techniques</strong>: points haved been augmented with neural features and rendered using a CNN，可以更快（甚至实时）进行视角合成；但仍然依赖MVS对geometry进行初始化，inherited artifacts include over- or under-reconstruction in hard cases such as featureless/shiny areas or thin structures</p>
+<p>Point-based $\alpha$-blending和NeRF的体渲染用的是相同的成像模型。典型的point-based approach通过融合同一个像素上重叠的N个有序点来计算颜色$C$：</p>
+<script type="math/tex; mode=display">
+C = \sum\limits_{i \in N} c_i \alpha_i \prod\limits_{j=1}^{i-1}(1-\alpha_j)</script><p>其中$c_i$是每个点的颜色，$\alpha_i$是协方差为$\Sigma$的2D Gaussian和可学习的不透明度的乘积。$\prod\limits_{j=1}^{i-1}(1-\alpha_j)$是透射率（transmittance）。</p>
+<p>但是Point-based $\alpha$-blending和NeRF的渲染算法是非常不一样的。NeRF连续、隐式地表示空间占用，随机采样消耗资源，而且有噪声；points是无结构、离散的表示，比较flexible，通过优化不透明度和位置来实现类似NeRF的geometry。</p>
+<p>sphere rasterization启发了我们的tile-based and sorting renderer。我们的光栅化方法保留了<strong>可见性顺序</strong>，另外，还<strong>将梯度反向传播给所有splats</strong>，并光栅化anisotropic splats。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><img src="image.png" alt="Alt text"></p>
+<h3 id="Differentiable-3D-Gaussians-Splatting"><a href="#Differentiable-3D-Gaussians-Splatting" class="headerlink" title="Differentiable 3D Gaussians Splatting"></a>Differentiable 3D Gaussians Splatting</h3><p>场景表示：稀疏的SfM点云初始化3D Gaussians，without normals。</p>
+<ul>
+<li>3D Gaussians由位置（均值）、协方差矩阵和不透明度$\alpha$定义：$G(x)=e^{-\frac{1}{2}(x)^T \Simga^{-1}(x)}$；</li>
+<li>因为很难估计稀疏点的normals，而且优化noisy normals很困难，干脆用不需要normals的3D Gaussians。</li>
+</ul>
+<p>优点：可微分，可以投影到2D splats进行快速的$\alpha$-blending。</p>
+<p>协方差矩阵$\Sigma = RSS^TR^T$，其中$S$是scale matrix，$R$是rotation matrix。我们分开存放$S$和$R$，以便于独立进行优化：$S$存储为3D vector，$R$存储为<a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/97186723?source_id=1005">四元数</a>$q$，这些存储方式都可以被转换回矩阵形式，能正规化$q$得到单位四元数。</p>
+<p>为了避免自动微分的overhead，我们显示地推导了所有参数的梯度。</p>
+<h3 id="用adaptive-density-control进行优化"><a href="#用adaptive-density-control进行优化" class="headerlink" title="用adaptive density control进行优化"></a>用adaptive density control进行优化</h3><p>本文方法的核心就是优化步骤，创建一个能精准表示场景的稠密的3D Gaussians。</p>
+<p>除了3D position, opacity $\alpha$, anisotropic covariance之外，我们还优化表示每个Gaussian的颜色$c$的spherical harmonic (SH) coefficients，来更好地表达视角相关的外观。这些参数的优化与控制Gaussians密度的过程是耦合的。</p>
+<p>在迭代过程中，不断地将渲染结果和对应视角的gt进行比较，来优化我们的3D Gaussians。因为3D to 2D投影具有不确定性，优化过程中需要对geometry做出调整。协方差矩阵的参数对于表示的紧性（compactness）至关重要，因为同质化的区域可以用很少的large anisotropic Gaussians来表示。</p>
 <h3 id="实时渲染"><a href="#实时渲染" class="headerlink" title="实时渲染"></a>实时渲染</h3><p>fast GPU sorting algorithms, inspired by tile-based rasterization</p>
 <p>Thanks to our 3D Gaussian representation, we can perform anisotropic splatting that respects visibility ordering – thanks to sorting and 𝛼-blending – and enable a fast and accurate backward pass by tracking the traversal of as many sorted splats as required.</p>
 <h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><ul>
