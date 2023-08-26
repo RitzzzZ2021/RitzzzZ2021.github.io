@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>
+        3DMM & EG3D - RitzzzZ 
+    </title>
+     
+    
+<link rel="stylesheet" href="/css/grid.css">
+
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+<link rel="stylesheet" href="/css/ringo.css">
+
+     
+        <link rel="icon" type="image/x-icon" href="/img/icon.png " />
+     
+     
+     
+        <meta name=" " content="" />
+     
+        <meta name=" " content="" />
+     
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header id="header" class="clearfix" onclick="window.open('/', '_self')">
+    <div class="site-name">
+        <a href="/" id="logo" class="site-title">
+            RitzzzZ
+        </a>
+        <p class="description site-description">
+            <span style="padding-top:20px; font-size: 10px">
+                An infinite journey
+            </span>
+        </p>
+    </div>
+</header>
+<div id="sidebar" role="complementary">
+    <section class="widget">
+        <ul class="menu widget-list">
+            
+                <li class="menu-item">
+                    <a href="/" class="menu-item-link">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/about" class="menu-item-link">
+                        About
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/archives" class="menu-item-link">
+                        Archives
+                    </a>
+                </li>
+                
+        </ul>
+    </section>
+    <section class="widget sidebar-foot">
+        <ul class="widget-list">
+            <li>Theme <a rel="nofollow" target="_blank" href="https://github.com/HeliumOI/hexo-theme-ringo">Ringo</a>
+                by <a target="_blank" href="/ "> RitzzzZ  </a></li>
+            <li>Proudly powered by  <a rel="nofollow" target="_blank" href="https://hexo.io/">Hexo</a></li>
+        </ul>
+    </section>
+</div>
+
+<div id="helpbar">
+    <div class="back-to-top">
+        <button id="back2top">↑</button>
+        <script>
+            back2top.onclick = function() {
+                var movement = document.body.scrollTop || document.documentElement.scrollTop;
+                scrollBy(0, -movement);
+            }
+        </script>
+    </div>
+</div>
+      <main class="main">
+        <div id="body">
+          <div class="container">
+            <div class="col-12" id="main" role="main">
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/08/26/EG3D/">
+                    3DMM &amp; EG3D
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-08-26
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <h2 id="3DMM"><a href="#3DMM" class="headerlink" title="3DMM"></a>3DMM</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/161828142">参考文章</a></p>
+</blockquote>
+<h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><p>人脸可以在三维空间中进行一一匹配，并且可以由其他许多幅人脸正交基加权线性相加而来。每一个三维的人脸，可以由一个数据库中的所有人脸组成的基向量空间中进行表示，而求解任意三维人脸的模型，实际上等价于求解各个基向量的系数的问题。</p>
+<p>人脸的基本属性包括<strong>形状</strong>和<strong>纹理</strong>，每一张人脸可以表示为形状向量和纹理向量的线性叠加。</p>
+<h3 id="人脸模型"><a href="#人脸模型" class="headerlink" title="人脸模型"></a>人脸模型</h3><script type="math/tex; mode=display">
+S_{model} = \bar{S} + \sum\limits_{i=1}^{m-1} \alpha_i s_i, T_{model} = \bar{T} + \sum\limits_{i=1}^{m-1} \beta_i t_i,</script><ol>
+<li>首先计算形状和纹理向量的平均值。</li>
+<li>中心化人脸数据。</li>
+<li>分别计算协方差矩阵。</li>
+<li>求得形状和纹理协方差矩阵的特征值$\alpha, \beta$和特征向量$s_i, t_i$。</li>
+</ol>
+<h3 id="求解方法"><a href="#求解方法" class="headerlink" title="求解方法"></a>求解方法</h3><p>Model Fitting：如何将2D人脸拟合到3D模型上？</p>
+<p>“A Morphable Model For The Synthesis Of 3D Faces” (1999) 提出的方法是<strong>Analysis by Synthesis</strong>。</p>
+<ul>
+<li>初始化一个3维的模型，需要初始化内部参数$\alpha, \beta$，以及外部渲染参数，包括相机的位置，图像平面的旋转角度，直射光和环境光的各个分量，图像对比度等共20多维，有了这些参数之后就可以唯一确定一个3D模型到2D图像的投影。</li>
+<li>在初始参数的控制下，经过3D至2D的投影，即可由一个3D模型得到2维图像，然后计算与输入图像的误差。再以误差反向传播调整相关系数，调整3D模型，不断进行迭代。每次参与计算的是一个三角晶格，如果人脸被遮挡，则该部分不参与损失计算。</li>
+<li>具体迭代时采用由粗到精的方式，初始的时候使用低分辨率的图像，只优化第一个主成分的系数，后面再逐步增加主成分。在后续一些迭代步骤中固定外部参数，对人脸的各个部位分别优化。</li>
+</ul>
+<p>存在的问题：</p>
+<ol>
+<li>该问题是一个病态问题，本身并没有全局解，容易陷入不好的局部解。</li>
+<li>人脸的背景干扰以及遮挡会影响精度，而且误差函数本身不连续。</li>
+<li>对初始条件敏感，比如基于关键点进行优化时，如果关键点精度较差，重建的模型精度也会受到很大影响。</li>
+</ol>
+<h3 id="发展"><a href="#发展" class="headerlink" title="发展"></a>发展</h3><p>数据集：Basel Face Model（200个人脸），LSFM（9663个人脸），BFM 2017（包含表情系数），FaceWarehouse（国内的数据集，没有开源）</p>
+<p>基于3DMM的表情模型</p>
+<ul>
+<li>加性模型：线性模型，将表情作为形状的一个偏移量</li>
+<li>乘性模型：因为表情也会改变人脸的形状，因此它和形状并非完全正交的关系，所以有的研究者提出了乘性模型</li>
+</ul>
+<p>纹理模型：也被称为表观模型，它相对于形状模型来说更加复杂，受到反射率和光照的影响，不过大部分的3DMM模型不区分两者，所以我们将其视为一个因素，即反射率。</p>
+<h3 id="深度学习3DMM重建"><a href="#深度学习3DMM重建" class="headerlink" title="深度学习3DMM重建"></a>深度学习3DMM重建</h3><p><strong>全监督方法</strong> 3DMM CNN：使用ResNet101网络直接回归出3DMM的形状系数和纹理系数，形状系数和纹理系数各有99维</p>
+<p><strong>自监督方法</strong> MoFa：三维人脸重建中真实的数据集获取成本非常高，这一类方法不依赖于真实的成对数据集，它将二维图像重建到三维，再反投影回二维图</p>
+<p><strong>更好的三维特征编码</strong> 3DDFA, PRNet</p>
+<h2 id="EG3D"><a href="#EG3D" class="headerlink" title="EG3D"></a>EG3D</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40731332/article/details/129032559">参考文章</a></p>
+</blockquote>
+<h3 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h3><ol>
+<li>提出一种<strong>triplane-based</strong> 3D GAN框架。在保持效果的情况下，提速明显。</li>
+<li>提出一种3D GAN训练策略dual discrimination，用于保持多视角一致性。</li>
+<li>提出generator pose conditioning，建模pose相关的属性，例如：表情。</li>
+<li>在FFHQ和AFHQ Cats的3D-aware图片生成中取得sota结果。</li>
+</ol>
+<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><img src="image.png" alt="Alt text"></p>
+
+             
+        </div>
+        
+            <p itemprop="keywords" class="tags">
+                
+                    <a href="/tags/CV/"> CV </a>
+                
+            </p>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/08/23/3D-Gaussian-Splatting-SIGGRAPH-2023-Best-Paper/">3D Gaussian Splatting (SIGGRAPH 2023 Best Paper) &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
+            <footer id="footer" role="contentinfo">
+    
+        &copy; 2022 - 2023
+        <br />
+    
+    
+    <br />
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_value_site_pv">......</span> visits ·
+        <span id="busuanzi_value_site_uv">......</span> visitors 
+    
+</footer>
+          </div>
+        </div>
+      </main>
+      <!-- highlight support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
+ 
+<script>
+        hljs.initHighlightingOnLoad();
+</script>
+ 
+<!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
+ 
+<!-- mathjax support -->
+
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- fancybox support -->
+ 
+<!-- viewerjs support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.js"></script>
+
+<script type="text/javascript">
+    Viewer.setDefaults({
+        zoomRatio: [0.5],
+        show: function () {
+            this.viewer.zoomTo(1);
+        },
+    });
+    
+    var imageList = document.querySelector('.post-content').getElementsByTagName('img');
+    
+    var imageArray = new Array();
+    Array.prototype.forEach.call(imageList, element => {
+        if (element.alt != "no-view" && element.className != "no-view") {
+            imageArray.push(element);
+        }
+    });
+    
+    Array.prototype.forEach.call(imageArray, element => {
+        var viewer1 = new Viewer(element);
+        viewer1.images = imageArray;
+        viewer1.length = imageArray.length;
+    });
+</script>
+ 
+<!-- google analytics support -->
+
+
+
+ 
+ 
+
+<!-- lazyload support -->
+
+    
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
+
+<script>
+    new LazyLoad({
+        elements_selector: '.post-content img'
+    });
+</script>
+ 
+  </body>
+
+</html>

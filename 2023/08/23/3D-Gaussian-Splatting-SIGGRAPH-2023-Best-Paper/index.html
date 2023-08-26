@@ -155,9 +155,24 @@ C = \sum\limits_{i \in N} c_i \alpha_i \prod\limits_{j=1}^{i-1}(1-\alpha_j)</scr
 <p>为了避免自动微分的overhead，我们显示地推导了所有参数的梯度。</p>
 <h3 id="用adaptive-density-control进行优化"><a href="#用adaptive-density-control进行优化" class="headerlink" title="用adaptive density control进行优化"></a>用adaptive density control进行优化</h3><p>本文方法的核心就是优化步骤，创建一个能精准表示场景的稠密的3D Gaussians。</p>
 <p>除了3D position, opacity $\alpha$, anisotropic covariance之外，我们还优化表示每个Gaussian的颜色$c$的spherical harmonic (SH) coefficients，来更好地表达视角相关的外观。这些参数的优化与控制Gaussians密度的过程是耦合的。</p>
-<p>在迭代过程中，不断地将渲染结果和对应视角的gt进行比较，来优化我们的3D Gaussians。因为3D to 2D投影具有不确定性，优化过程中需要对geometry做出调整。协方差矩阵的参数对于表示的紧性（compactness）至关重要，因为同质化的区域可以用很少的large anisotropic Gaussians来表示。</p>
-<h3 id="实时渲染"><a href="#实时渲染" class="headerlink" title="实时渲染"></a>实时渲染</h3><p>fast GPU sorting algorithms, inspired by tile-based rasterization</p>
+<p>在迭代过程中，不断地将渲染结果和对应视角的gt进行比较，来优化我们的3D Gaussians。因为3D to 2D投影具有不确定性，优化过程中需要对geometry做出调整。协方差矩阵的参数对于表示的紧性（compactness）至关重要，因为同质化的区域可以用很少的large anisotropic Gaussians来表示。优化使用的方法是随机梯度下降。</p>
+<p>主要加速的地方是<strong>rasterization</strong>。</p>
+<p>loss function: $L = (1 - \lambda)L_1 + \lambda L_{D-SSIM}$.</p>
+<p>Adaptive control</p>
+<ul>
+<li>缺失geometry feature的区域（under-reconstruction）：克隆一份Gaussian</li>
+<li>Gaussians很大的地方（over-reconstruction）：把一个大的Gaussian分成两半</li>
+</ul>
+<p><img src="image1.png" alt="Alt text"></p>
+<h3 id="可微渲染器"><a href="#可微渲染器" class="headerlink" title="可微渲染器"></a>可微渲染器</h3><p>fast GPU sorting algorithms, inspired by tile-based rasterization</p>
 <p>Thanks to our 3D Gaussian representation, we can perform anisotropic splatting that respects visibility ordering – thanks to sorting and 𝛼-blending – and enable a fast and accurate backward pass by tracking the traversal of as many sorted splats as required.</p>
+<ol>
+<li>将屏幕分成$16 \times 16$ tiles，剔除视锥和每个tile外的3D Gaussians，只保留和视锥相交有99% confidence以上的Gaussians。另外，用guard band去除极端位置上的Gaussians（均值靠近近平面，或者在视锥外面很远处）。</li>
+<li>根据重叠的tiles数目instantiate每个Gaussian，并且给每个instance赋予一个key（包括view space depth和tile ID）。</li>
+<li>根据key给Gaussians排序，使用GPU Radix sort。</li>
+<li>为每个tile生成了一个depth-sorted entry列表。</li>
+<li>为每个tile分配一个thread block，每个block并行地装载一些Gaussians到共享的内存中，对每个像素，从头到尾遍历列表，累计颜色和不透明度，<strong>不透明度饱和</strong>时该线程停止。data loading/sharing 和处理过程都是并行的。每隔一段时间轮询这些线程的状态，如果所有像素都处理好了，就停止整个tile。</li>
+</ol>
 <h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><ul>
 <li>full set of scenes presented in Mip-Nerf360 [Barron 2022] — <strong>state-of-the-art in NeRF rendering quality</strong></li>
 <li>two scenes from the Tanks and Temples dataset [Knapitsch 2017]</li>
@@ -183,7 +198,7 @@ C = \sum\limits_{i \in N} c_i \alpha_i \prod\limits_{j=1}^{i-1}(1-\alpha_j)</scr
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a>None</a>
+            <a href="/2023/08/26/EG3D/"> &raquo; 3DMM &amp; EG3D</a>
         
         <br /> &raquo; Next 
     </div>
