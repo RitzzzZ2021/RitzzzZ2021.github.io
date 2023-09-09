@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Stable Diffusion - RitzzzZ 
+        Stable Diffusion & LDM - RitzzzZ 
     </title>
      
     
@@ -97,7 +97,7 @@
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
                 <a itemprop="url" href="/2023/09/09/Stable-Diffusion/">
-                    Stable Diffusion
+                    Stable Diffusion &amp; LDM
                 </a>
             </h1>
         </div>
@@ -115,6 +115,42 @@
             <blockquote>
 <p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2112.10752.pdf">High-Resolution Image Synthesis with Latent Diffusion Models (LDM)</a></p>
 </blockquote>
+<h2 id="LDM"><a href="#LDM" class="headerlink" title="LDM"></a>LDM</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Diffusion Model实现了非常好的生成效果，但是存在问题：直接在像素空间（维度高）上操作，优化很耗时间，推理也很消耗资源。</p>
+<p>Key idea: 使用预训练的autoencoders，在latent space中训练模型。</p>
+<p>Contributions: </p>
+<ol>
+<li>高效地生成高分辨率的图像，加速训练和推理</li>
+<li>通过加入cross-attention，可以进行更通用的条件生成，比如text-to-image。</li>
+</ol>
+<h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p>基于似然的模型的学习过程可以被分成两步</p>
+<ol>
+<li>perceptual compression stage: 去除高频细节</li>
+<li>semantic compression stage: 实际上的生成模型，学习语义信息</li>
+</ol>
+<p>目标：找到一个 perceptually equavalent 并且计算成本更低的空间</p>
+<p>相应的，训练也分成两步</p>
+<ol>
+<li>autoencoder: 提供一个低维的表达空间（隐空间 latent space），并且和数据空间 perceptually equavalent；和其他工作最大的区别是LDM有很好的scaling properties，不需要空间压缩；图像生成也更快了，只需要经过一个神经网络；一个autoencoder可以被用于不同的任务</li>
+<li>在latent space上训练diffusion model</li>
+</ol>
+<h3 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h3><p>生成模型：GAN，likelihood-based methods (VAE, flow-based models, autoregressive models, diffusion models)</p>
+<p>两阶段图像合成：之前的工作面临trade-off，压缩率高，表现差，压缩率低，计算成本高</p>
+<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><strong>Autoencoder</strong>：encoder将图像从RGB空间变换到latent space，是一个下采样过程；decoder将latents变换回RGB图像。</p>
+<script type="math/tex; mode=display">
+H\times W \times 3 \to h\times w\times c</script><p>惩罚项的选择：</p>
+<ol>
+<li>KL-reg. 类似VAE</li>
+<li>VQ-reg. 在decoder中使用了向量量化层</li>
+</ol>
+<p><strong>LDM</strong>优化目标：LDM就是把DM的x变成了编码后的latent representations</p>
+<p><img src="0.png" alt="Untitled"></p>
+<p><img src="201.png" alt="Untitled"></p>
+<p><strong>Conditioning</strong>：针对多模态的输入，可以直接把向量拼接起来，也可以用cross-attention machanism，把UNet的中间层替换成cross-attention layer：</p>
+<p><img src="202.png" alt="Untitled"></p>
+<p>其中 $\tau_\theta$ 将条件输入映射成中间表示。</p>
+<p>训练LDM的过程中，联合优化 $\epsilon_\theta, \tau_\theta$ 的参数：</p>
+<p><img src="203.png" alt="Untitled"></p>
+<p><img src="204.png" alt="Untitled"></p>
 
              
         </div>
