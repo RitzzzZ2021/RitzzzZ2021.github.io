@@ -112,7 +112,8 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <blockquote>
+            <p>NeRF baking指的是生成加速的数据结构的模型的过程。</p>
+<blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1dk4y1v7Xi/?spm_id_from=333.337.search-card.all.click&amp;vd_source=dd883cce367009200a0a78c39490e160">参考视频</a></p>
 </blockquote>
 <h2 id="SNeRG-2021"><a href="#SNeRG-2021" class="headerlink" title="SNeRG (2021)"></a><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2103.14645.pdf">SNeRG</a> (2021)</h2><p>key idea：把NeRF模型bake到一个稀疏网格模型Sparse Neural Radiance Grid，从而加速渲染</p>
@@ -139,8 +140,7 @@
 <li>对射线上的采样值进行$\alpha$-compositing</li>
 <li>用MLP和视角方向一起解码，获得像素值</li>
 </ol>
-<h3 id="Baking"><a href="#Baking" class="headerlink" title="Baking"></a>Baking</h3><p>baking指的是生成加速的数据结构的模型的过程。</p>
-<ol>
+<h3 id="Baking"><a href="#Baking" class="headerlink" title="Baking"></a>Baking</h3><ol>
 <li>将空间划分成$N^3$的体素网格</li>
 <li>根据不透明度、体素能见度剔除空体素网格</li>
 <li>高斯采样后求平均，实现anti-aliasing</li>
