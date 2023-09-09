@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        3DMM & EG3D - RitzzzZ 
+        3DMM & EG3D & Next3D - RitzzzZ 
     </title>
      
     
@@ -97,7 +97,7 @@
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
                 <a itemprop="url" href="/2023/08/26/EG3D/">
-                    3DMM &amp; EG3D
+                    3DMM &amp; EG3D &amp; Next3D
                 </a>
             </h1>
         </div>
@@ -157,6 +157,12 @@ S_{model} = \bar{S} + \sum\limits_{i=1}^{m-1} \alpha_i s_i, T_{model} = \bar{T} 
 <li>在FFHQ和AFHQ Cats的3D-aware图片生成中取得sota结果。</li>
 </ol>
 <h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><img src="image.png" alt="Alt text"></p>
+<h2 id="Next3D"><a href="#Next3D" class="headerlink" title="Next3D"></a>Next3D</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/621742222">参考文章</a></p>
+<h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>目前市场上，生成对抗网络（GAN）已经被广泛应用于2D图像的合成，但是在3D领域中，受限于计算的复杂度，目前的方法仍然无法实现高分辨率、高质量的图像合成。此外，当下主流的3D GAN方法在虚拟人生成上，也无法对面部表情、眨眼和凝视方向进行细粒度控制。为了解决这些问题，我们提出了一种新颖的可驱动化3D GAN框架：Next3D。该框架可以从非结构化2D图像中无监督地学习生成高保真和多视图一致性的面部头像，并且在驱动处理上，可以实现全头旋转、面部表情、眨眼和凝视方向等精细控制。此外，Next3D还提供了强大的3D先验知识，可以用于下游任务如3D感知风格化等。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>为了对面部属性进行细粒度控制，我们通过 3D 可变形面部模型（3DMM）来显式或隐式地描述生成辐射场中的变形。显式方法提供细粒度的表达控制，但不能处理由头发和配饰引起的拓扑变化，而隐式方法可以模拟各种拓扑，但由于不受约束的变形场而导致泛化能力有限。</p>
+<p><img src="image1.png" alt="Alt text"></p>
+<p>Next3D是一种生成式纹理栅格化三平面（Generative Texture-Rasterized Tri-planes，简称GTRT）的3D表示。它可以从非结构化的2D图像中合成高质量且3D一致的面部头像，并实现对全头旋转、面部表情、眼睛眨动和凝视方向的精细控制。同时，我们将纹理嵌入到GTRT中，使其在参数化网络模板之上学习生成高质量和高保真的纹理信息，然后通过光栅化将它们投影到三个正交视图的特征平面中，形成用于体积渲染的三平面特征表示，用于提高渲染效率。</p>
+<p>此外，在3DMM（3D Morphable Model）中，通常只对面部外观进行建模，而忽略了口腔内部的细节——口腔内部的细节对于面部头像合成的质量至关重要。因此，我们提出了一个特定模块“efficient teeth synthesis module”，用于建模口腔内部的细节，并通过样式调制UNet来完成模板网格所遗漏的内部口腔特征，引入变形感知鉴别器来进一步规范变形精度，从而提高合成图像与预期变形2D投影之间的对齐度。</p>
 
              
         </div>
@@ -177,7 +183,7 @@ S_{model} = \bar{S} + \sum\limits_{i=1}^{m-1} \alpha_i s_i, T_{model} = \bar{T} 
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a>None</a>
+            <a href="/2023/09/09/Stable-Diffusion/"> &raquo; Stable Diffusion</a>
         
         <br /> &raquo; Next 
     </div>
