@@ -153,7 +153,7 @@ L_2=||\epsilon_t-\epsilon_\theta(x_t,t)||^2</script><p><img src="209.png" alt="U
 <p><img src="2012.png" alt="Untitled"></p>
 <p>可学习的逆向过程方差会导致训练不稳定。</p>
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p><a target="_blank" rel="noopener" href="https://github.com/zoubohao/DenoisingDiffusionProbabilityModel-ddpm-/blob/main/">简化的PyTorch实现</a></p>
-<h2 id="拓展工作：DDIM"><a href="#拓展工作：DDIM" class="headerlink" title="拓展工作：DDIM"></a>拓展工作：DDIM</h2><p>目标：加速DDPM</p>
+<h2 id="拓展工作：Denoising-Diffusion-Implicit-Model-DDIM"><a href="#拓展工作：Denoising-Diffusion-Implicit-Model-DDIM" class="headerlink" title="拓展工作：Denoising Diffusion Implicit Model (DDIM)"></a>拓展工作：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2010.02502.pdf">Denoising Diffusion Implicit Model (DDIM)</a></h2><p>目标：加速DDPM</p>
 <p>方法：假设期望满足分布</p>
 <script type="math/tex; mode=display">
 p(x_{t-1}|x_t,x_0) \sim \mathcal N (kx_0+mx_t,\sigma^2 I)</script><p>可以不连续地进行推理（不需要马尔可夫假设），跳过中间一些步；整个推导过程和方差无关。</p>
