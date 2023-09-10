@@ -112,11 +112,11 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <p>本文介绍了Stable Diffusion背后的原理（LDM），模型的微调方法（LoRA），以及一篇2023年的text-to-image工作（ControlNet）</p>
-<blockquote>
+            <p>本文介绍了Stable Diffusion背后的原理（LDM），模型的微调方法（LoRA），以及一篇2023年的text-to-image工作（ControlNet）。</p>
+<h2 id="LDM"><a href="#LDM" class="headerlink" title="LDM"></a>LDM</h2><blockquote>
 <p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2112.10752.pdf">High-Resolution Image Synthesis with Latent Diffusion Models (LDM)</a></p>
 </blockquote>
-<h2 id="LDM"><a href="#LDM" class="headerlink" title="LDM"></a>LDM</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Diffusion Model实现了非常好的生成效果，但是存在问题：直接在像素空间（维度高）上操作，优化很耗时间，推理也很消耗资源。</p>
+<h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Diffusion Model实现了非常好的生成效果，但是存在问题：直接在像素空间（维度高）上操作，优化很耗时间，推理也很消耗资源。</p>
 <p>Key idea: 使用预训练的autoencoders，在latent space中训练模型。</p>
 <p>Contributions: </p>
 <ol>
@@ -152,7 +152,11 @@ H\times W \times 3 \to h\times w\times c</script><p>惩罚项的选择：</p>
 <p>训练LDM的过程中，联合优化 $\epsilon_\theta, \tau_\theta$ 的参数：</p>
 <p><img src="203.png" alt="Untitled"></p>
 <p><img src="204.png" alt="Untitled"></p>
-<blockquote>
+<h2 id="LoRA"><a href="#LoRA" class="headerlink" title="LoRA"></a>LoRA</h2><blockquote>
+<p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2106.09685.pdf">LoRA: Low-Rank Adaptation of Large Language Models</a></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/611557340">参考文章</a></p>
+<h2 id="ControlNet"><a href="#ControlNet" class="headerlink" title="ControlNet"></a>ControlNet</h2><blockquote>
 <p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2302.05543.pdf">Adding Conditional Control to Text-to-Image Diffusion Models</a></p>
 </blockquote>
 
