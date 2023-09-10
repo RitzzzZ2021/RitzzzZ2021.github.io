@@ -112,9 +112,16 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <p>StyleGAN: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1812.04948.pdf">Paper</a> | <a target="_blank" rel="noopener" href="https://github.com/NVlabs/stylegan">Code</a></p>
+            <h2 id="StyleGAN"><a href="#StyleGAN" class="headerlink" title="StyleGAN"></a>StyleGAN</h2><p><strong>A Style-Based Generator Architecture for Generative Adversarial Networks</strong> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1812.04948.pdf">Paper</a> | <a target="_blank" rel="noopener" href="https://github.com/NVlabs/stylegan">Code</a></p>
+<h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><img src="image.png" alt="Alt text"></p>
+<p>StyleGAN 的网络结构包含两个部分，第一个是<strong>Mapping network</strong>，即下图(b)中的左部分，由隐藏变量 z 生成中间隐藏变量 w 的过程，这个 w 就是用来控制生成图像的style。 第二个是<strong>Synthesis network</strong>，它的作用是生成图像，创新之处在于给每一层子网络都输入 A 和 B：A 是由 w 转换得到的仿射变换，用于控制生成图像的风格，B 是转换后的随机噪声，用于丰富生成图像的细节，即每个卷积层都能根据输入的A来调整style。整个网络结构还是保持了 PG-GAN （progressive growing GAN）的结构。最后论文还提供了一个高清人脸数据集FFHQ。</p>
+<p><strong>Mapping network</strong>要做的事就是对隐藏空间（latent space）进行解耦。Mapping network由8个全连接层组成，通过一系列仿射变换，由 z 得到 w，这个 w 转换成风格$y=(y_s, y_b)$，结合 AdaIN (adaptive instance normalization) 风格变换方法：</p>
+<p><img src="image1.png" alt="Alt text"></p>
+<p><strong>为什么要把 z 变成 w？</strong>一般 z 是符合均匀分布或者高斯分布的随机向量，但在实际情况中，并不是这样，比如头发的长度和男子气概，下图（a）中就是这两个特征的组合，左上角缺失的部分代表头发越长，男子气概越强，如果直接用均匀分布或者高斯分布对头发长度和男子气概进行采样，得到的结果都不准确，因此在（b）中将分布（a）warp 成连续的分布函数 f(z)，这个 f(z) 的密度是非均匀的，图 (c) 是 w 的分布。</p>
+<p><img src="image2.png" alt="Alt text"></p>
 <p>StyleGAN2: <a href="">Paper</a> | <a href="">Code</a></p>
 <p>StyleGAN3: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2106.12423.pdf">Paper</a> | <a target="_blank" rel="noopener" href="https://github.com/NVlabs/stylegan3">Code</a></p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/263554045">StyleGAN 和 StyleGAN2 的深度理解</a></p>
 
              
         </div>
