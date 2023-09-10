@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Stable Diffusion & LDM - RitzzzZ 
+        Stable Diffusion以及一些延申 - RitzzzZ 
     </title>
      
     
@@ -97,7 +97,7 @@
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
                 <a itemprop="url" href="/2023/09/09/Stable-Diffusion/">
-                    Stable Diffusion &amp; LDM
+                    Stable Diffusion以及一些延申
                 </a>
             </h1>
         </div>
@@ -112,7 +112,8 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <blockquote>
+            <p>本文介绍了Stable Diffusion背后的原理（LDM），模型的微调方法（LoRA），以及一篇2023年的text-to-image工作（ControlNet）</p>
+<blockquote>
 <p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2112.10752.pdf">High-Resolution Image Synthesis with Latent Diffusion Models (LDM)</a></p>
 </blockquote>
 <h2 id="LDM"><a href="#LDM" class="headerlink" title="LDM"></a>LDM</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Diffusion Model实现了非常好的生成效果，但是存在问题：直接在像素空间（维度高）上操作，优化很耗时间，推理也很消耗资源。</p>
@@ -151,6 +152,9 @@ H\times W \times 3 \to h\times w\times c</script><p>惩罚项的选择：</p>
 <p>训练LDM的过程中，联合优化 $\epsilon_\theta, \tau_\theta$ 的参数：</p>
 <p><img src="203.png" alt="Untitled"></p>
 <p><img src="204.png" alt="Untitled"></p>
+<blockquote>
+<p>论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2302.05543.pdf">Adding Conditional Control to Text-to-Image Diffusion Models</a></p>
+</blockquote>
 
              
         </div>
