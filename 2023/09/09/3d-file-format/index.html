@@ -118,7 +118,7 @@
 <li>ply</li>
 <li>pcd</li>
 </ol>
-<h2 id="OBJ"><a href="#OBJ" class="headerlink" title="OBJ"></a>OBJ</h2><p>OBJ文件由一行行文本组成，每行由一两个标记字母，也就是关键字(Keyword)开头，关键字说明这一行是什么数据。</p>
+<h2 id="OBJ"><a href="#OBJ" class="headerlink" title="OBJ"></a>OBJ</h2><p>OBJ从几何学上定义的文件格式。OBJ文件由一行行文本组成，每行由一两个标记字母，也就是关键字(Keyword)开头，关键字说明这一行是什么数据。</p>
 <p>常用的关键字：</p>
 <ul>
 <li>v 几何体顶点 (Geometric vertices)</li>
@@ -169,7 +169,8 @@ f 6/12/4 2/13/4 4/5/4 8/14/4
 f 2/13/5 1/1/5 3/4/5 4/5/5
 f 6/11/6 5/10/6 1/1/6 2/13/6
 </code></pre>
-<h2 id="PLY"><a href="#PLY" class="headerlink" title="PLY"></a>PLY</h2><p>还是立方体的例子：</p>
+<h2 id="PLY"><a href="#PLY" class="headerlink" title="PLY"></a>PLY</h2><p>PLY是一种多边形文件格式，有文件头。</p>
+<p>还是立方体的例子：</p>
 <pre><code class="lang-txt">ply
 format ascii 1.0           &#123; ascii/binary, format version number &#125;
 comment made by anonymous  &#123; comments keyword specified, like all lines &#125;
@@ -195,6 +196,22 @@ end_header                 &#123; delimits the end of the header &#125;
 4 1 5 6 2
 4 2 6 7 3
 4 3 7 4 0
+</code></pre>
+<h2 id="PCD"><a href="#PCD" class="headerlink" title="PCD"></a>PCD</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/flyinggod/p/8591520.html">参考文章</a></p>
+<p>一个例子：</p>
+<pre><code class="lang-txt"># .PCD v.7 - Point Cloud Data file format
+VERSION .7
+FIELDS x y z rgb
+SIZE 4 4 4 4
+TYPE F FFF
+COUNT 1 1 1 1
+WIDTH 213
+HEIGHT 1
+VIEWPOINT 0 0 0 1 0 0 0
+POINTS 213
+DATA ascii
+0.93773 0.33763 0 4.2108e+06
+0.90805 0.35641 0 4.2108e+06
 </code></pre>
 
              
