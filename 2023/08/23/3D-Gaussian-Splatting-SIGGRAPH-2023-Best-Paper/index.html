@@ -147,7 +147,7 @@ C = \sum\limits_{i \in N} c_i \alpha_i \prod\limits_{j=1}^{i-1}(1-\alpha_j)</scr
 <h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><img src="image.png" alt="Alt text"></p>
 <h3 id="Differentiable-3D-Gaussians-Splatting"><a href="#Differentiable-3D-Gaussians-Splatting" class="headerlink" title="Differentiable 3D Gaussians Splatting"></a>Differentiable 3D Gaussians Splatting</h3><p>场景表示：稀疏的SfM点云初始化3D Gaussians，without normals。</p>
 <ul>
-<li>3D Gaussians由位置（均值）、协方差矩阵和不透明度$\alpha$定义：$G(x)=e^{-\frac{1}{2}(x)^T \Simga^{-1}(x)}$；</li>
+<li>3D Gaussians由位置（均值）、协方差矩阵和不透明度$\alpha$定义：$G(x)=e^{-\frac{1}{2}(x)^T \Sigma^{-1}(x)}$；</li>
 <li>因为很难估计稀疏点的normals，而且优化noisy normals很困难，干脆用不需要normals的3D Gaussians。</li>
 </ul>
 <p>优点：可微分，可以投影到2D splats进行快速的$\alpha$-blending。</p>
