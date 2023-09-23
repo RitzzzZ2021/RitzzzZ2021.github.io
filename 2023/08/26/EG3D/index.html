@@ -154,7 +154,8 @@ S_{model} = \bar{S} + \sum\limits_{i=1}^{m-1} \alpha_i s_i, T_{model} = \bar{T} 
 <li>在FFHQ和AFHQ Cats的3D-aware图片生成中取得sota结果。</li>
 </ol>
 <h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p><img src="image.png" alt="Alt text"></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40731332/article/details/129032559">参考文章</a></p>
+<p><strong>三种3D表示方法的比较</strong>：NeRF用全连接层和位置编码来表示一个3D场景，查询速度非常慢；体素（显式或混合）用较小的解码器，查询速度快，但是很难提高分辨率；本文提出的混合表示方法tri-plane不仅快而且能继续提高分辨率。</p>
+<p><img src="image.png" alt="Alt text"></p>
 <h2 id="Next3D"><a href="#Next3D" class="headerlink" title="Next3D"></a>Next3D</h2><p>Next3D: Generative Neural Texture Rasterization for 3D-Aware Head Avatars <a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2023/papers/Sun_Next3D_Generative_Neural_Texture_Rasterization_for_3D-Aware_Head_Avatars_CVPR_2023_paper.pdf">Paper</a></p>
 <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>目前市场上，生成对抗网络（GAN）已经被广泛应用于2D图像的合成，但是在3D领域中，受限于计算的复杂度，目前的方法仍然无法实现高分辨率、高质量的图像合成。此外，当下主流的3D GAN方法在虚拟人生成上，也无法对面部表情、眨眼和凝视方向进行细粒度控制。为了解决这些问题，我们提出了一种新颖的可驱动化3D GAN框架：Next3D。该框架可以从非结构化2D图像中无监督地学习生成高保真和多视图一致性的面部头像，并且在驱动处理上，可以实现全头旋转、面部表情、眨眼和凝视方向等精细控制。此外，Next3D还提供了强大的3D先验知识，可以用于下游任务如3D感知风格化等。</p>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>为了对面部属性进行细粒度控制，我们通过 3D 可变形面部模型（3DMM）来显式或隐式地描述生成辐射场中的变形。显式方法提供细粒度的表达控制，但不能处理由头发和配饰引起的拓扑变化，而隐式方法可以模拟各种拓扑，但由于不受约束的变形场而导致泛化能力有限。</p>
