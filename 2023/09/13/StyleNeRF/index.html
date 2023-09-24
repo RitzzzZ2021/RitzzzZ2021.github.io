@@ -113,6 +113,18 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <p>STYLENERF: A STYLE-BASED 3D-AWARE GENERATOR FOR HIGH-RESOLUTION IMAGE SYNTHESIS <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08985">Paper</a> | <a target="_blank" rel="noopener" href="https://github.com/facebookresearch/StyleNeRF">Code</a></p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>StyleNeRF: 3D-aware generative model，能在无结构2D图像上训练，合成多视角一致的高分辨率图像。</p>
+<p>目前的方法存在问题：</p>
+<ul>
+<li>无法合成高分辨率图像，或者3D不一致</li>
+<li>缺少对风格属性和camera pose的控制</li>
+</ul>
+<p>key idea:</p>
+<ul>
+<li>结合NeRF和style-based generator</li>
+<li>体渲染产生低分辨率feature map，逐渐上采样得到高分辨率图像 - 新的upsampler和惩罚项</li>
+</ul>
+<p>支持的任务：zoom-in and-out, style mixing, inversion, semantic editing</p>
 
              
         </div>
