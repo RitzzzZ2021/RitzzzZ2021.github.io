@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        StyleNeRF - RitzzzZ 
+        StyleNeRF (ICLR 2021) - RitzzzZ 
     </title>
      
     
@@ -97,7 +97,7 @@
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
                 <a itemprop="url" href="/2023/09/13/StyleNeRF/">
-                    StyleNeRF
+                    StyleNeRF (ICLR 2021)
                 </a>
             </h1>
         </div>
@@ -112,19 +112,30 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <p>STYLENERF: A STYLE-BASED 3D-AWARE GENERATOR FOR HIGH-RESOLUTION IMAGE SYNTHESIS <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08985">Paper</a> | <a target="_blank" rel="noopener" href="https://github.com/facebookresearch/StyleNeRF">Code</a></p>
+            <p>STYLENERF: A STYLE-BASED 3D-AWARE GENERATOR FOR HIGH-RESOLUTION IMAGE SYNTHESIS <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2110.08985">Paper</a> | <a target="_blank" rel="noopener" href="https://github.com/facebookresearch/StyleNeRF">Code</a> </p>
 <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>StyleNeRF: 3D-aware generative model，能在无结构2D图像上训练，合成多视角一致的高分辨率图像。</p>
 <p>目前的方法存在问题：</p>
 <ul>
-<li>无法合成高分辨率图像，或者3D不一致</li>
-<li>缺少对风格属性和camera pose的控制</li>
+<li>无法合成高分辨率图像，3D不一致</li>
+<li>缺少对style attributes和camera pose的控制</li>
 </ul>
 <p>key idea:</p>
 <ul>
 <li>结合NeRF和style-based generator</li>
 <li>体渲染产生低分辨率feature map，逐渐上采样得到高分辨率图像 - 新的upsampler和惩罚项</li>
 </ul>
-<p>支持的任务：zoom-in and-out, style mixing, inversion, semantic editing</p>
+<p>下游任务：zoom-in and-out, style mixing, inversion, semantic editing</p>
+<h2 id="Style-based-Generative-Neural-Radiance-Field"><a href="#Style-based-Generative-Neural-Radiance-Field" class="headerlink" title="Style-based Generative Neural Radiance Field"></a>Style-based Generative Neural Radiance Field</h2><p>用style vectors作为NeRF的条件输入：</p>
+<p><img src="image.png" alt="Alt text"></p>
+<p>类似于StyleGAN2，$f$是一个mapping network，把spherical Gaussian space 中的 noise vectors 映射到 style space。$g_\omega^i(\dot)$是第$i$层MLP，它的权重矩阵由输入的style vector $\omega$来调节。</p>
+<p>用提取出的特征预测密度和颜色：</p>
+<p><img src="image1.png" alt="Alt text"></p>
+<p>其中$h_\sigma$和$h_c$可以是线性投影或两层的MLP。和原来的NeRF不同的是，这里假设$n_\sigma&gt;n_c$，因为外观比几何存储的信息更多。前$\min(n_\sigma,n_c)$层是共享的。</p>
+<h2 id="高分辨率图像生成的近似算法"><a href="#高分辨率图像生成的近似算法" class="headerlink" title="高分辨率图像生成的近似算法"></a>高分辨率图像生成的近似算法</h2><ol>
+<li>每个像素都对应一个feature vector；</li>
+<li>只需要经过一次对网络的query，而NeRF需要对一根光线上的所有采样点在网络中进行查询。</li>
+</ol>
+<p><img src="image2.png" alt="Alt text"></p>
 
              
         </div>
