@@ -112,16 +112,19 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="Swin-Transformer"><a href="#Swin-Transformer" class="headerlink" title="Swin Transformer"></a>Swin Transformer</h2><p>目前将 Transformer 从自然语言处理领域应用到计算机视觉领域主要有两大挑战：</p>
+            <h2 id="Swin-Transformer"><a href="#Swin-Transformer" class="headerlink" title="Swin Transformer"></a>Swin Transformer</h2><p><img src="image1.png" alt="Alt text"></p>
+<p>目前将 Transformer 从自然语言处理领域应用到计算机视觉领域主要有两大挑战：</p>
 <ul>
 <li>视觉实体的方差较大，例如同一个物体，拍摄角度不同，转化为二进制后的图片就会具有很大的差异。同时在不同场景下视觉 Transformer 性能未必很好。</li>
 <li>图像分辨率高，像素点多，如果采用ViT模型，自注意力的计算量会与像素的平方成正比。</li>
 </ul>
 <p>针对上述两个问题，论文中提出了一种基于滑动窗口机制，具有层级设计（下采样层） 的 Swin Transformer：</p>
 <ul>
-<li>滑窗操作包括不重叠的 local window，和重叠的 cross-window。将注意力计算限制在一个窗口（window size固定）中，一方面能引入 CNN 卷积操作的局部性，另一方面能大幅度节省计算量，它只和窗口数量成线性关系。</li>
+<li>滑窗操作包括不重叠的 local window，和重叠的 cross-window。将self-attention限制在一个窗口（window size固定）中，一方面能引入 CNN 卷积操作的局部性，另一方面能大幅度节省计算量，它只和窗口数量成线性关系。</li>
 <li>通过下采样的层级设计，能够逐渐增大感受野，从而使得注意力机制也能够注意到全局的特征。</li>
 </ul>
+<h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p><img src="image2.png" alt="Alt text"></p>
+<p>整个模型采取层次化的设计，一共包含 4 个 stage，除第一个 stage 外，每个 stage 都会先通过 Patch Merging 层缩小输入特征图的分辨率，进行下采样操作，像 CNN 一样逐层扩大感受野，以便获取到全局的信息。</p>
 <h2 id="ViT"><a href="#ViT" class="headerlink" title="ViT"></a>ViT</h2><p>An image is worth 16x16 words: Transformers for image recognition at scale</p>
 <p>Key: scalable，模型越大效果越好, Transformer和CNN相比缺少归纳偏置（inductive bias）</p>
 <p>CNN具有以下特征：</p>

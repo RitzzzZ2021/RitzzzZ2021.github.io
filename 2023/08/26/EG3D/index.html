@@ -165,7 +165,8 @@ S_{model} = \bar{S} + \sum\limits_{i=1}^{m-1} \alpha_i s_i, T_{model} = \bar{T} 
 <p><strong>三种3D表示方法的比较</strong>：NeRF用全连接层和位置编码来表示一个3D场景，查询速度非常慢；体素（显式或混合）用较小的解码器，查询速度快，但是很难提高分辨率；本文提出的混合表示方法tri-plane不仅快而且能继续提高分辨率。</p>
 <h3 id="3D-GAN-framework"><a href="#3D-GAN-framework" class="headerlink" title="3D GAN framework"></a>3D GAN framework</h3><p>训练集：unstructured 2D images，用现成的pose detectors估计相机内外参数。</p>
 <p><strong>CNN generator backbone</strong>：EG3D使用StyleGAN2作为backbone，可以进行style-mixing和latent-space interpolation。</p>
-<p><strong>Rendering</strong>: 得到特征后，通过一个小MLP进行解码，得到density和32-channel feature，然后进行volume rendering，得到2D feature image。feature image比RGB image包含更多的信息，能更好地进行下一步的refinement。</p>
+<p><strong>Decoder</strong>: 从tri-plane中采样并加和后，decoder的结构是单隐藏层的MLP，这个MLP并不需要位置编码或者坐标或者角度的输入。</p>
+<p><strong>Rendering</strong>: 得到特征后，通过一个小MLP进行解码，得到density和32-channel feature，特征图的维度是$256 \times 256 \times 96$。然后进行volume rendering，得到2D feature image。feature image比RGB image包含更多的信息，能更好地进行下一步的refinement。</p>
 <p><img src="image2.png" alt="Alt text"></p>
 <p><strong>Super resolution</strong>: 为了更快地渲染高分辨率图像，体渲染只渲染较低分辨率的feature image，然后通过image-space convolutions来上采样得到高分辨率图像。</p>
 <p><strong>Dual discrimination</strong>: 用低分辨率的feature image得到raw image $I_{RGB}$，和超分得到的$I^+_{RGB}$拼接起来，得到6通道的图像；真实图像经过处理，得到它的blurred copy，也拼接起来得到6通道图像，然后输入判别器。</p>
