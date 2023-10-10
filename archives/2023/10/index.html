@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        3D Reconstruction 基础知识 - RitzzzZ 
+        archive: 2023/10 - RitzzzZ 
     </title>
      
     
@@ -93,84 +93,33 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
-        <div class="post-title">
-            <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/09/13/3D-Reconstruction/">
-                    3D Reconstruction 基础知识
-                </a>
-            </h1>
-        </div>
-        <ul class="post-meta post-meta-atpage">
-            <li class="post-time">
-                2023-09-13
-            </li>
-            <li>
-                <div class="article-category">
-                    
-                </div>
-            </li>
-        </ul>
-        <div class="post-content" itemprop="articleBody">
-            <h2 id="SfM"><a href="#SfM" class="headerlink" title="SfM"></a>SfM</h2><p>SfM的输入是一段motion或者一段2D图像序列，不需要任何相机的信息，相对位姿是需要在重建之前计算的。然后通过2D图之间的匹配可以推断出相机的各项参数。Corresponding points可以用SIFT，SURF来匹配，也可以用最新的AKAZE（SIFT的改进版，2010）来匹配。而Corresponding points的跟踪则可以用Lucas-Kanede的 Optical Flow 来完成。</p>
-<p>在SfM中，误匹配会造成较大的Error，所以要对匹配进行筛选，目前流行的方法是RANSAC（Random Sample Consensus）。2D的误匹配点可以应用3D的Geometric特征来进行排除。</p>
-<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/29845703?source_id=1005">参考文章</a></p>
-<h2 id="Optical-Flow"><a href="#Optical-Flow" class="headerlink" title="Optical Flow"></a>Optical Flow</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384651830">参考文章</a></p>
-<h2 id="MVS"><a href="#MVS" class="headerlink" title="MVS"></a>MVS</h2><h2 id="COLMAP"><a href="#COLMAP" class="headerlink" title="COLMAP"></a><a target="_blank" rel="noopener" href="https://demuc.de/colmap/">COLMAP</a></h2><p>COLMAP 是一种通用的运动结构 (SfM) 和多视图立体 (MVS) 管道，具有图形和命令行界面。它为有序和无序图像集合的重建提供了广泛的功能。该软件是在新的 BSD 许可下获得许可的。最新的源代码可在GitHub上获得。COLMAP 建立在现有作品的基础上，在 COLMAP 中使用特定算法时，请同时引用源代码中指定的原始作者。</p>
-<h2 id="Marching-cubes"><a href="#Marching-cubes" class="headerlink" title="Marching cubes"></a>Marching cubes</h2><p>Marching cubes 是一种重建算法，具体步骤如下：</p>
-<ol>
-<li>将一个3D几何体划分为若干个小正方体（体素化）。</li>
-<li>判断每一个体素的顶点是否在3D几何体内。</li>
-<li>通过体素顶点可以进行重建。</li>
-</ol>
-<p>在存储方面，可以按照栅格顶点的状态进行分类。</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/561731427">参考文章</a></p>
-<h2 id="SDF"><a href="#SDF" class="headerlink" title="SDF"></a>SDF</h2><p>SDF是一种表面几何的表达方式。</p>
-<h2 id="Differentiable-Rendering"><a href="#Differentiable-Rendering" class="headerlink" title="Differentiable Rendering"></a>Differentiable Rendering</h2><p>传统的渲染过程其实就是从3D空间到2D空间的一个过程。反过来，我们希望从一张图片，得到三维的场景信息（几何数据、相机参数、光照参数等），这个从2D到3D的过程被称为逆向渲染。可微渲染是逆向渲染的一种方法。</p>
-<p>可微渲染初始需要以下两个资源：</p>
-<ul>
-<li>参考图片（Ground truth）：二维目标图片。可微渲染的目标就是使得渲染的结果无限接近这张参考图片。</li>
-<li>初始场景参数：可以是一个大致接近于真实场景的粗略的三维场景，也可以是完全随机的三维场景。</li>
-</ul>
-<p>可微渲染两个部分：</p>
-<ul>
-<li>前向渲染：这和我们传统的渲染流程是一样的，都是根据场景参数渲染出一张二维图片。</li>
-<li>反向传播：我们做完前向渲染之后，需要将渲染结果与Ground truth做比较得到loss，再将梯度反向传播到场景参数中，实现优化。</li>
-</ul>
-<p>传统的渲染管线做不到反向传递梯度。</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/584510853">参考文章</a></p>
-<h2 id="欧拉角，轴角，四元数"><a href="#欧拉角，轴角，四元数" class="headerlink" title="欧拉角，轴角，四元数"></a>欧拉角，轴角，四元数</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/YiYeZhiNian/article/details/106750302">参考文章</a></p>
+   
+   
+    
+    
+      
+      
+          
+          <div class="post post-atmain archive-model">
+            <h2 class="archive-month">
+              2023.10
+            </h2>
+          </div>
+      
+      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <h2 class="archive-title" itemprop="name headline">
+          <a itemprop="url" href="/2023/10/10/Vision-Transformer/">
+            <time class="archive-time" itemprop="datePublished">
+              10.10
+            </time>
+            · Vision Transformer
+          </a>
+        </h2>
+      </article>
+    
+</div>
 
              
-        </div>
-        
-            <p itemprop="keywords" class="tags">
-                
-                    <a href="/tags/3DV/"> 3DV </a>
-                
-            </p>
-        
-    </article>
-    <div class="post-near">
-    <div class="post-near-child post-near-child-left "> 
-        
-            <a href="/2023/09/13/StyleNeRF/">StyleNeRF (ICLR 2021) &laquo; </a>
-        
-        <br /> Prev  &laquo;
-    </div>
-    <div class="post-near-child post-near-child-right">
-        
-            <a href="/2023/10/10/Vision-Transformer/"> &raquo; Vision Transformer</a>
-        
-        <br /> &raquo; Next 
-    </div>
-</div>
-</div>
-             
-<div id="comments">
-     
-</div>
- 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023
