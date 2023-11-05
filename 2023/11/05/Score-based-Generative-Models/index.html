@@ -142,9 +142,9 @@ J_{f^{-1}} = \begin{\bmatrix} \partial z_1/ \partial x_1 & \partial z_1/ \partia
 <p>实际上是训练$G^{-1}$，而生成时使用$G$。</p>
 <p><strong>Coupling Layer</strong>: 被用于NICE (2014)和Real NVP (2015)。把输入分成两部分，一部分进行复制，另一部分进行变换。其中，$F$和$H$可以是任何变换。$z_{i \leq d} = x_i$, $z_{i&gt;d}=\frac{x_i-\gamma_i}{\beta_i}$.</p>
 <p><img src="image6.png" alt="Alt text"></p>
-<p>为什么左下角不重要？因为右上角是全0，整个矩阵的determinant就是左上角子矩阵和右下角子矩阵的积。左下角的矩阵每个元素的值和$F$和$H$有关，所以$F$和$H$可以是任何变换。</p>
+<p>为什么左下角不重要？因为右上角是全0，整个矩阵的determinant就是左上角子矩阵和右下角子矩阵的积。左下角的矩阵每个元素的值和$F$和$H$有关，所以$F$和$H$可以是任何变换。右下角很好算，是一个线性变换求偏导，而且还是对角阵。</p>
 <p><img src="image7.png" alt="Alt text"></p>
-<p>把Coupling Layer叠起来，变成一个完整的genetor。不可以让某一部分一直简单地进行复制，所以叠的时候要让两部分交替进行复制和变换。对于图像来说，可以在像素空间上进行交替，也可以在通道上进行交替。</p>
+<p>把Coupling Layer叠起来，变成一个完整的generator。不可以让某一部分一直简单地进行复制，所以叠的时候要让两部分交替进行复制和变换。对于图像来说，可以在像素空间上进行交替，也可以在通道上进行交替。</p>
 <p><img src="image8.png" alt="Alt text"></p>
 <p>GLOW (2018)的$1 \times 1$ Convolution逐像素用$3 \times 3$的矩阵$W$来交换通道。$x = f(z) = Wz$，$W$一般来说是可逆的（随机初始化出不可逆的，也就是说Jacobian=0的矩阵概率是比较低的）。</p>
 <p><img src="image9.png" alt="Alt text"></p>
