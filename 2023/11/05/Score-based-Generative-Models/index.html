@@ -121,7 +121,7 @@
 <li>Variational Auto-encoder: optimize a <strong>lower bound</strong> of maximum likelihood 和真实目标之间有差距</li>
 <li>GAN: unstable training</li>
 </ul>
-<p>maximum likelihood $G^* = \argmax \limit_G \sum\limit^m_{i=1}\log _G(x^i)$ 等价于 min KL(P_{data}||P_G)</p>
+<p>maximum likelihood $G^* = \arg \max \limits_G \sum\limits^m_{i=1}\log _G(x^i)$ 等价于 min KL(P_{data}||P_G)</p>
 <p>Flow-based model 直接优化目标函数。</p>
 <h2 id="数学背景"><a href="#数学背景" class="headerlink" title="数学背景"></a>数学背景</h2><h3 id="Jacobian-Matrix"><a href="#Jacobian-Matrix" class="headerlink" title="Jacobian Matrix"></a>Jacobian Matrix</h3><script type="math/tex; mode=display">
 z=\begin{\bmatrix} z_1 \\ z_2 \end{\bmatrix} \ \ x = \begin{\bmatrix} x_1 \\ x_2 \end{\bmatrix} \\
