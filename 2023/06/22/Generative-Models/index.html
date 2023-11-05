@@ -131,7 +131,7 @@ L_G=-\Bbb{E}_{z\sim p_z}[log(D(G(z)))].</script><p>随着深度学习的兴起�
 <li>由于优化双方博弈的难度很大，GAN在稳定训练网络方面存在困难，导致更容易出现不收敛的情况。</li>
 <li>GAN还面临着模式崩溃的问题，即生成器将多个不同的潜在编码映射到相同的输出上。</li>
 </ul>
-<h3 id="VAE"><a href="#VAE" class="headerlink" title="VAE"></a>VAE</h3><p>变分自编码器（Variational Autoencoders，VAEs）是一种深度潜变量模型（Deep Latent Variable Models，DLVMs），通过神经网络对数据分布$x\sim p_\theta$进行参数化，引入潜在变量$z$，并给出一个先验分布$z\sim p_z$。DLVMs的参数$\theta$很难进行微分和优化，因为我们想要最大化的似然函数$p_\theta(x) = p_\theta(x|z)p_z(z)dz$是难以计算的。而变分自编码器通过对难以计算的后验进行有效近似，将其转化为一个可解的问题。具体来说，通过使用前馈模型对后验分布qφ(z|x)进行参数化，并通过最小化自身与先验分布$p_\theta(z|x)$之间的<a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/95687720?source_id=1005">KL散度</a>来进行优化：</p>
+<h3 id="VAE"><a href="#VAE" class="headerlink" title="VAE"></a>VAE</h3><p>变分自编码器（Variational Autoencoders，VAEs）是一种深度潜变量模型（Deep Latent Variable Models，DLVMs），通过神经网络对数据分布$x\sim p_\theta$进行参数化，引入潜在变量$z$，并给出一个先验分布$z\sim p_z$。DLVMs的参数$\theta$很难进行微分和优化，因为我们想要最大化的似然函数$p_\theta(x) = p_\theta(x|z)p_z(z)dz$是难以计算的。而变分自编码器通过对难以计算的后验进行有效近似，将其转化为一个可解的问题。具体来说，通过使用前馈模型对后验分布$q_\phi(z|x)$进行参数化，并通过最小化自身与先验分布$p_\theta(z|x)$之间的<a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/95687720?source_id=1005">KL散度</a>来进行优化：</p>
 <script type="math/tex; mode=display">
 L_{VAE}=-D_{KL}(q_{\phi}(z|x)||p_\theta(z))+\Bbb{E}_{z \sim q_{\phi (z|x)}}log(p_\theta(z|x))</script><p>被称为证据下界（ELBO）。由于$q_\phi (z|x)$的前馈模式，推断新样本的效率很高。并且，由于重构损失函数的存在，训练过程是稳定的。</p>
 <p>缺点：</p>
@@ -139,7 +139,7 @@ L_{VAE}=-D_{KL}(q_{\phi}(z|x)||p_\theta(z))+\Bbb{E}_{z \sim q_{\phi (z|x)}}log(p
 <li>变分自编码器也会遭受后验崩溃的问题，即学习到的潜在空间变得对重构给定数据不具有信息性。</li>
 <li>由于注入的噪声和不完美的重构，变分自编码器更容易合成比起GAN生成的样本更模糊的样本。</li>
 </ul>
-<h3 id="NF"><a href="#NF" class="headerlink" title="NF"></a>NF</h3><p>在GANs和VAEs中，使用参数化模型来隐式地学习数据的密度，因此无法计算精确的似然函数来优化模型训练。而归一化流通过引入一组可逆变换函数来缓解这个问题。它从一个正态分布开始，然后一系列的可逆函数$f_{1:N}(·)$依次将正态分布转化为最终输出的概率分布：</p>
+<h3 id="NF"><a href="#NF" class="headerlink" title="NF"></a>NF</h3><p>在GANs和VAEs中，使用参数化模型来隐式地学习数据的密度，因此无法计算精确的似然函数来优化模型训练。而归一化流通过引入一组<strong>可逆变换函数</strong>来缓解这个问题。它从一个正态分布开始，然后一系列的可逆函数$f_{1:N}(·)$依次将正态分布转化为最终输出的概率分布：</p>
 <script type="math/tex; mode=display">
 z_i=f_{i-1}(z_{i-1}).</script><p>由于$f_i$的可逆性质，新变量$z_i$的概率密度函数可以很容易地从上一步的变量$z_{i-1}$估计得到：</p>
 <script type="math/tex; mode=display">
