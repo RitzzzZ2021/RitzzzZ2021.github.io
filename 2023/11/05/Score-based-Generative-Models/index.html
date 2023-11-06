@@ -124,10 +124,16 @@
 <p>maximum likelihood $G^* = \arg \max \limits_G \sum\limits^m_{i=1}\log _G(x^i)$ 等价于 $min KL(P_{data}||P_G)$.</p>
 <p>Flow-based model 直接优化目标函数。</p>
 <h2 id="数学背景"><a href="#数学背景" class="headerlink" title="数学背景"></a>数学背景</h2><h3 id="Jacobian-Matrix"><a href="#Jacobian-Matrix" class="headerlink" title="Jacobian Matrix"></a>Jacobian Matrix</h3><script type="math/tex; mode=display">
-z=\begin{\bmatrix} z_1 \\ z_2 \end{\bmatrix} \ \ x = \begin{\bmatrix} x_1 \\ x_2 \end{\bmatrix}</script><script type="math/tex; mode=display">
-x = f(z)</script><script type="math/tex; mode=display">
-J_f = \begin{\bmatrix} \partial x_1/ \partial z_1 & \partial x_1/ \partial z_2 \\ \partial x_2/ \partial z_1 & \partial x_2/ \partial z_2 \end{\bmatrix}</script><script type="math/tex; mode=display">
-J_{f^{-1}} = \begin{\bmatrix} \partial z_1/ \partial x_1 & \partial z_1/ \partial x_2 \\ \partial z_2/ \partial x_1 & \partial z_2/ \partial x_2 \end{\bmatrix}</script><p>Determinant 行列式: 可以理解为二维中的面积，高维空间中的体积（绝对值）。逆矩阵的行列式是原矩阵的倒数，$det(J_f)=1/det(J_{f^{-1}})$.</p>
+\begin{equation}
+z=\begin{\bmatrix} z_1 \\ z_2 \end{\bmatrix} \ \ x = \begin{\bmatrix} x_1 \\ x_2 \end{\bmatrix}\\
+
+x = f(z)\\
+
+J_f = \begin{\bmatrix} \partial x_1/ \partial z_1 & \partial x_1/ \partial z_2 \\ \partial x_2/ \partial z_1 & \partial x_2/ \partial z_2 \end{\bmatrix}\\
+
+J_{f^{-1}} = \begin{\bmatrix} \partial z_1/ \partial x_1 & \partial z_1/ \partial x_2 \\ \partial z_2/ \partial x_1 & \partial z_2/ \partial x_2 \end{\bmatrix}
+
+\end{equation}</script><p>Determinant 行列式: 可以理解为二维中的面积，高维空间中的体积（绝对值）。逆矩阵的行列式是原矩阵的倒数，$det(J_f)=1/det(J_{f^{-1}})$.</p>
 <h3 id="Change-of-Variable-Theorem"><a href="#Change-of-Variable-Theorem" class="headerlink" title="Change of Variable Theorem"></a>Change of Variable Theorem</h3><p><img src="image.png" alt="change_of_variable"></p>
 <p><img src="image2.png" alt="Alt text"></p>
 <p>$\Delta x_{ij}$是$\Delta z_i$变化时$\Delta x_j$的变化量。</p>
