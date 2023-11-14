@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Notes on Camera Pose - RitzzzZ 
+        Notes on Camera - RitzzzZ 
     </title>
      
     
@@ -97,7 +97,7 @@
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
                 <a itemprop="url" href="/2023/11/13/Notes-on-Camera-Pose/">
-                    Notes on Camera Pose
+                    Notes on Camera
                 </a>
             </h1>
         </div>
@@ -113,15 +113,21 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <h2 id="相机位姿（pose）与外参（extrinsic）矩阵"><a href="#相机位姿（pose）与外参（extrinsic）矩阵" class="headerlink" title="相机位姿（pose）与外参（extrinsic）矩阵"></a>相机位姿（pose）与外参（extrinsic）矩阵</h2><p>w2c == extrinsic<br>c2w == pose</p>
-<p>外参矩阵即w2c (world to camera)矩阵，作用是将世界坐标系中的点坐标变换到相机坐标系，由一个单位正交旋转矩阵$R$和平移矢量$t$组成。记相机坐标为 $P_c$，世界坐标为$P_w$，则</p>
+<p>外参矩阵即w2c (world to camera)矩阵，作用是将世界坐标系中的点坐标变换到相机坐标系，由一个单位正交旋转矩阵$R$和平移矢量$t$组成。记相机坐标为$P_c$，世界坐标为$P_w$，则</p>
 <script type="math/tex; mode=display">
-P_c = [R t]\begin{bmatrix}P_w \\ 1\end{bmatrix},</script><p>外参矩阵的逆矩阵即相机位姿，也就是c2w (camera to world)矩阵，作用是将相机坐标系中的点坐标变换到世界坐标系。c2w直接描述了相机坐标系的朝向和原点，也可以写成旋转矩阵和平移矢量的组合，</p>
+P_c = [R \ t]\begin{bmatrix}P_w \\ 1\end{bmatrix},</script><p>外参矩阵的逆矩阵即相机位姿，也就是c2w (camera to world)矩阵，作用是将相机坐标系中的点坐标变换到世界坐标系。c2w直接描述了相机坐标系的<strong>朝向</strong>和<strong>原点</strong>，也可以写成旋转矩阵和平移矢量的组合，</p>
 <script type="math/tex; mode=display">
-P_w = [R_c C]\begin{bmatrix}P_c \\ 1\end{bmatrix},</script><p>其中旋转矩阵从左到右的每一列分别表示相机坐标系的X, Y, Z轴在世界坐标系下对应的方向，平移向量表示的是相机原点（camera center）在世界坐标系的位置。</p>
+P_w = [R_c \ C]\begin{bmatrix}P_c \\ 1\end{bmatrix},</script><p>其中旋转矩阵从左到右的每一列分别表示相机坐标系的X, Y, Z轴在世界坐标系下对应的方向，平移向量表示的是相机原点（camera center）在世界坐标系的位置。</p>
 <h3 id="c2w和w2c的相互转换"><a href="#c2w和w2c的相互转换" class="headerlink" title="c2w和w2c的相互转换"></a>c2w和w2c的相互转换</h3><p>c2w和w2c互为逆矩阵，即</p>
 <script type="math/tex; mode=display">
-\begin{bmatrix}R & t \\ 0 & 1\end{bmatrix} = \begin{bmatrix}R_c & C \\ 0 & 1\end{bmatrix} ^{-1},</script><p>可得$R=R_c^T,t=-RC$.</p>
+\begin{bmatrix}R & t \\ 0 & 1\end{bmatrix} = \begin{bmatrix}R_c & C \\ 0 & 1\end{bmatrix} ^{-1},</script><p>可通过计算得$R=R_c^T,t=-RC$.</p>
+<h2 id="相机内参（intrinsic）"><a href="#相机内参（intrinsic）" class="headerlink" title="相机内参（intrinsic）"></a>相机内参（intrinsic）</h2><p>相机的内参矩阵将相机坐标系下的3D坐标映射到2D的图像平面，这里以针孔相机（Pinhole camera）为例介绍相机的内参矩阵K：</p>
+<script type="math/tex; mode=display">
+K=\begin{bmatrix}f_x & 0 & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1\end{bmatrix},</script><p>内参矩阵K包含4个值，其中$f_x$和$f_y$是相机的水平和垂直焦距（对于理想的针孔相机，$f_x$=$f_y$）。焦距的物理含义是相机中心到成像平面的距离，长度以<strong>像素</strong>为单位。cx和cy是图像原点相对于相机光心的水平和垂直偏移量。cx，cy有时候可以用图像宽和高的1/2近似。</p>
+<h2 id="Camera-Convention"><a href="#Camera-Convention" class="headerlink" title="Camera Convention"></a>Camera Convention</h2><p>常见的相机坐标系定义：</p>
+<p><img src="image.png" alt="Alt text"></p>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/642715876">相机位姿(camera pose)与外参矩阵 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/593204605">NeRF代码解读-相机参数与坐标系变换 - 知乎</a></p>
 
              
         </div>
