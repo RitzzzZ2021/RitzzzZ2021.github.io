@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        archive: 2023/11 - RitzzzZ 
+        Wonder3D - RitzzzZ 
     </title>
      
     
@@ -93,59 +93,62 @@
         <div id="body">
           <div class="container">
             <div class="col-12" id="main" role="main">
-   
-   
-    
-    
-      
-      
-          
-          <div class="post post-atmain archive-model">
-            <h2 class="archive-month">
-              2023.11
-            </h2>
-          </div>
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/11/21/Wonder3D/">
-            <time class="archive-time" itemprop="datePublished">
-              11.21
-            </time>
-            · Wonder3D
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/11/13/Notes-on-Camera-Pose/">
-            <time class="archive-time" itemprop="datePublished">
-              11.13
-            </time>
-            · Notes on Camera
-          </a>
-        </h2>
-      </article>
-    
-      
-      
-      <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
-        <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/2023/11/05/Score-based-Generative-Models/">
-            <time class="archive-time" itemprop="datePublished">
-              11.05
-            </time>
-            · Flow-based Generative Models
-          </a>
-        </h2>
-      </article>
-    
-</div>
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2023/11/21/Wonder3D/">
+                    Wonder3D
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2023-11-21
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>task：单视角生成高质量mesh</p>
+<p>challenges：</p>
+<ol>
+<li>SDS从2D扩散先验中获得3D geometry信息，但是对每个shape进行优化很耗时，还有几何不一致的问题；</li>
+<li>快速网络推理得到3D信息，质量低，缺乏3D细节。</li>
+</ol>
+<p>key ideas：</p>
+<ol>
+<li>cross-domain diffusion model，生成多视角normal map和color image；</li>
+<li>multi-view cross-domain attention；</li>
+<li>geometry-aware normal fusion algorithm，从多视角2D表示中提取mesh。</li>
+</ol>
 
              
+        </div>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/11/13/Notes-on-Camera-Pose/">Notes on Camera &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
             <footer id="footer" role="contentinfo">
     
         &copy; 2022 - 2023
