@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Diffusion for 3D Generation - RitzzzZ 
+        Diffusion Models for 3D Generation - RitzzzZ 
     </title>
      
     
@@ -97,7 +97,7 @@
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
                 <a itemprop="url" href="/2023/07/26/Diffusion/">
-                    Diffusion for 3D Generation
+                    Diffusion Models for 3D Generation
                 </a>
             </h1>
         </div>
@@ -157,7 +157,7 @@
 <li>阐述了Score Jacobian Chaining在3D文本驱动生成问题上的有效性</li>
 </ol>
 </li>
-<li><p>NeRDi: Single-View NeRF Synthesis with Language-Guided Diffusion as General Image Priors</p>
+<li><p><a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2023/papers/Deng_NeRDi_Single-View_NeRF_Synthesis_With_Language-Guided_Diffusion_As_General_Image_CVPR_2023_paper.pdf">NeRDi: Single-View NeRF Synthesis with Language-Guided Diffusion as General Image Priors</a> (CVPR 2023)</p>
 <p>  2D-to-3D重建是一个ill-posed problem，人们用3D世界的先验知识来解决这个问题。本文提出NeRDi，一个带有从2D扩散模型获得的图像先验的单视角NeRF合成框架。将单视角重建看做 image-conditioned 3D生成问题，利用输入视角约束下的预训练扩散模型，通过最小化任意视角渲染的diffusion loss来优化NeRF representations。我们用现有的视觉-语言模型，并引入two-section语言引导作为扩散模型的conditioning input，这对提高多视角内容的一致性有很大帮助，因为它缩小了基于单视角图片的语义和视觉特征的图像先验的范围。另外，我们引入了一个基于估计的深度图的geometric loss，用来正则化NeRF的3D geometry。在DTU MVS数据集上的实验结果表明，我们的模型可以进行高质量的新视角合成。我们还说明了该模型在zero-shot（零样本）NeRF合成上的通用性，用于野外的图像合成。</p>
 <p>  <img src="image4.png" alt="Alt text"></p>
 <p>  loss = 固定的输入视角的重建损失 + 任意采样视角diffusion loss + 输入视角的depth correlation loss</p>
@@ -221,12 +221,12 @@
 <li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2211.14108.pdf">3DDesigner: Towards Photorealistic 3D Object Generation and Editing with Text-guided Diffusion Models</a></p>
 <p>  我们用text-guided扩散模型实现3D一致的生成，用类似NeRF的神经场来生成某个相机视角下低分辨率的图像，作为接下来扩散过程的condition。在去噪过程中，我们使用一种新的双流异步扩散过程，通过建模跨视角的对应性来加强3D一致性。我们研究了3D局部编辑，并提出生成360°可操控图像的两步解决方案，第一步是通过融合预测的噪声进行2D局部编辑，第二步是进行noise-to-text逆过程，将融合的噪声映射到视角无关的text embedding space。获得对应的text embedding后，就能生成360°图像。最后，我们将模型扩展，在单张照片上finetuning从而进行one-shot新视角合成。</p>
 <p>  <img src="image12.png" alt="Alt text"></p>
-<p>  结构：基于NeRF的condition module接受的输入是一对 <one coarse text, two camera views>，生成低分辨率的coarse results。双流异步扩散模块接受的输入是四元组<one full text, two coarse results, two timesteps, two noised images>，并预测加上的噪声，每一条流是一个vanilla text-guided diffusion model，除了每个attention block后的特征交互。timesteps是随机产生的，并且两个streams之间参数是共享的。</p>
+<p>  结构：基于NeRF的condition module接受的输入是一对 &lt; one coarse text, two camera views &gt;，生成低分辨率的coarse results。双流异步扩散模块接受的输入是四元组&lt; one full text, two coarse results, two timesteps, two noised images &gt;，并预测加上的噪声，每一条流是一个vanilla text-guided diffusion model，除了每个attention block后的特征交互。timesteps是随机产生的，并且两个streams之间参数是共享的。</p>
 </li>
 </ul>
 <h3 id="in-3D-Latent-space"><a href="#in-3D-Latent-space" class="headerlink" title="in 3D/Latent space"></a>in 3D/Latent space</h3><ul>
-<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2207.13751.pdf">GAUDI: A Neural Architect for Immersive 3D Scene Generation</a></p>
-<p>  GAUDI是一个能捕捉复杂、真实的3D场景分布的生成模型。我们首先优化解耦场景和相机位姿的latent representation，然后被用来学习能进行条件和非条件生成3D场景的生成模型。相比于之前的关注单个物体的工作，我们并不假定相机位姿的分布能在样本之间共享。</p>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2207.13751.pdf">GAUDI: A Neural Architect for Immersive 3D Scene Generation</a> (NeurIPS 2022)</p>
+<p>  GAUDI是一个能捕捉复杂、真实的3D场景分布的生成模型。我们首先优化解耦neural fields和相机位姿的latent representation，然后被用来学习能进行条件/非条件3D场景生成的生成模型。GAUDI通过去除相机位姿的分布能在样本之间共享的假设，达到泛化效果。</p>
 <p>  <img src="image14.png" alt="Alt text"></p>
 <p>  camera pose decoder：用来预测在规范化的临时位置的相机位姿。</p>
 <p>  scene decoder：将场景解码成triplane的表示形式。</p>
@@ -266,7 +266,7 @@
         
             <p itemprop="keywords" class="tags">
                 
-                    <a href="/tags/ML/"> ML </a>
+                    <a href="/tags/CV/"> CV </a>
                 
             </p>
         
