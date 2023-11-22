@@ -115,7 +115,7 @@
             <blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.xxlong.site/Wonder3D/">Wonder3D: Single Image to 3D using Cross-Domain Diffusion</a></p>
 </blockquote>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>task：单视角生成高质量mesh</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>task：单张图生成3D mesh</p>
 <p>challenges：</p>
 <ol>
 <li>SDS从2D扩散先验中获得3D geometry信息，但是对每个shape进行优化很耗时，还有几何不一致的问题；</li>
@@ -124,14 +124,14 @@
 <p>key ideas：</p>
 <ol>
 <li>cross-domain diffusion model，生成多视角normal map和color image；</li>
-<li>multi-view cross-domain attention，使得多视角一致，几何和视觉两个域之间一致；</li>
+<li>multi-view cross-domain attention，使得多视角一致，几何和外观两个domain之间一致；</li>
 <li>geometry-aware normal fusion algorithm，从多视角2D表示中提取mesh。</li>
 </ol>
 <h2 id="Related-Works"><a href="#Related-Works" class="headerlink" title="Related Works"></a>Related Works</h2><h3 id="2D-Diffusion-Models-for-3D-Generation"><a href="#2D-Diffusion-Models-for-3D-Generation" class="headerlink" title="2D Diffusion Models for 3D Generation"></a>2D Diffusion Models for 3D Generation</h3><p>per-shape optimization: 核心是优化一个3D表示。把神经渲染生成的2D图像输入2D diffusion models或者CLIP model，计算SDS loss，用这个loss指导优化。代表作：DreamFusion, SJC（<a href="https://ritzzzz2021.github.io/2023/07/26/Diffusion/">论文笔记</a>）</p>
 <p>缺点：</p>
 <ul>
 <li>效率低，通常优化一个shape要几十分钟</li>
-<li>multi-face problem，因为缺少显示的3D监督</li>
+<li>multi-face problem，因为缺少显式的3D监督</li>
 </ul>
 <p>one-2-3-45: 用可泛化的重建方法 SparseNeuS 直接从 zero123 生成的图片中提取3D几何，但是结果质量比较低，缺少几何细节。</p>
 <h3 id="3D-Generative-Models"><a href="#3D-Generative-Models" class="headerlink" title="3D Generative Models"></a>3D Generative Models</h3><p>基于3D表示（点云，mesh，神经场），训练3D diffusion models。</p>
