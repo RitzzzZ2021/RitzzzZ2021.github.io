@@ -124,10 +124,10 @@
 <p>key ideas：</p>
 <ol>
 <li>cross-domain diffusion model，生成多视角normal map和color image；</li>
-<li>multi-view cross-domain attention；</li>
+<li>multi-view cross-domain attention，使得多视角一致，几何和视觉两个域之间一致；</li>
 <li>geometry-aware normal fusion algorithm，从多视角2D表示中提取mesh。</li>
 </ol>
-<h2 id="Related-Works"><a href="#Related-Works" class="headerlink" title="Related Works"></a>Related Works</h2><h3 id="2D-Diffusion-Models-for-3D-Generation"><a href="#2D-Diffusion-Models-for-3D-Generation" class="headerlink" title="2D Diffusion Models for 3D Generation"></a>2D Diffusion Models for 3D Generation</h3><p>per-shape optimization: 核心是优化一个3D表示。把神经渲染生成的2D图像输入2D diffusion models或者CLIP model，计算SDS loss，用这个loss指导优化。代表作：DreamFusion, SJC （<a href="https://ritzzzz2021.github.io/2023/07/26/Diffusion/">笔记</a></p>
+<h2 id="Related-Works"><a href="#Related-Works" class="headerlink" title="Related Works"></a>Related Works</h2><h3 id="2D-Diffusion-Models-for-3D-Generation"><a href="#2D-Diffusion-Models-for-3D-Generation" class="headerlink" title="2D Diffusion Models for 3D Generation"></a>2D Diffusion Models for 3D Generation</h3><p>per-shape optimization: 核心是优化一个3D表示。把神经渲染生成的2D图像输入2D diffusion models或者CLIP model，计算SDS loss，用这个loss指导优化。代表作：DreamFusion, SJC（<a href="https://ritzzzz2021.github.io/2023/07/26/Diffusion/">论文笔记</a>）</p>
 <p>缺点：</p>
 <ul>
 <li>效率低，通常优化一个shape要几十分钟</li>
@@ -147,8 +147,34 @@
 <li>MVDream需要耗时的优化，多视角蒸馏需要1.5小时。</li>
 <li>本文提出的方法可以在2分钟内重建高质量的纹理网格。</li>
 </ul>
-<h2 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h2><p>将3D资产的分布定义为对应的2D多视角normal maps和color images的联合分布。</p>
+<h2 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h2><p>将3D资产的分布定义为对应的2D多视角normal maps和color images的联合分布。目标是学习一个模型$f$，能够合成对应一组相机位姿的normal maps和color images。</p>
+<p>优点：</p>
+<ol>
+<li>可以用预训练的有很强先验的2D diffusion models，可以实现zero-shot的泛化性；</li>
+<li>normal maps可以刻画出表面的波动和变化，真实的几何细节。</li>
+</ol>
 <h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p><img src="image.png" alt="Alt text"></p>
+<h3 id="Consistent-Multi-view-Generation"><a href="#Consistent-Multi-view-Generation" class="headerlink" title="Consistent Multi-view Generation"></a>Consistent Multi-view Generation</h3><p>和SyncDreamer, MVDream一样，各个视角之间用attention来交换信息。做法是将原来的self-attention layers扩展到全局，使不同视角间建立联系。</p>
+<h3 id="Cross-Domain-Diffusion"><a href="#Cross-Domain-Diffusion" class="headerlink" title="Cross-Domain Diffusion"></a>Cross-Domain Diffusion</h3><p>如何将2D diffusion model扩展到一个以上的domain？</p>
+<ul>
+<li>简单的想法是对UNet的输出加4个通道，表示增加的normal domain；但问题是收敛速度慢，泛化性差；原因可能是通道增加对预训练的权重有扰动，造成模型遗忘。</li>
+<li>由于可以把联合分布因式分解为两个条件分布，也可以先训练一个diffusion model生成normal maps，然后训练另一个diffusion model以normal maps作为条件生成color images（或者反过来）；但问题是two-stage framework有一定复杂性，计算开销大，而且表现会变差。</li>
+<li>最终的解决方案：<strong>domain switcher</strong>，记为$s$。$s$是一个一维向量，标记不同domain。先对$s$进行位置编码，然后和time embedding进行concat。这个操作不会明显改变预训练先验，可以快速收敛，并能稳定地泛化。</li>
+<li>为了让两个domain之间一致，加了一个cross-domain attention，让生成的几何和外观align。cross-domain attention的结构和原来的self-attention layer结构一致，在transformer block中，cross-domain attention加在cross-attention layer前。</li>
+</ul>
+<p><img src="image1.png" alt="Alt text"></p>
+<h3 id="Textured-Mesh-Extraction"><a href="#Textured-Mesh-Extraction" class="headerlink" title="Textured Mesh Extraction"></a>Textured Mesh Extraction</h3><p>通过优化有向距离场（SDF），提取显式3D几何。比起mesh，SDF具有紧凑、可微的优点。但是不能直接用现有的SDF-based重建方法（例如NeuS），因为这些方法适用于真实获得的图像，而且需要稠密的输入视角。而生成视角相对稀疏，生成的normal maps和color images可能在一些像素上有一些偏差，导致优化得到畸变的几何。</p>
+<p>geometric-aware optimization 目标函数：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L &= L_{normal} + L{rgb} + L{mask} \\
+&= R_{eik} + R_{sparse} + R_{smooth}
+\end{align},</script><p>其中$L{rgb}$表示MSE loss，计算渲染出的图片和生成的图片的误差；$L{mask}$表示二元交叉熵损失，计算渲染出的mask和生成的mask（用分割模型对生成的normal maps或者color images处理得到）的误差；$R_{eik}$表示eikonal惩罚项，使得SDF梯度大小是单位长度；$R_{sparse}$表示稀疏惩罚项，避免SDF的漂浮物；$R_{smooth}$表示光滑惩罚项，使SDF的梯度在3D空间中光滑。</p>
+<p>利用SDF的可微性质，SDF的法线$\hat{g}_k$可以通过对SDF求二阶导得到。$L_{normal}$用来监督3D几何：</p>
+<script type="math/tex; mode=display">
+L_{normal}=\frac{1}{\sum w_k} \sum w_k \cdot e_k \\
+e_k = (1-cos(\hat{g}_k,g_k)),</script><p>其中$w_k$是geometric-aware weight。由于一个3D点在不同视角下都可以被看见，就会受多个法线影响，这些法线之间必须有一致性。法线和视线方向之间角度大的会被赋予更高的权重。</p>
+<p>另一个trick叫outlier-dropping loss。由于mask和color images存在一些不精确的地方，会在优化过程中积累，导致表面的噪声和洞。outlier-dropping loss的做法是在每个iteration中对所有采样光线的color errors降序排序，按预先设定好的百分比去除最大的errors。因为错误的预测缺乏和其他视角的一致性，在优化过程中更难被最小化，所以产生了最大的errors。</p>
 
              
         </div>
