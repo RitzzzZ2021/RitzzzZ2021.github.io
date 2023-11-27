@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        3D Reconstruction 基础知识 - RitzzzZ 
+        3D Reconstruction Based on NeRF - RitzzzZ 
     </title>
      
     
@@ -97,7 +97,7 @@
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
                 <a itemprop="url" href="/2023/09/13/3D-Reconstruction/">
-                    3D Reconstruction 基础知识
+                    3D Reconstruction Based on NeRF
                 </a>
             </h1>
         </div>
@@ -112,7 +112,70 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="SfM"><a href="#SfM" class="headerlink" title="SfM"></a>SfM</h2><p>SfM的输入是一段motion或者一段2D图像序列，不需要任何相机的信息，相对位姿是需要在重建之前计算的。然后通过2D图之间的匹配可以推断出相机的各项参数。Corresponding points可以用SIFT，SURF来匹配，也可以用最新的AKAZE（SIFT的改进版，2010）来匹配。而Corresponding points的跟踪则可以用Lucas-Kanede的 Optical Flow 来完成。</p>
+            <h1 id="3D-Reconstruction-Based-on-NeRF"><a href="#3D-Reconstruction-Based-on-NeRF" class="headerlink" title="3D Reconstruction Based on NeRF"></a>3D Reconstruction Based on NeRF</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1V94y1s776/?spm_id_from=333.999.0.0&amp;vd_source=dd883cce367009200a0a78c39490e160">GAMES Webinar 292-几何专题-姚遥-基于神经辐射场的三维重建_哔哩哔哩_bilibili</a></p>
+</blockquote>
+<p>photogrammetry pipeline</p>
+<p><img src="Untitled.png" alt="Untitled"></p>
+<h2 id="几何重建"><a href="#几何重建" class="headerlink" title="几何重建"></a>几何重建</h2><h3 id="Classical-MVS"><a href="#Classical-MVS" class="headerlink" title="Classical MVS"></a>Classical MVS</h3><p>计算匹配</p>
+<ul>
+<li>逐个像素点的匹配<ul>
+<li>matching cost: SSD, NCC</li>
+</ul>
+</li>
+<li>密度匹配<ul>
+<li>cost regularization: semi-global matching, propagation</li>
+</ul>
+</li>
+</ul>
+<p>classical MVS的问题：textureless areas, thin structure</p>
+<h3 id="MVSNet-ECCV-2018-oral"><a href="#MVSNet-ECCV-2018-oral" class="headerlink" title="MVSNet (ECCV 2018 oral)"></a>MVSNet (ECCV 2018 oral)</h3><p>Real-time: ~5s</p>
+<h3 id="R-MVSNet"><a href="#R-MVSNet" class="headerlink" title="R-MVSNet"></a>R-MVSNet</h3><p>MVSNet的问题：3D CNNs is memory consuming，不能用于大场景</p>
+<p>解决方法：sequential regularization</p>
+<h3 id="Vis-MVSNet"><a href="#Vis-MVSNet" class="headerlink" title="Vis-MVSNet"></a>Vis-MVSNet</h3><p>可见性：有的像素点在其他视角下不可见</p>
+<p>解决方法：显式的匹配概率和可见性建模</p>
+<p>手机端重建：<a target="_blank" rel="noopener" href="https://ar.code.com">https://ar.code.com</a></p>
+<h2 id="Differentiable-Rendering"><a href="#Differentiable-Rendering" class="headerlink" title="Differentiable Rendering"></a>Differentiable Rendering</h2><p>渲染：3D → 2D</p>
+<p>逆向渲染：2D → 3D</p>
+<p><img src="Untitled1.png" alt="Untitled"></p>
+<ul>
+<li>Volume Rendering: e.g. NeRF</li>
+<li>Surface Rendering: e.g. IDR</li>
+</ul>
+<p><img src="Untitled2.png" alt="Untitled"></p>
+<h3 id="MVSDF"><a href="#MVSDF" class="headerlink" title="MVSDF"></a>MVSDF</h3><p>可微渲染的问题：geometry-appearance ambiguity (IDR)：不正确的几何也可以渲染出看起来靠谱的渲染</p>
+<p>解决方法：</p>
+<ul>
+<li>几何先验：用MVSNet的点云进行初始化</li>
+<li>regularizations：MVSNet的depth map加进来作为regularization</li>
+</ul>
+<h3 id="RegSDF"><a href="#RegSDF" class="headerlink" title="RegSDF"></a>RegSDF</h3><p>idea来源于传统graphics中的smoothness function，应用到regularization中需要考虑representation从mesh换成了SDF或者NeRF</p>
+<ul>
+<li>Minimum surface constraint</li>
+<li>Hessian smoothness</li>
+</ul>
+<h2 id="材质重建"><a href="#材质重建" class="headerlink" title="材质重建"></a>材质重建</h2><h3 id="NelLF-ECCV-2022"><a href="#NelLF-ECCV-2022" class="headerlink" title="NelLF (ECCV 2022)"></a>NelLF (ECCV 2022)</h3><p><img src="Untitled3.png" alt="Untitled"></p>
+<p>Env map的假设是无限远的环境光，而室内场景不适合进行这种假设。</p>
+<p>用NelLF模拟入射光和BRDF（材质）：</p>
+<ul>
+<li>完全的5D入射光场</li>
+<li>任何静态场景的直接/间接光照</li>
+<li>不需要做ray tracing &amp; bouncing</li>
+</ul>
+<p><img src="Untitled4.png" alt="Untitled"></p>
+<h3 id="NelLF-ICCV-2023"><a href="#NelLF-ICCV-2023" class="headerlink" title="NelLF++ (ICCV 2023)"></a>NelLF++ (ICCV 2023)</h3><p>通过<strong>PBR</strong>和<strong>inter-reflection</strong>，把NeRF和NelLF合在一起：光场=出射光场（NeRF）+入射光场（NelLF）</p>
+<p><img src="Untitled5.png" alt="Untitled"></p>
+<p><img src="Untitled6.png" alt="Untitled"></p>
+<h2 id="Future-Works"><a href="#Future-Works" class="headerlink" title="Future Works"></a>Future Works</h2><ul>
+<li>material &amp; lighting estimation</li>
+<li>dynamic 3D reconstruction</li>
+<li>point-based differentiable rendering<ul>
+<li>以前点云的问题是不好做渲染，now: gaussian splatting</li>
+<li>点云优点：容易做编辑</li>
+</ul>
+</li>
+</ul>
+<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><h2 id="SfM"><a href="#SfM" class="headerlink" title="SfM"></a>SfM</h2><p>SfM的输入是一段motion或者一段2D图像序列，不需要任何相机的信息，相对位姿是需要在重建之前计算的。然后通过2D图之间的匹配可以推断出相机的各项参数。Corresponding points可以用SIFT，SURF来匹配，也可以用最新的AKAZE（SIFT的改进版，2010）来匹配。而Corresponding points的跟踪则可以用Lucas-Kanede的 Optical Flow 来完成。</p>
 <p>在SfM中，误匹配会造成较大的Error，所以要对匹配进行筛选，目前流行的方法是RANSAC（Random Sample Consensus）。2D的误匹配点可以应用3D的Geometric特征来进行排除。</p>
 <p><a target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/29845703?source_id=1005">参考文章</a></p>
 <h2 id="Optical-Flow"><a href="#Optical-Flow" class="headerlink" title="Optical Flow"></a>Optical Flow</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/384651830">参考文章</a></p>
@@ -126,7 +189,7 @@
 <p>在存储方面，可以按照栅格顶点的状态进行分类。</p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/561731427">参考文章</a></p>
 <h2 id="SDF"><a href="#SDF" class="headerlink" title="SDF"></a>SDF</h2><p>SDF是一种表面几何的表达方式。</p>
-<h2 id="Differentiable-Rendering"><a href="#Differentiable-Rendering" class="headerlink" title="Differentiable Rendering"></a>Differentiable Rendering</h2><p>传统的渲染过程其实就是从3D空间到2D空间的一个过程。反过来，我们希望从一张图片，得到三维的场景信息（几何数据、相机参数、光照参数等），这个从2D到3D的过程被称为逆向渲染。可微渲染是逆向渲染的一种方法。</p>
+<h2 id="Differentiable-Rendering-1"><a href="#Differentiable-Rendering-1" class="headerlink" title="Differentiable Rendering"></a>Differentiable Rendering</h2><p>传统的渲染过程其实就是从3D空间到2D空间的一个过程。反过来，我们希望从一张图片，得到三维的场景信息（几何数据、相机参数、光照参数等），这个从2D到3D的过程被称为逆向渲染。可微渲染是逆向渲染的一种方法。</p>
 <p>可微渲染初始需要以下两个资源：</p>
 <ul>
 <li>参考图片（Ground truth）：二维目标图片。可微渲染的目标就是使得渲染的结果无限接近这张参考图片。</li>
