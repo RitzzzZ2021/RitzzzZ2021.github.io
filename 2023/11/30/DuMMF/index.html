@@ -115,7 +115,15 @@
             <blockquote>
 <p><a target="_blank" rel="noopener" href="https://sirui-xu.github.io/DuMMF/">Stochastic Multi-Person 3D Motion Forecasting</a></p>
 </blockquote>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>之前的工作忽略了现实世界中人类运动预测的复杂性，包括：</p>
+<ol>
+<li>社会属性；</li>
+<li>动作和互动的多样性；</li>
+<li>旋转动作的复杂性。</li>
+</ol>
+<p>本文提出了一个新的任务，随机多人3D运动预测（stochastic multi-person 3D motion forecasting），并提出一个dual-level的生成式建模框架，在local level上建模独立的个体运动，在global level上建模人与人之间的互动。值得关注的是，这个dual-level建模框架可以用一个共享的生成模型实现。具体方法是（1）引入了可学习的latent codes，表示未来的运动；（2）在不同level上改变codes的运作模式。该框架是一个通用的框架，可以用多种生成模型进行初始化，包括GANs，diffusion models，以及其他多人预测模型。在CMU-Mocap, MuPoTS-3D和SoMoF benchmarks上，该方法都展示出多样且准确的多人预测。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><p><img src="image.png" alt="Alt text"></p>
+
              
         </div>
         
