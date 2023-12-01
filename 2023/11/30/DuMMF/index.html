@@ -121,8 +121,24 @@
 <li>动作和互动的多样性；</li>
 <li>旋转动作的复杂性。</li>
 </ol>
-<p>本文提出了一个新的任务，随机多人3D运动预测（stochastic multi-person 3D motion forecasting），并提出一个dual-level的生成式建模框架，在local level上建模独立的个体运动，在global level上建模人与人之间的互动。值得关注的是，这个dual-level建模框架可以用一个共享的生成模型实现。具体方法是（1）引入了可学习的latent codes，表示未来的运动；（2）在不同level上改变codes的运作模式。该框架是一个通用的框架，可以用多种生成模型进行初始化，包括GANs，diffusion models，以及其他多人预测模型。在CMU-Mocap, MuPoTS-3D和SoMoF benchmarks上，该方法都展示出多样且准确的多人预测。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><p><img src="image.png" alt="Alt text"></p>
+<p>本文提出了一个新的任务，随机多人3D运动预测（stochastic multi-person 3D motion forecasting），并提出一个dual-level的生成式建模框架，在local level上建模独立的个体运动，在global level上建模人与人之间的互动。值得关注的是，这个dual-level建模框架可以用一个共享的生成模型实现。具体方法是（1）引入了可学习的latent codes，表示未来的运动；（2）在不同level上改变codes的运作模式。该框架是一个通用的框架，可以用多种生成模型进行初始化，包括GANs，diffusion models，以及其他多人预测模型。在CMU-Mocap, MuPoTS-3D和SoMoF benchmarks上，该方法都能进行多样且准确的多人预测。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>人类智能的一大体现，就是能根据历史信息预测物理世界的接下来一段时间的变化，比如预测人群在公共场合的运动，做出反应，并根据社会规则来计划自己的行为，比如避免碰撞。因此，有效预测人类运动在CV和Robotics领域都很重要（自动驾驶，机器人导航等）。</p>
+<p>预测人类运动主要挑战：</p>
+<ol>
+<li>人类运动既要考虑物理，又要考虑社会规范，而且依赖于周围环境以及它的变化</li>
+<li>人类运动是不确定的、多态的，特别是在较长的时间范围下</li>
+</ol>
+<p>之前的工作经常只关注简化的场景，比如（1）单人随机局部运动预测，忽略了人和环境、人和其他人的互动；（2）确定性多人运动预测，没有考虑个体运动的多样性和人之间的互动；（3）使用attention models或spatial-temporal graph models对人群中的随机运动轨迹进行预测，然而，建模可旋转的人体姿态要包含更丰富的人类动作。</p>
+<p>因此，本文提出了一个新的任务，<strong>随机多人3D运动预测（stochastic multi-person 3D motion forecasting）</strong>。该任务面临的问题有：</p>
+<ol>
+<li>single-person fidelity：对每个人的预测应该是真实、一致的，比如避免脚悬空和滑动。</li>
+<li>multi-person fidelity：多人在场景中的运动应该遵守互动的原则，比如避免碰撞。</li>
+<li>overall diversity：长时间的运动是随机的。</li>
+</ol>
+<p><img src="image1.png" alt="Alt text"></p>
+<p>同时优化这三个目标是很有挑战的。single-person fidelity和multi-person fidelity可以看作两个独立的目标，而diversity和fidelity之间必须进行trade-off。</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="image.png" alt="Alt text"></p>
+<p>(a) Local-level modeling：将multi-person embeddings和独立的intent codes（也就是生成模型中的latent codes）组合在一起。<br>(b) Global-level modeling：建模人和人之间的互动，需要相同的latent codes。<br>(c) latent codes包括从数据中学习到的离散的intent codes（表示为集合）和连续的intent codes。<br>(d) 把multi-person predictor的编码器抽象成编码单人运动的local分支和编码多人运动的global分支。</p>
 
              
         </div>
