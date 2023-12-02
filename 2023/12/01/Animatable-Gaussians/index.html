@@ -112,17 +112,42 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <blockquote>
-<p><a target="_blank" rel="noopener" href="https://animatable-gaussians.github.io/">Animatable Gaussians: Learning Pose-dependent Gaussian Maps<br>for High-fidelity Human Avatar Modeling</a></p>
+            <p>最近3D Gaussian Splatting的论文卷得有点快，随机挑选一篇读一下。之前human avatar的论文看得不多，如理解有误请见谅~Related Works部分参考了ChatGPT的翻译。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://animatable-gaussians.github.io/">Animatable Gaussians: Learning Pose-dependent Gaussian Maps for High-fidelity Human Avatar Modeling</a></p>
 </blockquote>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>任务：从RGB视频中建模可动画化的人物（animatable human avatars）。</p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>任务：从RGB视频中建模可动画化的人物（animatable human avatars）。</p>
 <p>目前的工作一般采用基于MLP的NeRF表示3D人物，但是对于纯MLP来说，回归依赖于姿势的服装细节是很困难的。本文引入了<strong>Animatable Gaussians</strong>，一种新的avatar表示，用2D CNNs和3D Gaussian Splatting来创建avatar。为了把3D Gaussians和animatable avatar联系起来，从输入视频中学习<strong>参数化模板</strong>，然后在前后两个canonical <strong>Gaussian maps</strong>的模板上进行参数化，其中，每个像素表示一个3D Gaussian。学到的模板可以适用于服装，比如裙子一类较为宽松的衣服。模板引导的2D参数化使基于StyleGAN的CNN能学到依赖于姿势的服装动态细节。另外，本文提出了一个<strong>姿势投影策略</strong>，达到更好的泛化性。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>显式的3D表达（mesh和点云）需要稠密重建的mesh才能得到较好的人物几何，在稀疏视角、基于视频的人物建模上的应用有限。NeRF出现之后，很多研究者将3D人物表示成pose-conditioned NeRF，但是这种隐式表示需要基于坐标的MLP对一个连续场进行回归，而MLP会产生低频光谱偏差（low-frequency spectral bias）。后来有许多工作用纹理特征或structured local NeRFs增强avatar的表示，但都无法取得满意的结果。</p>
+<p>结果：该方法能创造出<strong>高度动态的、真实的、具有泛化性的</strong>可动画化角色。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>显式的3D表达（mesh和点云）需要稠密重建的mesh才能得到较好的人物几何，在稀疏视角、基于视频的人物建模上的应用有限。NeRF出现之后，很多研究者将3D人物表示成pose-conditioned NeRF，但是这种隐式表示需要基于坐标的MLP对一个连续场进行回归，而MLP会产生低频光谱偏差（low-frequency spectral bias）。后来有许多工作用纹理特征或structured local NeRFs增强avatar的表示，但都无法取得满意的结果。</p>
 <p>3D Gaussian Splatting是一种高效且显式的基于点的表示（explicit point-based representation）。相比于隐式表达，explicit point-based representation可以在2D maps上进行参数化，因此可以使用更强大的2D网络建模。</p>
-<p>本文提出的Animatable Gaussians用2D CNNs和3D Gaussian Splatting来创建avatar。首先，为了解决服装（包括长裙）建模的难题，作者从视频中重建一个<strong>参数化模板（parametric template）</strong>，通过扩散蒙皮权重（skinning weights）继承SMPL的参数。这样做的好处是可以根据模板的运动使3D gaussians动画化，同时避免在标准Gaussians中的密度控制，确保在接下来的2D参数化中保持3D Gaussians的时间一致结构（temporally consistent structure）。</p>
-<p>为了与2D网络兼容，有必要将3D模板参数化到<strong>2D map</strong>上。然而，将具有任意拓扑结构的模板展开到统一而连续的UV空间仍然具有挑战性。考虑到正反视图几乎覆盖整个标准人体，我们通过将标准模板在两个视图中进行正交投影来实现参数化。在每个视图中，我们将模板掩码内的每个像素定义为一个3D Gaussian，由其位置、协方差、不透明度和颜色属性表示，从而产生两个正反Gaussian map。同样，考虑到运动姿势，我们获得两个posed position maps，作为姿势条件（pose condition）。这样的模板引导参数化使得能够通过基于StyleGAN的条件生成器StyleUNet从姿势条件中预测依赖于姿势的高斯图。</p>
-<p>另一方面，对于新颖的姿势，可动画化角色的泛化尚未得到广泛探讨。由于基于学习的角色建模具有数据驱动的特性，对于分布之外的姿势直接外推肯定会产生令人不满意的结果。本文提出使用主成分分析（PCA）将由position map表示的驱动信号投影到PCA空间中，促使在训练姿势的分布内进行合理的插值。</p>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p><img src="image.png" alt="Alt text"></p>
+<p>本文提出的Animatable Gaussians用2D CNNs和3D Gaussian Splatting来创建avatar。首先，为了解决服装（包括长裙）建模的难题，作者从视频中重建一个<strong>参数化模板（parametric template）</strong>，通过扩散蒙皮权重（skinning weights）继承SMPL的参数。这样做的好处是可以根据模板的运动使3D Gaussians动画化，同时避免在标准Gaussians中的密度控制，确保在接下来的2D参数化中保持3D Gaussians的时间一致结构（temporally consistent structure）。</p>
+<p>为了与2D网络兼容，有必要将3D模板参数化到<strong>2D map</strong>上。然而，将具有任意拓扑结构的模板展开到统一而连续的UV空间仍然具有挑战性。考虑到正反视图几乎覆盖整个标准人体，我们通过将标准模板在两个视图中进行正交投影来实现参数化。在每个视图中，我们将模板掩码内的每个像素定义为一个3D Gaussian，由其位置、协方差、不透明度和颜色属性表示，从而产生两个正反<strong>Gaussian map</strong>。同样，考虑到运动姿势，我们获得两个<strong>posed position map</strong>，作为姿势条件（pose condition）。这样的模板引导参数化使得能够通过基于StyleGAN的条件生成器<strong>StyleUNet</strong>从姿势条件中预测依赖于姿势的高斯图。</p>
+<p>可动画化角色在新姿势上的泛化还没有得到广泛探讨。由于基于学习的角色建模具有数据驱动的特性，对于分布之外的姿势，直接推广显然会产生令人不满意的结果。本文提出使用主成分分析（PCA）将由position map表示的驱动信号<strong>投影到PCA空间中</strong>，促使在训练姿势的分布内进行合理的插值。</p>
+<!-- ## 相关工作
+
+### 基于Mesh的人类角色
+
+为了使用网格模型建模可动化的人体角色，早期方法提出通过物理模拟或从数据库检索来重建一个特定角色的纹理网格，并对其进行动画化。最近，研究人员倾向于利用神经网络来建模动态纹理和运动：
+
+* 通过密集的多视角视频重建拓扑一致的网格，并在UV空间学习动态纹理
+* DDC和HDHumans 学习由骨架和嵌入图（embeded graph）参数化的变形，采用先前扫描的模板。
+* DELIFFAS利用DCC作为可变形模板，并将身体周围的光场参数化到双表面上进行快速合成。
+
+这些基于网格的方法需要进行密集的重建、非刚性跟踪或预先扫描的模板来表示动态的人物。此外，一些研究通过单目RGB或RGB-D视频在SMPL上优化非刚性变形，但是SMPL+D表示限制了角色的质量。
+
+### 基于隐函数的人类角色
+
+
+
+### 基于点的人类角色 -->
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="整体pipeline"><a href="#整体pipeline" class="headerlink" title="整体pipeline"></a>整体pipeline</h3><p><img src="image.png" alt="Alt text"></p>
+<p>给定一个角色的多视角RGB视频 &amp; 对应每帧姿势和共享形状的SMPL-X registration，目标是创建一个栩栩如生的可动画化角色。Pipeline分成两步：</p>
+<ol>
+<li><strong>学习参数化模板</strong>：首先从输入视频中选择一个近似A姿势的帧，然后通过SMPL蒙皮和基于有符号距离场的体渲染（SDF-based volume rendering）来优化canonical SDF &amp; color field，以适应多视角图像。然后使用Marching Cubes从canonical SDF field中提取模板网格。接着将SMPL顶点上的蒙皮权重扩散到模板表面，得到一个可变形的参数化模板。</li>
+<li><strong>学习姿势相关的高斯图</strong>： 针对训练姿势，我们首先通过线性混合蒙皮（Linear Blend Skinning, LBS）将模板变形到posed space，并将变形后的顶点坐标渲染到规范的正面和背面视图，得到两个position map。position map用作pose condition，并通过StyleUNet转换成正面和背面的Gaussian map。然后，从模板掩码中提取有效的3D Gaussians，通过LBS将canonical 3D Gaussians变形到posed space。最后，通过可微分的splatting光栅化将posed 3D Gaussians渲染到目标视角。</li>
+</ol>
+<p><img src="image1.png" alt="Alt text"></p>
 
              
         </div>
