@@ -112,12 +112,11 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <p>最近3D Gaussian Splatting的论文卷得有点快，随机挑选一篇读一下。之前human avatar的论文看得不多，如理解有误请见谅~Related Works部分参考了ChatGPT的翻译。</p>
-<blockquote>
+            <blockquote>
 <p><a target="_blank" rel="noopener" href="https://animatable-gaussians.github.io/">Animatable Gaussians: Learning Pose-dependent Gaussian Maps for High-fidelity Human Avatar Modeling</a></p>
 </blockquote>
-<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>任务：从RGB视频中建模可动画化的人物（animatable human avatars）。</p>
-<p>目前的工作一般采用基于MLP的NeRF表示3D人物，但是对于纯MLP来说，回归依赖于姿势的服装细节是很困难的。本文引入了<strong>Animatable Gaussians</strong>，一种新的avatar表示，用2D CNNs和3D Gaussian Splatting来创建avatar。为了把3D Gaussians和animatable avatar联系起来，从输入视频中学习<strong>参数化模板</strong>，然后在前后两个canonical <strong>Gaussian maps</strong>的模板上进行参数化，其中，每个像素表示一个3D Gaussian。学到的模板可以适用于服装，比如裙子一类较为宽松的衣服。模板引导的2D参数化使基于StyleGAN的CNN能学到依赖于姿势的服装动态细节。另外，本文提出了一个<strong>姿势投影策略</strong>，达到更好的泛化性。</p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>任务：从RGB视频中建模可动画化的人类角色（animatable human avatars）。</p>
+<p>目前的工作一般采用基于MLP的NeRF表示3D人物，但是对于MLP来说，回归依赖于姿势的服装细节是很困难的。本文引入了<strong>Animatable Gaussians</strong>，一种新的avatar表示，用2D CNNs和3D Gaussian Splatting来创建avatar。为了把3D Gaussians和animatable avatar联系起来，从输入视频中学习<strong>参数化模板</strong>，然后在前后两个canonical <strong>Gaussian maps</strong>的模板上进行参数化，其中，每个像素表示一个3D Gaussian。学到的模板可以适用于服装，例如裙子之类较宽松的衣服。模板引导的2D参数化使基于StyleGAN的CNN能学到依赖于姿势的服装动态细节。另外，本文提出了一个<strong>姿势投影策略</strong>，达到更好的泛化性。</p>
 <p>结果：该方法能创造出<strong>高度动态的、真实的、具有泛化性的</strong>可动画化角色。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>显式的3D表达（mesh和点云）需要稠密重建的mesh才能得到较好的人物几何，在稀疏视角、基于视频的人物建模上的应用有限。NeRF出现之后，很多研究者将3D人物表示成pose-conditioned NeRF，但是这种隐式表示需要基于坐标的MLP对一个连续场进行回归，而MLP会产生低频偏差（low-frequency spectral bias）。后来有许多工作用纹理特征或structured local NeRFs增强avatar的表示，但都无法取得满意的结果。</p>
 <p>3D Gaussian Splatting是一种高效且显式的基于点的表示（explicit point-based representation）。相比于隐式表达，explicit point-based representation可以在2D maps上进行参数化，因此可以使用更强大的2D网络建模。</p>
@@ -141,7 +140,7 @@
 
 
 ### 基于点的人类角色 -->
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="整体pipeline"><a href="#整体pipeline" class="headerlink" title="整体pipeline"></a>整体pipeline</h3><p><img src="image.png" alt="Alt text"></p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h3><p><img src="image.png" alt="Alt text"></p>
 <p>给定一个角色的多视角RGB视频 &amp; 对应每帧姿势和共享形状的SMPL-X registration，目标是创建一个栩栩如生的可动画化角色。Pipeline分成两步：</p>
 <ol>
 <li><strong>学习参数化模板</strong>：首先，从输入视频中选择一个近似A姿势的帧。为了关联canonical space和posed space，将SMPL顶点上的蒙皮权重沿着表面法线扩散到整个权重体（weight volume）$W$中，预计算canonical space中的蒙皮权重。对于posed space中的每个点，可以通过查找根（root finding）来找到canonical space中的对应点</li>
