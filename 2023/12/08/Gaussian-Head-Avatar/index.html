@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <title>
-        Deformable 3D Gaussians - RitzzzZ 
+        Gaussian Head Avatar - RitzzzZ 
     </title>
      
     
@@ -96,14 +96,14 @@
     <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
         <div class="post-title">
             <h1 class="post-title post-title-atpage" itemprop="name headline">
-                <a itemprop="url" href="/2023/12/05/Deformable-3D-Gaussians/">
-                    Deformable 3D Gaussians
+                <a itemprop="url" href="/2023/12/08/Gaussian-Head-Avatar/">
+                    Gaussian Head Avatar
                 </a>
             </h1>
         </div>
         <ul class="post-meta post-meta-atpage">
             <li class="post-time">
-                2023-12-05
+                2023-12-08
             </li>
             <li>
                 <div class="article-category">
@@ -113,9 +113,40 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p><a target="_blank" rel="noopener" href="https://ingra14m.github.io/Deformable-Gaussians/">Deformable 3D Gaussians for High-Fidelity Monocular Dynamic Scene Reconstruction</a></p>
+<p><a target="_blank" rel="noopener" href="https://yuelangx.github.io/gaussianheadavatar/">Gaussian Head Avatar: Ultra High-fidelity Head Avatar via Dynamic Gaussians</a></p>
 </blockquote>
-<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>任务：</p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>任务：由稀疏视角创建高保真三维头像（3D head avatars）。</p>
+<p>本文提出了由可控的3D Gaussians表示的头像建模方法，<strong>Gaussian Head Avatar</strong>，优化<strong>neutral 3D Gaussians</strong>和<strong>基于MLP的形变场（MLP-based deformation field）</strong>，以捕捉复杂的面部表情。这两个部分相辅相成，可以在确保表情准确性的同时建模细粒度的动态细节。此外，本文设计了一种基于<strong>隐式SDF</strong>和<strong>Deep Marching Tetrahedra</strong>的几何引导初始化策略，以确保训练过程的稳定性和收敛性。</p>
+<p>结果：在夸张的面部表情下，能达到2K分辨率的渲染质量。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在稀疏视角这种lightweight setting下，重建3D头像最大的挑战是缺乏精确的几何。基于NeRF的方法可以被用于稀疏视角的头像重建，但是<strong>无法达到2K的分辨率</strong>，缺乏像素级的细节，包括皱纹、眼睛等。</p>
+<p>3D Gaussian splatting在静态/动态场景下的渲染质量很高，而且速度很快。然而，用3D Gaussians建模动态场景的工作都不可动画化。对于建模可动画化头像来说，需要关注的是<strong>如何有效地控制3D Gaussians的形变，并通过表情系数建模动态外观</strong>。</p>
+<p>之前，人脸形变一般利用linear blend skinning (LBS)的蒙皮权重和blendshapes，就像FLAME model那样。问题在于LBS-based方法无法用简单的线性操作表现出夸张的、细粒度的表情。受NeRSemble启发，本文提出了一种完全学习的<strong>expression-conditioned deformation field</strong>，输入3D Gaussians的位置和表情系数，MLP预测从中性表情到目标表情的位移。类似地，也可以用head pose控制非面部区域（比如脖子）的运动。</p>
+<p>3D Gaussians是一种离散的显式表示，离散性使得梯度反向传播时无法传递到整个空间中，所以训练的收敛很大程度上依赖于<strong>geometry和deformation field合理的初始化</strong>。随之而来的问题是，用FLAME之类的可变性模板进行初始化无法建模长发和肩膀。于是本文提出了一种几何引导的初始化策略，先优化一个隐式SDF场，颜色场以及deformation MLP，对应建立基本的几何、颜色和表情相关的形变。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p><img src="image.png" alt="Alt text"></p>
+<p>这是一个2-stage pipeline。</p>
+<p><strong>数据预处理</strong>：把数据集中每张图片的背景去除，联合估计3DMM model，3D facial landmarks和每一帧的表情系数。</p>
+<h3 id="Gaussian-Head-Avatar"><a href="#Gaussian-Head-Avatar" class="headerlink" title="Gaussian Head Avatar"></a>Gaussian Head Avatar</h3><p>为了容易理解，论文先介绍了训练的第二阶段。</p>
+<p>首先要建立一个canonical neutral Gaussian model，包含和表情无关的属性，${X_0,F_0,Q_0,S_0,A_0}$，分别代表Gaussians的坐标，特征向量（dimension=128），neutral rotation, scale, opacity。然后，通过<strong>dynamic generator $\Phi$</strong>将neutral Gaussians形变，生成目标表情。</p>
+<script type="math/tex; mode=display">
+{X,C,Q,S,A}=\Phi{X_0,F_0,Q_0,S_0,A_0;\theta,\beta}</script><p>其中$\theta, \beta$分别表示表情系数和头的姿态（head pose）。dynamic generator内部的具体做法简单来讲分成以下三部分</p>
+<ol>
+<li>Gaussians坐标：两个预测位移的MLP，分别受表情和head pose控制，然后对两个MLP的输出加权平均，离landmarks近的Gaussian受表情系数的影响大，反之则受head pose的影响大。</li>
+<li>颜色：也用两个MLP来预测，并加权平均；和上面提到的坐标不同的是不需要预定义的neutral color。</li>
+<li>rotation, scale, opacity：同样用两个MLP来预测与neutral value的偏移量，并加权平均；还要进行平移和旋转操作，从canonical space变换到world space。</li>
+</ol>
+<p>最后，在给定的相机视角下，将Gaussians渲染成32个通道的512*512特征图，然后将其输入超分辨率网络以生成2K分辨率的图像。整个模型在多视角RGB视频的监督下进行优化，损失函数如下：</p>
+<p><img src="image2.png" alt="Alt text"></p>
+<p>其中$I_{lr}$是32通道的特征图的前三个通道。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>第一阶段需要优化一个guidance model，包括neutral mesh, deformation MLP和color MLP。</p>
+<p>SDF场通过Deep Marching Tetrahedra (DMTet) 转化成mesh，而顶点的颜色和形变通过MLP进行预测。然后对mesh渲染RGB图像和mask，在多视角RGB图像的监督下优化网络参数。另外还用到landmarks作为监督信号，训练表情形变MLP。此外还有一些惩罚项。总的损失函数如下：</p>
+<p><img src="image3.png" alt="Alt text"></p>
+<p>最后，用SDF场提取出的mesh初始化3D Gaussians的顶点位置和特征向量，其中特征向量在下一个阶段被用于预测点的颜色。color MLP和deformation MLP在第二阶段用来确保训练的稳定和收敛。整个初始化过程需要10分钟左右。</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>主要看了一下消融：</p>
+<ol>
+<li>初始化策略：相比直接用FLAME初始化，本文提出的几何引导初始化对离头比较远的发丝的重建效果比较好。</li>
+<li>形变策略：相比用LBS，本文提出的fully learned形变在夸张表情的setting下效果更好。</li>
+</ol>
+<p><img src="image5.png" alt="Alt text"></p>
 
              
         </div>
@@ -130,13 +161,13 @@
     <div class="post-near">
     <div class="post-near-child post-near-child-left "> 
         
-            <a href="/2023/12/01/Animatable-Gaussians/">Animatable Gaussians &laquo; </a>
+            <a href="/2023/12/05/Deformable-3D-Gaussians/">Deformable 3D Gaussians &laquo; </a>
         
         <br /> Prev  &laquo;
     </div>
     <div class="post-near-child post-near-child-right">
         
-            <a href="/2023/12/08/Gaussian-Head-Avatar/"> &raquo; Gaussian Head Avatar</a>
+            <a>None</a>
         
         <br /> &raquo; Next 
     </div>
