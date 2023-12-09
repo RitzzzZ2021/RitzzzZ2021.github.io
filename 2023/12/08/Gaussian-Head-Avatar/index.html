@@ -117,7 +117,7 @@
 </blockquote>
 <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>任务：由稀疏视角创建高保真三维头像（3D head avatars）。</p>
 <p>本文提出了由可控的3D Gaussians表示的头像建模方法，<strong>Gaussian Head Avatar</strong>，优化<strong>neutral 3D Gaussians</strong>和<strong>基于MLP的形变场（MLP-based deformation field）</strong>，以捕捉复杂的面部表情。这两个部分相辅相成，可以在确保表情准确性的同时建模细粒度的动态细节。此外，本文设计了一种基于<strong>隐式SDF</strong>和<strong>Deep Marching Tetrahedra</strong>的几何引导初始化策略，以确保训练过程的稳定性和收敛性。</p>
-<p>结果：在夸张的面部表情下，能达到2K分辨率的渲染质量。</p>
+<p>结果：能达到2K分辨率的渲染质量，而且能很好地handle夸张表情。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在稀疏视角这种lightweight setting下，重建3D头像最大的挑战是缺乏精确的几何。基于NeRF的方法可以被用于稀疏视角的头像重建，但是<strong>无法达到2K的分辨率</strong>，缺乏像素级的细节，包括皱纹、眼睛等。</p>
 <p>3D Gaussian splatting在静态/动态场景下的渲染质量很高，而且速度很快。然而，用3D Gaussians建模动态场景的工作都不可动画化。对于建模可动画化头像来说，需要关注的是<strong>如何有效地控制3D Gaussians的形变，并通过表情系数建模动态外观</strong>。</p>
 <p>之前，人脸形变一般利用linear blend skinning (LBS)的蒙皮权重和blendshapes，就像FLAME model那样。问题在于LBS-based方法无法用简单的线性操作表现出夸张的、细粒度的表情。受NeRSemble启发，本文提出了一种完全学习的<strong>expression-conditioned deformation field</strong>，输入3D Gaussians的位置和表情系数，MLP预测从中性表情到目标表情的位移。类似地，也可以用head pose控制非面部区域（比如脖子）的运动。</p>
