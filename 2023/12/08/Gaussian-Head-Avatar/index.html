@@ -126,9 +126,9 @@
 <p>这是一个2-stage pipeline。</p>
 <p><strong>数据预处理</strong>：把数据集中每张图片的背景去除，联合估计3DMM model，3D facial landmarks和每一帧的表情系数。</p>
 <h3 id="Gaussian-Head-Avatar"><a href="#Gaussian-Head-Avatar" class="headerlink" title="Gaussian Head Avatar"></a>Gaussian Head Avatar</h3><p>为了容易理解，论文先介绍了训练的第二阶段。</p>
-<p>首先要建立一个canonical neutral Gaussian model，包含和表情无关的属性，${X_0,F_0,Q_0,S_0,A_0}$，分别代表Gaussians的坐标，特征向量（dimension=128），neutral rotation, scale, opacity。然后，通过<strong>dynamic generator $\Phi$</strong>将neutral Gaussians形变，生成目标表情。</p>
+<p>首先要建立一个canonical neutral Gaussian model，包含和表情无关的属性，$\{X_0,F_0,Q_0,S_0,A_0\}$，分别代表Gaussians的坐标，特征向量（dimension=128），neutral rotation, scale, opacity。然后，通过<strong>dynamic generator $\Phi$</strong>将neutral Gaussians形变，生成目标表情。</p>
 <script type="math/tex; mode=display">
-{X,C,Q,S,A}=\Phi{X_0,F_0,Q_0,S_0,A_0;\theta,\beta}</script><p>其中$\theta, \beta$分别表示表情系数和头的姿态（head pose）。dynamic generator内部的具体做法简单来讲分成以下三部分</p>
+\{X,C,Q,S,A\}=\Phi(X_0,F_0,Q_0,S_0,A_0;\theta,\beta)</script><p>其中$\theta, \beta$分别表示表情系数和头的姿态（head pose）。dynamic generator内部的具体做法简单来讲分成以下三部分</p>
 <ol>
 <li>Gaussians坐标：两个预测位移的MLP，分别受表情和head pose控制，然后对两个MLP的输出加权平均，离landmarks近的Gaussian受表情系数的影响大，反之则受head pose的影响大。</li>
 <li>颜色：也用两个MLP来预测，并加权平均；和上面提到的坐标不同的是不需要预定义的neutral color。</li>
@@ -147,6 +147,8 @@
 <li>形变策略：相比用LBS，本文提出的fully learned形变在夸张表情的setting下效果更好。</li>
 </ol>
 <p><img src="image5.png" alt="Alt text"></p>
+<h2 id="其他的一些3DGS-avatar工作"><a href="#其他的一些3DGS-avatar工作" class="headerlink" title="其他的一些3DGS avatar工作"></a>其他的一些3DGS avatar工作</h2><p><a target="_blank" rel="noopener" href="https://ustc3dv.github.io/FlashAvatar/">FlashAvatar</a></p>
+<p><a target="_blank" rel="noopener" href="https://shenhanqian.github.io/gaussian-avatars">GaussianAvatars</a></p>
 
              
         </div>
