@@ -121,7 +121,7 @@
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在稀疏视角这种lightweight setting下，重建3D头像最大的挑战是缺乏精确的几何。基于NeRF的方法可以被用于稀疏视角的头像重建，但是<strong>无法达到2K的分辨率</strong>，缺乏像素级的细节，包括皱纹、眼睛等。</p>
 <p>3D Gaussian splatting在静态/动态场景下的渲染质量很高，而且速度很快。然而，用3D Gaussians建模动态场景的工作都不可动画化。对于建模可动画化头像来说，需要关注的是<strong>如何有效地控制3D Gaussians的形变，并通过表情系数建模动态外观</strong>。</p>
 <p>之前，人脸形变一般利用linear blend skinning (LBS)的蒙皮权重和blendshapes，就像FLAME model那样。问题在于LBS-based方法无法用简单的线性操作表现出夸张的、细粒度的表情。受NeRSemble启发，本文提出了一种完全学习的<strong>expression-conditioned deformation field</strong>，输入3D Gaussians的位置和表情系数，MLP预测从中性表情到目标表情的位移。类似地，也可以用head pose控制非面部区域（比如脖子）的运动。</p>
-<p>3D Gaussians是一种离散的显式表示，离散性使得梯度反向传播时无法传递到整个空间中，所以训练的收敛很大程度上依赖于<strong>geometry和deformation field合理的初始化</strong>。随之而来的问题是，用FLAME之类的可变性模板进行初始化无法建模长发和肩膀。于是本文提出了一种几何引导的初始化策略，先优化一个隐式SDF场，颜色场以及deformation MLP，对应建立基本的几何、颜色和表情相关的形变。</p>
+<p>3D Gaussians是一种离散的显式表示，离散性使得梯度反向传播时无法传递到整个空间中，所以训练的收敛很大程度上依赖于<strong>geometry和deformation field合理的初始化</strong>。随之而来的问题是，用FLAME之类的可变形模板进行初始化无法建模长发和肩膀。于是本文提出了一种几何引导的初始化策略，先优化一个隐式SDF场，颜色场以及deformation MLP，对应建立基本的几何、颜色和表情相关的形变。</p>
 <h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p><img src="image.png" alt="Alt text"></p>
 <p>这是一个2-stage pipeline。</p>
 <p><strong>数据预处理</strong>：把数据集中每张图片的背景去除，联合估计3DMM model，3D facial landmarks和每一帧的表情系数。</p>
