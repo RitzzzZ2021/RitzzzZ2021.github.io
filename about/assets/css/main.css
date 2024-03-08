@@ -9273,20 +9273,22 @@ img.mfp-img {
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-    border-bottom: 1px #efefef solid;
-    padding: 2em 0 2em 0
+    /* border-bottom: 1px #efefef solid; */
+    /* padding: 2em 0 2em 0 */
+    padding: 1em 0 1em 0
 }
 
 .paper-box .paper-box-image {
     justify-content: center;
     display: flex;
-    width: 100%;
+    /* width: 100%; */
     order: 2
 }
 
 .paper-box .paper-box-image img {
-    max-width: 400px;
-    box-shadow: 3px 3px 6px #888;
+    max-width: 130px;
+    /* margin-right: 20px; */
+    /* box-shadow: 3px 3px 6px #888; */
     object-fit: cover
 }
 
@@ -9298,7 +9300,7 @@ img.mfp-img {
 @media (min-width: 48em) {
     .paper-box .paper-box-image {
         justify-content:left;
-        min-width: 200px;
+        /* min-width: 200px; */
         max-width: 40%;
         order: 1
     }
