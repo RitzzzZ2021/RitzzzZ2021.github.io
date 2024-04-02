@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>
+        Develop with Flask - RitzzzZ 
+    </title>
+     
+    
+<link rel="stylesheet" href="/css/grid.css">
+
+    
+<link rel="stylesheet" href="/css/custom.css">
+
+    
+<link rel="stylesheet" href="/css/ringo.css">
+
+     
+        <link rel="icon" type="image/x-icon" href="/img/favicon.ico " />
+     
+     
+     
+        <meta name=" " content="" />
+     
+        <meta name=" " content="" />
+     
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+  <body>
+    <header id="header" class="clearfix" onclick="window.open('/', '_self')">
+    <div class="site-name">
+        <a href="/" id="logo" class="site-title">
+            RitzzzZ
+        </a>
+        <p class="description site-description">
+            <span style="padding-top:20px; font-size: 10px">
+                An infinite journey
+            </span>
+        </p>
+    </div>
+</header>
+<div id="sidebar" role="complementary">
+    <section class="widget">
+        <ul class="menu widget-list">
+            
+                <li class="menu-item">
+                    <a href="/" class="menu-item-link">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/about" class="menu-item-link">
+                        About
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/archives" class="menu-item-link">
+                        Archives
+                    </a>
+                </li>
+                
+        </ul>
+    </section>
+    <section class="widget sidebar-foot">
+        <ul class="widget-list">
+            <li>Theme <a rel="nofollow" target="_blank" href="https://github.com/HeliumOI/hexo-theme-ringo">Ringo</a>
+                by <a target="_blank" href="/ "> RitzzzZ  </a></li>
+            <li>Proudly powered by  <a rel="nofollow" target="_blank" href="https://hexo.io/">Hexo</a></li>
+        </ul>
+    </section>
+</div>
+
+<div id="helpbar">
+    <div class="back-to-top">
+        <button id="back2top">↑</button>
+        <script>
+            back2top.onclick = function() {
+                var movement = document.body.scrollTop || document.documentElement.scrollTop;
+                scrollBy(0, -movement);
+            }
+        </script>
+    </div>
+</div>
+      <main class="main">
+        <div id="body">
+          <div class="container">
+            <div class="col-12" id="main" role="main">
+    <article class="post post-atpost" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-title">
+            <h1 class="post-title post-title-atpage" itemprop="name headline">
+                <a itemprop="url" href="/2024/04/02/Flask-Notes/">
+                    Develop with Flask
+                </a>
+            </h1>
+        </div>
+        <ul class="post-meta post-meta-atpage">
+            <li class="post-time">
+                2024-04-02
+            </li>
+            <li>
+                <div class="article-category">
+                    
+                </div>
+            </li>
+        </ul>
+        <div class="post-content" itemprop="articleBody">
+            <h3 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a>MVC模式</h3><p>MVC模式（Model-View-Controller）是软件工程中的一种架构模式，主要用于实现用户界面的分离。它将应用程序划分为三个核心组件：</p>
+<ol>
+<li><p><strong>Model（模型）</strong>：表示应用程序的数据结构，通常负责管理数据、数据库的读写以及数据处理的逻辑。模型组件直接与数据库交互，并修改或抓取数据。</p>
+</li>
+<li><p><strong>View（视图）</strong>：展示数据给用户的部分，是用户看到并与之交互的界面。视图仅仅展示数据，不执行任何业务逻辑。</p>
+</li>
+<li><p><strong>Controller（控制器）</strong>：作为模型和视图之间的协调者，从视图接收用户的输入并决定调用哪个模型组件来处理请求，然后再确定用哪个视图来显示返回的数据。</p>
+</li>
+</ol>
+<p>这种模式使得用户界面可以更容易地被理解、测试和维护，因为它强制性地让数据处理（模型）、用户界面（视图）和用户输入（控制器）保持独立。在Web开发中，MVC模式非常流行，很多框架如Ruby on Rails、Django和ASP.NET MVC都采用了这种模式。</p>
+<p>举一个简单的例子，假设要编写一个网上商店的软件：</p>
+<ul>
+<li><strong>Model</strong> 可能包括商品对象、库存管理和订单处理系统。</li>
+<li><strong>View</strong> 是用户浏览商品和下单时看到的页面。</li>
+<li><strong>Controller</strong> 接收用户的操作（例如“添加到购物车”），更新模型，并最终引导视图更新显示。</li>
+</ul>
+<p>通过使用MVC模式，如果你想改变数据展示方式，你只需要修改视图部分；如果需要更改业务逻辑，只需更改模型部分；而控制器往往在结构没有大的变化时保持不变。这样，在团队合作和代码维护时就有很高的灵活性。</p>
+<h3 id="蓝图"><a href="#蓝图" class="headerlink" title="蓝图"></a>蓝图</h3><p>Flask的蓝图（Blueprint）是一种组织和注册应用程序中视图函数、模板、静态文件等的方式。蓝图可以看作是应用中的一个子模块，它允许你在不同的文件中构建应用的不同部分，并且在主体架构创建后再将其注册到应用上。</p>
+<p>使用蓝图的目的是为了提供一种将应用划分成不同部分的方法，每个部分都有自己的路由、错误处理页面、模板等。这对于大型应用或团队协作非常有益，因为它能够帮助维持代码结构的清晰性，易于管理和扩展。</p>
+<p>蓝图的特点：</p>
+<ul>
+<li><strong>模块化</strong>：蓝图使得你可以构建重复使用的模块，例如认证、博客接口等。</li>
+<li><strong>组件隔离</strong>：各个蓝图可以独立地定义它们自己的静态文件、模板和视图函数。</li>
+<li><strong>延迟注册</strong>：你可以在系统的任何地方定义蓝图，但只有当它们被注册到一个Flask应用实例时，对应的路由和其他功能才会生效。</li>
+<li><strong>多实例支持</strong>：可以在多个应用实例中注册相同的蓝图，用于共享代码。</li>
+</ul>
+<p>以下是如何定义和注册一个蓝图的简单例子：</p>
+<pre><code class="lang-python">from flask import Blueprint
+
+# 创建一个蓝图对象，&#39;simple_page&#39; 是蓝图名字，__name__ 用于关联资源文件的位置
+simple_page = Blueprint(&#39;simple_page&#39;, __name__, template_folder=&#39;templates&#39;)
+
+# 使用蓝图定义一个路由
+@simple_page.route(&#39;/hello&#39;)
+def hello():
+    return &#39;Hello World!&#39;
+
+# 然后在应用工厂函数中注册这个蓝图
+from flask import Flask
+
+app = Flask(__name__)
+app.register_blueprint(simple_page)
+</code></pre>
+<p>在此示例中，<code>simple_page</code> 是我们创建的蓝图，我们给它定义了一个路由 <code>/hello</code>。然后，在Flask应用对象 <code>app</code> 上调用 <code>register_blueprint</code> 方法来注册这个蓝图。注册之后，蓝图定义的所有路由都会添加到Flask应用中。</p>
+<p>蓝图大大增强了Flask的灵活性，是构建大型或者复杂Web应用的理想选择。</p>
+<h3 id="编程模式：Application-Factories"><a href="#编程模式：Application-Factories" class="headerlink" title="编程模式：Application Factories"></a>编程模式：Application Factories</h3><p>Application Factories是一个编程模式，特别是在使用Flask这类Web框架时常见的设计模式。这个模式让你能够创建一个函数或者方法来构造并配置你的Flask应用实例。使用Application Factory模式有几个好处：</p>
+<ol>
+<li><strong>测试友好</strong>：你可以为不同的配置轻松地创建多个实例，便于进行单元测试和集成测试。</li>
+<li><strong>实例化控制</strong>：可以根据不同的运行环境（开发、测试、生产等）来构建应用，在构建时可以引入不同的配置。</li>
+<li><strong>延迟创建</strong>：允许你在不立即需要的时候先不创建应用实例，而是在需要时才进行创建，这有助于避免循环依赖问题。</li>
+</ol>
+<p>下面是一个简单的Application Factory示例：</p>
+<pre><code class="lang-python">from flask import Flask
+
+def create_app(config_filename):
+    app = Flask(__name__)
+    app.config.from_pyfile(config_filename)
+
+    from yourapplication.views import views_blueprint
+    app.register_blueprint(views_blueprint)
+
+    return app
+</code></pre>
+<p>在上面的代码中，<code>create_app</code> 是一个工厂函数，它接受一个配置文件的名称，并基于这个配置文件来创建并返回一个Flask应用实例。然后，你可以注册<strong>蓝图（Blueprints）</strong>到这个应用实例，以及做其他配置。这样，你可以根据需要创建具有不同配置的应用实例。</p>
+<h3 id="在Flask中使用MongoDB"><a href="#在Flask中使用MongoDB" class="headerlink" title="在Flask中使用MongoDB"></a>在Flask中使用MongoDB</h3><p><code>flask_pymongo</code> 是一个为 Flask 应用提供的 PyMongo 扩展。PyMongo 是一个 Python 分发包，它包含用于连接和操作 MongoDB 数据库的工具。通过使用 <code>flask_pymongo</code>，你可以在 Flask 应用中轻松地访问 MongoDB 数据库，并执行数据存储、检索、更新和删除等操作。</p>
+<p>要使用 <code>flask_pymongo</code>，首先需要安装它。通常，你可以使用 pip 来进行安装：</p>
+<pre><code class="lang-bash">pip install flask_pymongo
+</code></pre>
+<p>然后可以在 Flask 应用中这样使用它：</p>
+<p>```python<br>from flask import Flask<br>from flask_pymongo import PyMongo</p>
+<p>app = Flask(<strong>name</strong>)</p>
+<h1 id="你需要在应用配置中设置-MONGO-URI-来指定数据库的-URI"><a href="#你需要在应用配置中设置-MONGO-URI-来指定数据库的-URI" class="headerlink" title="你需要在应用配置中设置 MONGO_URI 来指定数据库的 URI"></a>你需要在应用配置中设置 MONGO_URI 来指定数据库的 URI</h1><p>app.config[“MONGO_URI”] = “mongodb://localhost:27017/myDatabase”</p>
+<p>mongo = PyMongo(app)</p>
+<p>@app.route(‘/add’)<br>def add():</p>
+<pre><code># 使用 mongo.db 来访问数据库
+mongo.db.items.insert_one(&#123;&#39;name&#39;: &#39;Item One&#39;&#125;)
+return &#39;Added Item!&#39;
+</code></pre><p>@app.route(‘/find’)<br>def find():</p>
+<pre><code># 查询数据库中所有的 &#39;name&#39; 为 &#39;Item One&#39; 的文档
+item = mongo.db.items.find_one_or_404(&#123;&#39;name&#39;: &#39;Item One&#39;&#125;)
+</code></pre>
+             
+        </div>
+        
+            <p itemprop="keywords" class="tags">
+                
+                    <a href="/tags/SE/"> SE </a>
+                
+            </p>
+        
+    </article>
+    <div class="post-near">
+    <div class="post-near-child post-near-child-left "> 
+        
+            <a href="/2023/12/08/Gaussian-Head-Avatar/">Gaussian Head Avatar &laquo; </a>
+        
+        <br /> Prev  &laquo;
+    </div>
+    <div class="post-near-child post-near-child-right">
+        
+            <a>None</a>
+        
+        <br /> &raquo; Next 
+    </div>
+</div>
+</div>
+             
+<div id="comments">
+     
+</div>
+ 
+            <footer id="footer" role="contentinfo">
+    
+        &copy; 2022 - 2024
+        <br />
+    
+    
+    <br />
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_value_site_pv">......</span> visits ·
+        <span id="busuanzi_value_site_uv">......</span> visitors 
+    
+</footer>
+          </div>
+        </div>
+      </main>
+      <!-- highlight support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
+ 
+<script>
+        hljs.initHighlightingOnLoad();
+</script>
+ 
+<!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
+ 
+<!-- mathjax support -->
+
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<!-- fancybox support -->
+ 
+<!-- viewerjs support -->
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/viewerjs@1.10.0/dist/viewer.min.js"></script>
+
+<script type="text/javascript">
+    Viewer.setDefaults({
+        zoomRatio: [0.5],
+        show: function () {
+            this.viewer.zoomTo(1);
+        },
+    });
+    
+    var imageList = document.querySelector('.post-content').getElementsByTagName('img');
+    
+    var imageArray = new Array();
+    Array.prototype.forEach.call(imageList, element => {
+        if (element.alt != "no-view" && element.className != "no-view") {
+            imageArray.push(element);
+        }
+    });
+    
+    Array.prototype.forEach.call(imageArray, element => {
+        var viewer1 = new Viewer(element);
+        viewer1.images = imageArray;
+        viewer1.length = imageArray.length;
+    });
+</script>
+ 
+<!-- google analytics support -->
+
+
+
+ 
+ 
+
+<!-- lazyload support -->
+
+    
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
+
+<script>
+    new LazyLoad({
+        elements_selector: '.post-content img'
+    });
+</script>
+ 
+  </body>
+
+</html>
