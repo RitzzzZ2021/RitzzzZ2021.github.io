@@ -139,6 +139,28 @@
 <p><strong>Gauge transformation</strong></p>
 <p>首先将无散的速度场 $u$ 转换成冲量表达式：$m=u+\nabla \phi$，其中 $\phi$ 满足</p>
 <p><img src="image1.png" alt="alt text"></p>
+<p>$\alpha_n=n \dot \nabla$是法线梯度。这个方程组可以被看作常规的投影步骤，即求解受标准自由表面（第二行）和固体边界条件（第三行）约束的泊松方程（第一行），输入冲量场 $m$，输出速度场 $u$。将这些代回NS方程，得到NS方程的冲量形式:</p>
+<p><img src="image2.png" alt="alt text"></p>
+<p>和标准NS方程一样，这个方程组包含一个动量守恒方程（第一行），不可压缩条件（第二行），固体边界条件（第三行）和自由表面条件（第四行）。自由表明条件由一个gauge variable $q$ 来满足。通过逐渐演变 $m$，最后从 $m$ 得到 $u$。这样的好处是，不需要 $m$ 在演化过程中满足全局的不可压缩条件，可以设计更灵活的时域演化策略。</p>
+<p><strong>不可压的冲量流</strong></p>
+<p>要解的冲量流体方程：</p>
+<p><img src="image3.png" alt="alt text"></p>
+<p>固体边界条件：</p>
+<p><img src="image4.png" alt="alt text"></p>
+<p>自由表面边界条件：</p>
+<p><img src="image5.png" alt="alt text"></p>
+<p><strong>浮力</strong></p>
+<p>用Boussinesq近似模拟烟粒密度的变化。忽略除了密度之外其他流体属性的变化，并且密度只出现在和重力加速度常数相乘。浮力可以直接应用于 $m$：</p>
+<p><img src="image6.png" alt="alt text"></p>
+<p>其中 $p’$ 是有效烟密度，$\rho$ 是背景密度常数。</p>
+<h3 id="数值方法"><a href="#数值方法" class="headerlink" title="数值方法"></a>数值方法</h3><p>本文的求解器使用标准MAC网格进行空间离散化，$u$ 和 $m$ 储存在网格面的中心，gauge variable $\phi$, $q$, 烟粒密度 $\rho ‘$ 或levelset value $\Phi$ 存储在元胞中心。levelset function用来追踪液体表面。</p>
+<p>模拟的每一个时间步包括reinitialization, advection, stretching, viscosity, projection。</p>
+<p><strong>Reinitialization</strong></p>
+<p>每个时步的最开始，将冲量 $m^n$ 和一个很小比例的速度 $u^n$ 混合：$m^n_r=rm^n+(1-r)u^n$，其中 $r$ 是一个接近1的全局参数。这么做的动机是防止冲量经过一段时间变得太大，导致数值不稳定。reinitialization只会影响到非无散的部分，投影得到的速度场是一样的。</p>
+<p><strong>Advection</strong></p>
+<p>只考虑advection时，$Dm/Dt=0$，可以离散化成</p>
+<p><img src="image7.png" alt="alt text"></p>
+<p>即 $m_r^{n+1}=m_r^n-\delta t u^n \dot \nabla m_r^n$。可以用半拉格朗日法（对于烟的模拟），或者PIC/FLIP方法（对于液体模拟）。</p>
 <h2 id="Fluid-Simulation-on-Neural-Flow-Maps"><a href="#Fluid-Simulation-on-Neural-Flow-Maps" class="headerlink" title="Fluid Simulation on Neural Flow Maps"></a>Fluid Simulation on Neural Flow Maps</h2>
              
         </div>
