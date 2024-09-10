@@ -112,7 +112,7 @@
             </li>
         </ul>
         <div class="post-content" itemprop="articleBody">
-            <h2 id="Impulse-Fluid-Simulation"><a href="#Impulse-Fluid-Simulation" class="headerlink" title="Impulse Fluid Simulation"></a>Impulse Fluid Simulation</h2><p>本文提出了一种新的基于冲量测量变换的incompressible NS solver。该方法的数学模型来自于NS方程的冲量-速度公式，将流体冲量当作辅助变量，在每个时步的最后可以将其投影得到incompressible的速度。该方法在笛卡尔网格上数值求解冲量形式的方程。模拟算法的核心是1. 解决了冲量拉伸，2.使用harmonic boundary treatment，增加了表面张力的效果。本文还构建了一个PIC/FLIP solver，支持自由表面的流体模拟。</p>
+            <h2 id="Impulse-Fluid-Simulation"><a href="#Impulse-Fluid-Simulation" class="headerlink" title="Impulse Fluid Simulation"></a>Impulse Fluid Simulation</h2><p>本文提出了一种新的基于冲量测量变换的incompressible NS solver。该方法的数学模型来自于NS方程的冲量-速度公式，将流体冲量当作辅助变量，在每个时步的最后可以将其投影得到incompressible的速度。该方法在笛卡尔网格上数值求解冲量形式的方程。模拟算法的核心是1. 解决了impulse stretching，2.使用harmonic boundary treatment，增加了表面张力的效果。本文还构建了一个PIC/FLIP solver，支持自由表面的流体模拟。</p>
 <h3 id="Gauge-method"><a href="#Gauge-method" class="headerlink" title="Gauge method"></a>Gauge method</h3><p>Gauge method求辅助变量 $m$ 的解，而不是直接求流体速度 $u$。$u$可以通过投影得到：$u=m-\nabla p$（Helmholtz-Hodge分解），其中 $p$ 是一个标量。投影步骤的输入是一个gauge variable，输出是无散的速度。而传统方法的投影步骤输入输出都是速度场。这一步表明，gauge variable和流体速度是比较松散地耦合的。</p>
 <p>优点：</p>
 <ul>
@@ -161,7 +161,20 @@
 <p>只考虑advection时，$Dm/Dt=0$，可以离散化成</p>
 <p><img src="image7.png" alt="alt text"></p>
 <p>即 $m_r^{n+1}=m_r^n-\delta t u^n \dot \nabla m_r^n$。可以用半拉格朗日法（对于烟的模拟），或者PIC/FLIP方法（对于液体模拟）。</p>
-<h2 id="Fluid-Simulation-on-Neural-Flow-Maps"><a href="#Fluid-Simulation-on-Neural-Flow-Maps" class="headerlink" title="Fluid Simulation on Neural Flow Maps"></a>Fluid Simulation on Neural Flow Maps</h2>
+<h2 id="Fluid-Simulation-on-Neural-Flow-Maps"><a href="#Fluid-Simulation-on-Neural-Flow-Maps" class="headerlink" title="Fluid Simulation on Neural Flow Maps"></a>Fluid Simulation on Neural Flow Maps</h2><p>本文提出了一种混合神经场表示，Spatially Sparse Neural Fields (SSNF)，将小神经网络和重叠的、多分辨率的、稀疏的网格金字塔结合起来，紧凑地表示长期时空速度场。有了neural velocity buffer，就可以计算长时间跨度、双向的flow maps以及它们的Jacobians。</p>
+<h3 id="Flow-Map"><a href="#Flow-Map" class="headerlink" title="Flow Map"></a>Flow Map</h3><p>在流体域 $\Omega$ 定义一个时空速度场 $u(q, \tau)$，表示 $\tau$ 时刻在位置 $q$ 处的速度向量。对于某个物质点 $X\in \Omega$，正向的flow map定义为：</p>
+<p><img src="image8.png" alt="alt text"></p>
+<p>$X$ 表示0时刻点的位置，$x$ 表示 $t$ 时刻点的位置。类似地，定义反向flow map：</p>
+<p><img src="image9.png" alt="alt text"></p>
+<p>空间梯度（Jacobian）表示如下，它们表示初始和当前帧的变形：</p>
+<p><img src="image10.png" alt="alt text"></p>
+<p>时域上的：</p>
+<p><img src="image11.png" alt="alt text"></p>
+<p>粘性液体的欧拉方程的冲量形式：</p>
+<p><img src="image12.png" alt="alt text"></p>
+<p>solver首先计算反向的flow map $\psi$ 和它的Jacobian $\Tau$，然后通过 $m(x,t)=\Tau ^T m (\psi (x),0)$ 重建冲量 $m$。类似地，正向flow map $\phi$ 和它的Jacobian $\mathscr{F}$，$\bar{m}(X,0)=\mathscr{F}^Tm(\phi(X),t)$。然后将 $\bar{m}(X,0)$ 和 $\bar{m}(X,0)$ 比较，计算BFECC误差。</p>
+<p>问题：逆向映射用半拉格朗日法演算，每一步有耗散的网格插值；而正向映射是用高阶Runge-Kutta方法进行的，是精确的。这两者的不对称导致了数值误差。</p>
+
              
         </div>
         
