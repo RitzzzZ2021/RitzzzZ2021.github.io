@@ -172,8 +172,34 @@
 <p><img src="image11.png" alt="alt text"></p>
 <p>粘性液体的欧拉方程的冲量形式：</p>
 <p><img src="image12.png" alt="alt text"></p>
-<p>solver首先计算反向的flow map $\psi$ 和它的Jacobian $\Tau$，然后通过 $m(x,t)=\Tau ^T m (\psi (x),0)$ 重建冲量 $m$。类似地，正向flow map $\phi$ 和它的Jacobian $\mathscr{F}$，$\bar{m}(X,0)=\mathscr{F}^Tm(\phi(X),t)$。然后将 $\bar{m}(X,0)$ 和 $\bar{m}(X,0)$ 比较，计算BFECC误差。</p>
+<p>solver首先计算反向的flow map $\psi$ 和它的Jacobian $\mathscr{T}$，然后通过 $m(x,t)=\mathscr{T} ^T m (\psi (x),0)$ 重建冲量 $m$。类似地，计算正向flow map $\phi$ 和它的Jacobian $\mathscr{F}$，$\bar{m}(X,0)=\mathscr{F}^Tm(\phi(X),t)$。然后将 $\bar{m}(X,0)$ 和 $\bar{m}(X,0)$ 比较，计算BFECC误差。</p>
 <p>问题：逆向映射用半拉格朗日法演算，每一步有耗散的网格插值；而正向映射是用高阶Runge-Kutta方法进行的，是精确的。这两者的不对称导致了数值误差。</p>
+<h3 id="Alternative-Bidirectional-March"><a href="#Alternative-Bidirectional-March" class="headerlink" title="Alternative: Bidirectional March"></a>Alternative: Bidirectional March</h3><p>正向和反向的flow map都描述了速度场在时域上的积分，所以都可以用一样的不需要插值的Runge-Kutta方法计算。</p>
+<p>bidirectionla marching的难点：存储时空域上的速度的buffer需要多少内存？</p>
+<ul>
+<li>本文提出的解决方法：使用memory-compact Implicit Neural Representations，即SSNF</li>
+<li>Spatially Sparse Neural Fields相比在密集的均匀网格上存储一个速度场，可以用较少的内存表示长距离的时空速度信息</li>
+</ul>
+<h3 id="Spatially-Sparse-Neural-Fields-SSNF"><a href="#Spatially-Sparse-Neural-Fields-SSNF" class="headerlink" title="Spatially Sparse Neural Fields (SSNF)"></a>Spatially Sparse Neural Fields (SSNF)</h3><p>SSNF是一个通用目的的表示时空信号的混合INR。它包含：</p>
+<ol>
+<li>多分辨率的空间上稀疏的数据结构，保存可训练的特征向量</li>
+<li>一系列轻量的神经网络，将特征向量解码成MAC网格上的离散的速度场</li>
+</ol>
+<p><img src="image13.png" alt="alt text"></p>
+<p>输入坐标 $(x,y,t)$，先用空间坐标 $(x,y)$ 查询特征网格，在每个分辨率的层级上得到一个特征向量。每个特征向量被分成四个片段，对应4个时间戳，跨分辨率的片段被拼接起来，形成4个时间锚向量，可以用来插值得到 $t$ 时刻的特征向量。最后，用神经网络解码得到各个方向上的速度分量。</p>
+<h2 id="Solid-Fluid-Interaction-on-Particle-Flow-Map"><a href="#Solid-Fluid-Interaction-on-Particle-Flow-Map" class="headerlink" title="Solid-Fluid Interaction on Particle Flow Map"></a>Solid-Fluid Interaction on Particle Flow Map</h2><p>Particle Flow Map: 准确的长距离不可压缩流体模拟。前向模拟中的粒子轨迹本身就是一个flow map。</p>
+<p>本文提出的欧拉-拉格朗日框架包含以下四部分：</p>
+<ol>
+<li>拉格朗日粒子</li>
+<li>两尺度的map，存储各种流动的量的映射</li>
+<li>粒子到网格的插值方法，用来从粒子到网格节点传输某些量</li>
+<li>混合的基于冲量的求解器，保证不可压缩性</li>
+</ol>
+<p>优点：</p>
+<ul>
+<li>复杂的涡结构和湍流的细节</li>
+<li>相比neural flow map减少计算时间（49倍），减少内存消耗（41%）</li>
+</ul>
 
              
         </div>

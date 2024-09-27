@@ -181,18 +181,28 @@ def create_app(config_filename):
 <pre><code class="lang-bash">pip install flask_pymongo
 </code></pre>
 <p>然后可以在 Flask 应用中这样使用它：</p>
-<p>```python<br>from flask import Flask<br>from flask_pymongo import PyMongo</p>
-<p>app = Flask(<strong>name</strong>)</p>
-<h1 id="你需要在应用配置中设置-MONGO-URI-来指定数据库的-URI"><a href="#你需要在应用配置中设置-MONGO-URI-来指定数据库的-URI" class="headerlink" title="你需要在应用配置中设置 MONGO_URI 来指定数据库的 URI"></a>你需要在应用配置中设置 MONGO_URI 来指定数据库的 URI</h1><p>app.config[“MONGO_URI”] = “mongodb://localhost:27017/myDatabase”</p>
-<p>mongo = PyMongo(app)</p>
-<p>@app.route(‘/add’)<br>def add():</p>
-<pre><code># 使用 mongo.db 来访问数据库
-mongo.db.items.insert_one(&#123;&#39;name&#39;: &#39;Item One&#39;&#125;)
-return &#39;Added Item!&#39;
-</code></pre><p>@app.route(‘/find’)<br>def find():</p>
-<pre><code># 查询数据库中所有的 &#39;name&#39; 为 &#39;Item One&#39; 的文档
-item = mongo.db.items.find_one_or_404(&#123;&#39;name&#39;: &#39;Item One&#39;&#125;)
+<pre><code class="lang-python">from flask import Flask
+from flask_pymongo import PyMongo
+
+app = Flask(__name__)
+
+# 需要在应用配置中设置 MONGO_URI 来指定数据库的 URI
+app.config[&quot;MONGO_URI&quot;] = &quot;mongodb://localhost:27017/myDatabase&quot;
+
+mongo = PyMongo(app)
+
+@app.route(&#39;/add&#39;)
+def add():
+    # 使用 mongo.db 来访问数据库
+    mongo.db.items.insert_one(&#123;&#39;name&#39;: &#39;Item One&#39;&#125;)
+    return &#39;Added Item!&#39;
+
+@app.route(&#39;/find&#39;)
+def find():
+    # 查询数据库中所有的 &#39;name&#39; 为 &#39;Item One&#39; 的文档
+    item = mongo.db.items.find_one_or_404(&#123;&#39;name&#39;: &#39;Item One&#39;&#125;)
 </code></pre>
+
              
         </div>
         
