@@ -1577,16 +1577,17 @@ var simplemaps_worldmap_mapdata={
       lat: "30.2489634",
       lng: "120.2052342",
       color: "default",
-      description: "Where I grew up and went to college",
+      description: "Where I grew up and went to college—a beautiful city known as 'Paradise on Earth', and home to both DeepSeek and Alibaba.",
       url: "default"
     },
     "1": {
-      name: "Shanghai",
-      lat: "31.230416",
-      lng: "121.473701",
-      color: "default",
+      name: "New York",
+      lat: "40.712776",
+      lng: "-74.005974",
       description: "",
-      url: "default"
+      color: "default",
+      url: "default",
+      size: "default"
     },
     "2": {
       name: "Tokyo",
@@ -1668,15 +1669,7 @@ var simplemaps_worldmap_mapdata={
       url: "default",
       size: "default"
     },
-    "11": {
-      name: "New York",
-      lat: "40.712776",
-      lng: "-74.005974",
-      description: "",
-      color: "default",
-      url: "default",
-      size: "default"
-    },
+    
   },
   labels: {}
 };
