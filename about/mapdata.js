@@ -1615,15 +1615,15 @@ var simplemaps_worldmap_mapdata={
       url: "default",
       size: "default"
     },
-    "5": {
-      name: "New Orleans",
-      lat: "29.951065",
-      lng: "-90.071533",
-      description: "",
-      color: "default",
-      url: "default",
-      size: "default"
-    },
+    // "5": {
+    //   name: "New Orleans",
+    //   lat: "29.951065",
+    //   lng: "-90.071533",
+    //   description: "",
+    //   color: "default",
+    //   url: "default",
+    //   size: "default"
+    // },
     "6": {
       name: "Seoul",
       lat: "37.566535",
