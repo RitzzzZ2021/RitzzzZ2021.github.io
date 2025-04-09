@@ -1585,7 +1585,7 @@ var simplemaps_worldmap_mapdata={
       lat: "31.230416",
       lng: "121.473701",
       color: "default",
-      description: "Where I did my internship and lived for three months. One of my favorite cities",
+      description: "",
       url: "default"
     },
     "2": {
@@ -1609,7 +1609,7 @@ var simplemaps_worldmap_mapdata={
       name: "Cancun",
       lat: "21.161908",
       lng: "-86.851528",
-      description: "Where I went for my winter break",
+      description: "",
       color: "default",
       url: "default",
       size: "default"
@@ -1618,7 +1618,7 @@ var simplemaps_worldmap_mapdata={
       name: "New Orleans",
       lat: "29.951065",
       lng: "-90.071533",
-      description: "Where I went for New Year's Eve",
+      description: "",
       color: "default",
       url: "default",
       size: "default"
@@ -1627,7 +1627,7 @@ var simplemaps_worldmap_mapdata={
       name: "Seoul",
       lat: "37.566535",
       lng: "126.977969",
-      description: "Where I first went abroad",
+      description: "",
       color: "default",
       url: "default",
       size: "default"
@@ -1663,6 +1663,15 @@ var simplemaps_worldmap_mapdata={
       name: "Cambodia",
       lat: "13.412469",
       lng: "103.866986",
+      description: "",
+      color: "default",
+      url: "default",
+      size: "default"
+    },
+    "11": {
+      name: "New York",
+      lat: "40.712776",
+      lng: "-74.005974",
       description: "",
       color: "default",
       url: "default",
